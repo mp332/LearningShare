@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js'%}"></script>
+</head>
+<body>
+<div class="container">
+    {#    导航栏#}
+    {% include "head.html" %}
+    <div class="container">
+        {% block add_question %}{% endblock %}
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+
+	<div class="row clearfix">
+		<div class="col-md-2 column">
+		</div>
+		<div class="col-md-8 column">
+			<div class="tabbable" id="tabs-175642">
+				<ul class="nav nav-tabs">
+					{% for category in categorys %}
+					<li>
+						 <a href="{{ category.id }}" data-toggle="tab">{{ category.name}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+<!--				<div class="tab-content">-->
+<!--					<div class="tab-pane" id="panel-494703">-->
+<!--						<p>-->
+<!--							I'm in Section 1.-->
+<!--						</p>-->
+<!--					</div>-->
+<!--					<div class="tab-pane active" id="panel-75557">-->
+<!--						<p>-->
+<!--							Howdy, I'm in Section 2.-->
+<!--						</p>-->
+<!--					</div>-->
+<!--				</div>-->
+			</div>
+			{% for question in questions %}
+			<div class="panel panel-default">
+<!--				<div class="panel-heading">-->
+<!--					<h3 class="panel-title">-->
+<!--						Panel title-->
+<!--					</h3>-->
+<!--				</div>-->
+				<div class="panel-body">
+                    <a href="{{ question.id }}">
+                        {{question.questionTitle}}
+                    </a>
+
+				</div>
+<!--				<div class="panel-footer">-->
+<!--					Panel footer-->
+<!--				</div>-->
+			</div>
+			{% endfor %}
+<!--			<div class="panel panel-default">-->
+<!--				<div class="panel-heading">-->
+<!--					<h3 class="panel-title">-->
+<!--						Panel title-->
+<!--					</h3>-->
+<!--				</div>-->
+<!--				<div class="panel-body">-->
+<!--					Panel content-->
+<!--				</div>-->
+<!--				<div class="panel-footer">-->
+<!--					Panel footer-->
+<!--				</div>-->
+<!--			</div>-->
+		</div>
+		<div class="col-md-2 column">
+		</div>
+	</div>
+    {% include "footer.html" %}
+    {% block javascript %}{% endblock %}
+</div>
+
+</body>
+</html>
