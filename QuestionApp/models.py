@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -20,7 +20,8 @@ class Question(models.Model):
     questionTitle = models.CharField('问题标题', max_length=40, unique=True,blank=False)
     questionCategory = models.ForeignKey('Category', verbose_name='板块名称', on_delete=models.CASCADE)
     questionDescription = models.TextField('详细描述')
-    publishDate = models.DateTimeField(auto_now=True, verbose_name='发布日期')
+    created=models.DateTimeField(default=timezone.now(),verbose_name='发布日期')
+    publishDate = models.DateTimeField(auto_now=True, verbose_name='更新日期')
     godNum = models.IntegerField(default=0,verbose_name='赞数')
     badNum = models.IntegerField(default=0, verbose_name='反对数')
     grade = models.IntegerField(default=0, verbose_name='综合质量')
@@ -40,3 +41,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.commentText
+
+
+
