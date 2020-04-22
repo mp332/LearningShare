@@ -20,7 +20,7 @@ def answer(request):
         answers = AnswerModel.objects.filter(question=request.question)
         # 找到该问题的所有答案,并按照时间顺序排序
         answer_form = AnswerForm()
-        return render(request, "template", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
+        return render(request, "question/answer.html", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
     else:
         author = User.objects.get(id=request.user.id)
         answer_form = AnswerForm(request.POST)
@@ -33,7 +33,7 @@ def answer(request):
             )
             answer_data.save()
             answers = AnswerModel.objects.filter(question=request.question).order_by("pub_date")
-            return render(request, "template", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
+            return render(request, "question/answer.html", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
         else:
             return HttpResponse("error")
 
@@ -42,4 +42,4 @@ def answer(request):
 def answer_list(request):
     answers = AnswerModel.objects.filter(question=request.question)
     question = Question.objects.filter(id=request.question.id)
-    return render(request, "template", {"answers": answers, "question": question})
+    return render(request, "question/answer.html", {"answers": answers, "question": question})
