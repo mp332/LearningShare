@@ -7,7 +7,26 @@ from django.contrib.auth.models import User
 from .forms import AskForm
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
 # Create your views here.
+
+
+def index(request):
+    questions = Question.objects.all()
+    categorys = Category.objects.all()
+    context = {
+        "questions": questions,
+        "categorys": categorys
+    }
+
+    return render(request, "index.html", context=context)
+
+
+def question_content(request, question_id):
+    question = Question.objects.get(id=question_id)
+
+    return render(request, "question/content.html", {"question": question})
 
 
 def ask(request):
@@ -27,7 +46,7 @@ def ask(request):
         if user:
             pass
         else:
-            #return HttpResponseRedirect(reverse('question_and_answer:index'))
+            # return HttpResponseRedirect(reverse('question_and_answer:index'))
             return HttpResponse("1")
 
         form = AskForm(request.POST)
@@ -43,7 +62,7 @@ def ask(request):
                 questionDescription=question_text,
             )
             question.save()
-            #return HttpResponseRedirect(reverse('question_and_answer:detail', args=(question.id,)))
+            # return HttpResponseRedirect(reverse('question_and_answer:detail', args=(question.id,)))
             return HttpResponse("问题添加成功")
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
@@ -52,7 +71,7 @@ def ask(request):
     else:
         form = AskForm()
         context['form'] = form
-    return render(request, 'question_and_answer/ask.html', context)
+    return render(request, 'question/add_question.html', context)
 
 
 def like(request, id):
