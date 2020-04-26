@@ -47,6 +47,9 @@
 
 
 {#老齐#}
+    <!--markdown-->
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 <div style="margin-left: 10px">
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
         <div class="row" style="margin-top: 10px;">
@@ -56,16 +59,19 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>类型：</span></div>
             <div class="col-md-10 text-left">
-{#                <select id="which_category">#}
-{#                    {% for category in categorys %}#}
-{#                    <option value="{{ category.id }}">{{ category.name }}</option>#}
-{#                    {% endfor %}#}
-{#                </select>#}
+                <select id="which_category">
+                    {% for category in category %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>详细描述：</span></div>
-            <div class="col-md-10 text-left">{{ form.question }}</div>
+                        <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
+            <div id="editormd" class="col-md-10 text-left">
+                <textarea style="display: none;" id="id_question"></textarea>
+            </div>
         </div>
         <div class="row">
             <button class="btn btn-default" type="submit">提问</button>
@@ -87,5 +93,18 @@
         })
 
     }
+</script>
+
+        <!--markdown-->
+<script type="text/javascript" src='{% static "editor/editormd.min.js" %}'></script>
+<script type="text/javascript">
+    $(function() {
+        var editor  = editormd("editormd",{
+            width : "100%",
+            height : 640,
+            syncScrolling : "single",
+            path : "{% static 'editor/lib/' %}"
+        });
+    });
 </script>
 {% endblock %}
