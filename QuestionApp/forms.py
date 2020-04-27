@@ -5,15 +5,12 @@ import re
 
 
 class AskForm(forms.Form):
-    """category = forms.ChoiceField(label='请选择问题种类', choices=[(0,'物理'),(1,'数学'),(2,'语言'),(3,'金融')], required=True,
-                                 widget=forms.RadioSelect)"""
+    category = forms.ChoiceField(label='请选择问题种类', required=True, widget=forms.RadioSelect)
     title = forms.CharField(label='请输入问题题目(60字以内):', max_length=60,required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     question = forms.CharField(label='请输入问题内容(2000字以内):', max_length=2000, required=True,widget=forms.Textarea(attrs={"class":"form-control"}))
 
     def clean_category(self):
         category = self.cleaned_data.get('category')
-        if int(category) < 0 or int(category) > 3:
-            raise forms.ValidationError("你选择的模块不存在")
         return category
 
     def clean_title(self):

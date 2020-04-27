@@ -67,11 +67,11 @@ def ask(request):
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()
-
+            return HttpResponse("问题添加失败")
     else:
         form = AskForm()
-        context['form'] = form
-    return render(request, 'question/add_question.html', context)
+        category = Category.objects.all()
+        return render(request, 'question/add_question.html', {"category": category, "form": form})
 
 
 def like(request, id):
