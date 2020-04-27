@@ -51,10 +51,11 @@
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 <div style="margin-left: 10px">
+
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
         <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>问题：</span></div>
-            <div class="col-md-10 text-left">{{ form.title }}</div>
+            <div id="id_title" class="col-md-2 text-right"><span>问题：</span></div>
+            <input class="col-md-10 text-left" type="text">{{ form.questionTitle }}</input>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>类型：</span></div>
@@ -64,22 +65,27 @@
                     <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
+            {{ form.category }}
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>详细描述：</span></div>
                         <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
+
             <div id="editormd" class="col-md-10 text-left">
-                <textarea style="display: none;" id="id_question"></textarea>
+                <textarea style="display: none;" id="id_body"></textarea>
             </div>
         </div>
         <div class="row">
-            <button class="btn btn-default" type="submit">提问</button>
+            <input  type="button" class="btn btn-default"  value="提问2" onclick="add_question()">
         </div>
     </form>
 </div>
-<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+
+<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript" src="{% static 'editor/editormd.min.js' %}"></script>
 <script type="text/javascript">
     function add_question() {
         var questionTitle = $("#id_title").val();
@@ -88,7 +94,18 @@
         $.ajax({
             url:"{% url 'question:add_question' %}",
             type:"POST",
-            data: {"questionTitle":questionTitle,"questionDiscreption":body,"category_id":category_id},
+            data: {"questionTitle":questionTitle,"questionDescription":body,"category":category_id},
+            success:function (e) {
+                    if(e==="1")
+                        layer.msg("successful");
+                    else if(e===2)
+                        layer.msg("sorry");
+                    else {
+
+                        location.href = "{% url 'account:user_login' %}"
+                    }
+
+            }
 
         })
 
@@ -103,6 +120,7 @@
             width : "100%",
             height : 640,
             syncScrolling : "single",
+            imageUpload : true,
             path : "{% static 'editor/lib/' %}"
         });
     });

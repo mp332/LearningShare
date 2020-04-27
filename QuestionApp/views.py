@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -28,7 +29,7 @@ def question_content(request, question_id):
 
     return render(request, "question/content.html", {"question": question})
 
-
+@csrf_exempt
 def ask(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -63,15 +64,15 @@ def ask(request):
             )
             question.save()
             # return HttpResponseRedirect(reverse('question_and_answer:detail', args=(question.id,)))
-            return HttpResponse("问题添加成功")
+            return HttpResponse("添加成功")
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()
             return HttpResponse("问题添加失败")
     else:
-        form = AskForm()
-        category = Category.objects.all()
-        return render(request, 'question/add_question.html', {"category": category, "form": form})
+            form = AskForm()
+            category = Category.objects.all()
+            return render(request, 'question/add_question.html', {"category": category, "form": form})
 
 
 def like(request, id):

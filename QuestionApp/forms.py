@@ -5,7 +5,13 @@ import re
 
 
 class AskForm(forms.Form):
-    category = forms.ChoiceField(label='请选择问题种类', required=True, widget=forms.RadioSelect)
+
+    class Meta:
+         model = Question
+         fields=('questionTitle','category','questionDescription')
+
+
+    category = forms.ChoiceField(label='请选择问题种类', choices=[(0,'物理'),(1,'数学'),(2,'语言'),(3,'金融')],required=True, widget=forms.RadioSelect)
     title = forms.CharField(label='请输入问题题目(60字以内):', max_length=60,required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     question = forms.CharField(label='请输入问题内容(2000字以内):', max_length=2000, required=True,widget=forms.Textarea(attrs={"class":"form-control"}))
 
@@ -21,7 +27,7 @@ class AskForm(forms.Form):
         elif len(title) > 60:
             raise forms.ValidationError("Your title is too long.")
         else:
-            filter_result = Question.objects.filter(question_title__exact=title)
+            filter_result = Question.objects.filter(questionTitle__exact=title)
             if len(filter_result) > 0:
                 raise forms.ValidationError("Your title already exists.")
         return title
@@ -35,3 +41,5 @@ class AskForm(forms.Form):
             raise forms.ValidationError("Your text is too long.")
         else:
             return question
+
+
