@@ -3,6 +3,6 @@
 {% block content %}
 <h1>{{ question.questionTitle }}</h1>
 <p>{{ question.user }}</p>
-    <a href="{% url "answer:answer_question" %}">回答</a>
+    <a href="{% url 'answer:answer_question' question_id=question.id%}">回答</a>
     {% block answer %}{% endblock %}
 {% endblock %}

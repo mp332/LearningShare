@@ -1,9 +1,9 @@
-{% extends "question.content.html" %}
+{% extends "question/content.html" %}
 {% block answer %}
 <form class="form-horizontal" action="." method="post">{% csrf_token %}
     <div class="row" style="margin-top: 10px;">
         <div class="col-md-2 text-right"><span>你的回答：</span></div>
-        <div class="col-md-10 text-left">{{ content_of_answer }}</div>
+        <div class="col-md-10 text-left">{{ answer_form.answer_text }}</div>
 {#                content_of_answer为回答内容，随便改名字#}
     </div>
     <div class="row">
