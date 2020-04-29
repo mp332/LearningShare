@@ -12,5 +12,6 @@ urlpatterns = [
     path('<int:question_id>/', views.question_content, name="question_content"),
     # path('add_question',views.add_question,name='add_question')
     path('add_question/', views.ask, name='add_question'),
+    path('search/', views.search, name='search'),
 
 ]

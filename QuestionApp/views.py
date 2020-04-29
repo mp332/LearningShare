@@ -102,3 +102,15 @@ def unlike(request, id):
     question.grade = question.grade + 10
     question.save()
 
+
+def search(request):
+    keyword = request.GET.get('keyword')
+    err_msg = ''
+
+    if not keyword:
+        err_msg = '请输入关键词'
+        return render(request, 'question/search.html', {'err_msg': err_msg})
+
+    post_list = Question.objects.filter(questionTitle__icontains=keyword)
+    print(post_list)
+    return render(request, 'question/search.html', {'err_msg': err_msg, 'post_list': post_list, 'keyword': keyword})
