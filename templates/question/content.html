@@ -5,4 +5,26 @@
 <p>{{ question.user }}</p>
     <a href="{% url 'answer:answer_question' question_id=question.id%}">回答</a>
     {% block answer %}{% endblock %}
+    {% for answer in answer_list %}
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-2 column">
+		</div>
+		<div class="col-md-8 column">
+{#			<h2>#}
+{#				Heading#}
+{#			</h2>#}
+			<p>
+				{{ answer.answer_text }}
+			</p>
+			<p>
+				 <a class="btn" href="#">View details »</a>
+			</p>
+		</div>
+		<div class="col-md-2 column">
+		</div>
+	</div>
+    </div>
+    {% endfor %}
+
 {% endblock %}
