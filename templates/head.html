@@ -38,13 +38,13 @@
 						</li>
 
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
-						<div class="form-group">
-							<input class="form-control" type="text" />
-{#                            考虑怎么改成内嵌式#}
+					<form class="navbar-form navbar-left" role="search" method="get" id="searchform" action="{%url 'question:search' %}">
 
-                            <button class="btn btn-default" type="submit"><a href="#">搜索</a></button>
-						</div>
+<!--					<div class="form-group">-->
+<!--						{% csrf_token %}-->
+						<input type="search" name="keyword" placeholder="Search" required>
+						<button type="submit"><span>搜索</span></button>
+<!--					</div>-->
 					</form>
 					<ul class="nav navbar-nav navbar-right">
                         <li>

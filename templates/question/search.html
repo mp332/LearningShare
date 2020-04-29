@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'index.html' %}
+{% block search %}
+    {% if err_msg %}
+        <p>{{ err_msg }}</p>
+    {% endif %}
+
+    {% if keyword %}
+        <p>搜索关键字：{{ keyword }}</p>
+    {% endif %}
+
+    {% for question in post_list %}
+          <div class="panel panel-default">
+              <div class="panel-body">
+                   <a href="{{ question.id }}">
+                   {{question.questionTitle}}
+                    </a>
+
+				</div>
+			</div>
+    {% empty %}
+        <div class="no-post">道歉，没有找到相应的问题</div>
+    {% endfor %}
+{% endblock %}
