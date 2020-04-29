@@ -18,9 +18,9 @@
     <div class="container">
         {% block add_question %}{% endblock %}
     </div>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+
+    {% block content %}
+
 
 
 	<div class="row clearfix">
@@ -29,9 +29,12 @@
 		<div class="col-md-8 column">
 			<div class="tabbable" id="tabs-175642">
 				<ul class="nav nav-tabs">
+                    <li>
+                        <a href="{% url 'question:index'   %}">全部</a>
+                    </li>
 					{% for category in categorys %}
 					<li>
-						 <a href="{{ category.id }}" data-toggle="tab">{{ category.name}}</a>
+						 <a href="/question/?category_id={{ category.id }}" >{{ category.name}}</a>
 					</li>
 					{% endfor %}
 				</ul>
@@ -48,6 +51,7 @@
 <!--					</div>-->
 <!--				</div>-->
 			</div>
+        {% block question_list %}
 			{% for question in questions %}
 			<div class="panel panel-default">
 <!--				<div class="panel-heading">-->
@@ -66,6 +70,7 @@
 <!--				</div>-->
 			</div>
 			{% endfor %}
+        {% endblock %}
 <!--			<div class="panel panel-default">-->
 <!--				<div class="panel-heading">-->
 <!--					<h3 class="panel-title">-->
@@ -83,6 +88,7 @@
 		<div class="col-md-2 column">
 		</div>
 	</div>
+    {% endblock %}
     {% include "footer.html" %}
     {% block javascript %}{% endblock %}
 </div>
