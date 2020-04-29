@@ -50,11 +50,12 @@ def ask(request):
             return HttpResponse("1")
 
         form = AskForm(request.POST)
+
         if form.is_valid():
-            question_category_number = form.cleaned_data['category']
+            # question_category_number = form.cleaned_data['category']
             question_title = form.cleaned_data['title']
             question_text = form.cleaned_data['question']
-            question_category = Category.objects.get(number=question_category_number)
+            question_category = Category.objects.get(number=1) # 赋默认值
             question = Question(
                 user=user,
                 questionTitle=question_title,
@@ -67,6 +68,7 @@ def ask(request):
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()
+            print(request.POST)
             return HttpResponse("问题添加失败")
     else:
         form = AskForm()
