@@ -50,41 +50,45 @@
     <!--markdown-->
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
-<div style="margin-left: 10px">
-
-    <form class="form-horizontal" action="." method="post">{% csrf_token %}
-        <div class="row" style="margin-top: 10px;">
-            <div id="id_title" class="col-md-2 text-right"><span>问题：</span></div>
-            <input class="col-md-10 text-left" type="text">{{ form.questionTitle }}</input>
-        </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>类型：</span></div>
-            <div class="col-md-10 text-left">
-                <select id="which_category">
-                    {% for category in category %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            {{ form.category }}
-            </div>
-        </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>详细描述：</span></div>
+	<div id="fh5co-contact" >
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 animate-box">
+					<h2>Asking</h2>
+					<form action="." method="post">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.category.id_for_label }}">请选择问题种类</label>
+                        {{ form.category }}
+                    </div>
+                     <div class="form-group">
+                        <label for="{{ form.title.id_for_label }}">题目</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>详细描述：</span></div>
                         <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
 
-            <div id="editormd" class="col-md-10 text-left">
-                <textarea style="display: none;" id="id_body"></textarea>
-            </div>
+                        <div id="editormd" class="col-md-10 text-left">
+                        <textarea style="display: none;" id="id_body"></textarea>
+                    </div>
         </div>
-        <div class="row">
-            <input  type="button" class="btn btn-default"  value="提问2" onclick="add_question()">
-        </div>
-    </form>
-</div>
+
+    					<div class="form-group">
+                            {{ askMessage }}
+                            <button type="submit" class="btn btn-primary btn-lg" >提交</button>
+							<!--<p><a class="btn btn-primary btn-lg" href="../ask2">提交</a><p>-->
+                        </div>
+    				</form>
+    			</div>
+			</div>
+		</div>
+	</div>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript" src="{% static "js/csrf.js" %}"></script>
 <script type="text/javascript" src="{% static 'editor/editormd.min.js' %}"></script>
 <script type="text/javascript">
     function add_question() {
@@ -101,8 +105,8 @@
                     else if(e===2)
                         layer.msg("sorry");
                     else {
+                        layer.msg("sorry2");
 
-                        location.href = "{% url 'account:user_login' %}"
                     }
 
             }

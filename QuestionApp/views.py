@@ -29,7 +29,7 @@ def question_content(request, question_id):
 
     return render(request, "question/content.html", {"question": question})
 
-@csrf_exempt
+#@csrf_exempt
 def ask(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -51,10 +51,12 @@ def ask(request):
             return HttpResponse("1")
 
         form = AskForm(request.POST)
+        #print(user)
+        #print(request.POST)
         if form.is_valid():
-            question_category_number = form.cleaned_data['category']
-            question_title = form.cleaned_data['title']
-            question_text = form.cleaned_data['question']
+            question_category_number = request.POST.get('category')
+            question_title = request.POST.get('title')
+            question_text = request.POST.get('editormd-markdown-doc')
             question_category = Category.objects.get(number=question_category_number)
             question = Question(
                 user=user,
