@@ -17,11 +17,12 @@ def answer(request, question_id):
     """
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'GET':
-        answers = AnswerModel.objects.filter(question=question)
+        #print(request.GET)
+        #answers = AnswerModel.objects.filter(question=question)
         # 找到该问题的所有答案,并按照时间顺序排序
         answer_form = AnswerForm()
         return render(request, "question/answer.html",
-                      {'answers': answers, 'answer_form': answer_form, 'question': question})
+                      {'answer_form': answer_form, 'question': question})
         # 显示答案撰写页面
     else:
         author = User.objects.get(id=request.user.id)
