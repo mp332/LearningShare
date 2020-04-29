@@ -2,9 +2,10 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Question
 import re
-
+from CategoryApp.models import Category
 
 class AskForm(forms.Form):
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),required=True,empty_label=None)
     # category = forms.ChoiceField(label='请选择问题种类', required=True, widget=forms.RadioSelect)
     title = forms.CharField(label='请输入问题题目(60字以内):', max_length=60,required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     question = forms.CharField(label='请输入问题内容(2000字以内):', max_length=2000, required=True,widget=forms.Textarea(attrs={"class":"form-control"}))
