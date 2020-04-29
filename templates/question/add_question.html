@@ -58,20 +58,20 @@
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>类型：</span></div>
-            <div class="col-md-10 text-left">
-                <select id="which_category">
-                    {% for category in category %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+{#            <div class="col-md-10 text-left">#}
+{#                <select id="which_category">#}
+{#                    {% for category in category %}#}
+{#                    <option value="{{ category.id }}">{{ category.name }}</option>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+{#            </div>#}
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2 text-right"><span>详细描述：</span></div>
-                        <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
-            <div id="editormd" class="col-md-10 text-left">
-                <textarea style="display: none;" id="id_question"></textarea>
-            </div>
+                        <div class="col-md-10 text-left">{{ form.question }}</div>
+{#            <div id="editormd" class="col-md-10 text-left">#}
+{#                <textarea style="display: none;" id="id_question"></textarea>#}
+{#            </div>#}
         </div>
         <div class="row">
             <button class="btn btn-default" type="submit">提问</button>
