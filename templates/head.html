@@ -61,12 +61,18 @@
 									 <a href="#">我的主页</a>
 								</li>
 								<li>
+                                    <a href="{% url 'account:password_change' %}">修改密码</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'account:my_information' %}">个人信息</a>
+                                </li>
+                                <li>
 									 <a href="#">设置</a>
 								</li>
 								<li>
-									 <a href="#">退出</a>
+									 <a href="{% url 'account:user_logout' %}">退出</a>
 								</li>
-								<li class="divider">
+                                <li class="divider">
 								</li>
 								<li>
 									 <a href="#">Separated link</a>
