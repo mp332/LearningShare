@@ -10,30 +10,33 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url='/account/login/')
-def answer(request):
+def answer(request, question_id):
     """
     先检测用户是否登录，问题是否存在
     根据请求类型，显示答案，或者编写答案
     """
-    question = get_object_or_404(Question, id=request.question.id)
+    question = get_object_or_404(Question, id=question_id)
     if request.method == 'GET':
-        answers = AnswerModel.objects.filter(question=request.question)
+        answers = AnswerModel.objects.filter(question=question)
         # 找到该问题的所有答案,并按照时间顺序排序
         answer_form = AnswerForm()
-        return render(request, "question/answer.html", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
+        return render(request, "question/answer.html",
+                      {'answers': answers, 'answer_form': answer_form, 'question': question})
+        # 显示答案撰写页面
     else:
         author = User.objects.get(id=request.user.id)
         answer_form = AnswerForm(request.POST)
         if answer_form.is_valid():
-            answer_text = answer_form.cleaned_data['detail']
+            answer_text = answer_form.cleaned_data['answer_text']
             answer_data = AnswerModel(
                 author=author,
                 question=question,
                 answer_text=answer_text,
             )
             answer_data.save()
-            answers = AnswerModel.objects.filter(question=request.question).order_by("pub_date")
-            return render(request, "question/answer.html", {"answers": answers, 'answer_form': answer_form})  # 显示答案撰写页面
+            answers = AnswerModel.objects.filter(question=question).order_by("pub_date")
+            return render(request, "question/content.html", {"answers": answers, 'answer_form': answer_form,
+                                                             'question': question})  # 显示答案撰写页面
         else:
             return HttpResponse("error")
 
