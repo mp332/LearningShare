@@ -50,63 +50,83 @@
     <!--markdown-->
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
-<div style="margin-left: 10px">
-    <form class="form-horizontal" action="." method="post">{% csrf_token %}
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>问题：</span></div>
-            <div class="col-md-10 text-left">{{ form.title }}</div>
+	<div id="fh5co-contact" >
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 animate-box">
+					<h2>Asking</h2>
+					<form action="." method="post">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.category.id_for_label }}">请选择问题种类</label>
+                        {{ form.category }}
+                    </div>
+                     <div class="form-group">
+                        <label for="{{ form.title.id_for_label }}">题目</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>详细描述：</span></div>
+                        <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
+
+                        <div id="editormd" class="col-md-10 text-left">
+                        <textarea style="display: none;" id="id_body"></textarea>
+                    </div>
         </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>类型：</span></div>
-            <div class="col-md-10 text-left">
-                {{ form.category }}
-            </div>
-        </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>详细描述：</span></div>
-                        <div class="col-md-10 text-left">{{ form.question }}</div>
-{#            <div id="editormd" class="col-md-10 text-left">#}
-{#                <textarea style="display: none;" id="id_question"></textarea>#}
-{#            </div>#}
-        </div>
-        <div class="row">
-            <button class="btn btn-default" type="submit">提问</button>
-        </div>
-    </form>
-</div>
-<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+
+    					<div class="form-group">
+                            {{ askMessage }}
+                            <button type="submit" class="btn btn-primary btn-lg" >提交</button>
+							<!--<p><a class="btn btn-primary btn-lg" href="../ask2">提交</a><p>-->
+                        </div>
+    				</form>
+    			</div>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
-{#<script type="text/javascript">#}
-{#    function add_question() {#}
-{#        var questionTitle = $("#id_title").val();#}
-{#        var category_id = $("#which_category").val();#}
-{#        var question = $("#id_question").val();#}
-{#        $.ajax({#}
-{#            url:"{% url 'question:add_question' %}",#}
-{#            type:"POST",#}
-{#            data: {"questionTitle":questionTitle,"questionDiscreption":question,"category_id":category_id},#}
-{#            success: function (e) {#}
-{#                if(e == "1"){#}
-{#                    layer.msg("successful")#}
-{#                }#}
-{##}
-{#            },#}
-{##}
-{#        });#}
-{##}
-{#    }#}
-{#</script>#}
+<script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript" src="{% static "js/csrf.js" %}"></script>
+<script type="text/javascript" src="{% static 'editor/editormd.min.js' %}"></script>
+<script type="text/javascript">
+    function add_question() {
+        var questionTitle = $("#id_title").val();
+        var category_id = $("#which_category").val();
+        var body = $("#id_body").val();
+        $.ajax({
+            url:"{% url 'question:add_question' %}",
+            type:"POST",
+            data: {"questionTitle":questionTitle,"questionDescription":body,"category":category_id},
+            success:function (e) {
+                    if(e==="1")
+                        layer.msg("successful");
+                    else if(e===2)
+                        layer.msg("sorry");
+                    else {
+                        layer.msg("sorry2");
+
+                    }
+
+            }
+
+        })
+
+    }
+</script>
 
         <!--markdown-->
-{#<script type="text/javascript" src='{% static "editor/editormd.min.js" %}'></script>#}
-{#<script type="text/javascript">#}
-{#    $(function() {#}
-{#        var editor  = editormd("editormd",{#}
-{#            width : "100%",#}
-{#            height : 640,#}
-{#            syncScrolling : "single",#}
-{#            path : "{% static 'editor/lib/' %}"#}
-{#        });#}
-{#    });#}
-{#</script>#}
+<script type="text/javascript" src='{% static "editor/editormd.min.js" %}'></script>
+<script type="text/javascript">
+    $(function() {
+        var editor  = editormd("editormd",{
+            width : "100%",
+            height : 640,
+            syncScrolling : "single",
+            imageUpload : true,
+            path : "{% static 'editor/lib/' %}"
+        });
+    });
+</script>
 {% endblock %}

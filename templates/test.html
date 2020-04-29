@@ -1,0 +1,32 @@
+<div style="margin-left: 10px">
+
+    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+        <div class="row" style="margin-top: 10px;">
+            <div id="id_title" class="col-md-2 text-right"><span>问题：</span></div>
+            <input class="col-md-10 text-left" type="text">{{ form.questionTitle }}</input>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>类型：</span></div>
+            <div class="col-md-10 text-left">
+                <select id="which_category">
+                    {% for category in category %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            {{ form.category }}
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>详细描述：</span></div>
+                        <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
+            {{ form.question }}
+            <div id="editormd" class="col-md-10 text-left">
+                <textarea style="display: none;" id="id_body"></textarea>
+            </div>
+        </div>
+        <div class="row">
+ {#           <input  type="button" class="btn btn-default"  value="提问2" onclick="add_question()">#}
+            <button type="submit" class="btn btn-default" value="提交"></button>
+        </div>
+    </form>
+</div>
