@@ -15,10 +15,7 @@
 <div class="container">
     {#    导航栏#}
     {% include "head.html" %}
-    <div class="container">
-        {% block add_question %}{% endblock %}
-    </div>
-
+    {% block add_question %}
     {% block content %}
 
 
@@ -89,6 +86,8 @@
 		</div>
 	</div>
     {% endblock %}
+	{% endblock %}
+
     {% include "footer.html" %}
     {% block javascript %}{% endblock %}
 </div>
