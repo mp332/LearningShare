@@ -71,8 +71,7 @@ def ask(request):
             return HttpResponse("问题添加失败")
     else:
         form = AskForm()
-        #category = Category.objects.all()
-        return render(request, 'question/add_question.html', {"category": category, "form": form})
+        return render(request, 'question/add_question.html', { "form": form})
 
 
 def like(request, id):
