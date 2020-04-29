@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login  # 1从 Django 默认的（或者说是内置的）用户认证和管理应用中引入的两个方法。
-from .forms import LoginForm, RegistrationForm, UserProfileForm
+from .forms import LoginForm, RegistrationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile
+from .models import UserProfile, UserInfo
 from django.contrib.auth.models import User
+from .forms import UserProfileForm, UserInfoForm, UserForm
+
 
 
 # Create your views here.
@@ -39,6 +41,7 @@ def register(request):
             new_profile = userprofile_form.save(commit=False)
             new_profile.user = new_user
             new_profile.save()
+            UserInfo.objects.create(user=new_user)
             return HttpResponse("successfully")
         else:
             return HttpResponse("sorry,your can not register.")
@@ -48,27 +51,24 @@ def register(request):
         return render(request, "account/register.html", {"form": user_form, "profile": userprofile_form})
 
 
-"""
 @login_required(login_url='/account/login/')
 def myself(request):
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
-    # userinfo = UserInfo.objects.get(user=user)
+    userinfo = UserInfo.objects.get(user=user)
     return render(request, "account/myself.html", {"user": user, "userinfo": userinfo, "userprofile": userprofile})
-"""
 
-""""
 @login_required(login_url='/account/login/')
 def myself_edit(request):
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=request.user)
-    # userinfo = UserInfo.objects.get(user=request.user)
+    userinfo = UserInfo.objects.get(user=request.user)
 
     if request.method == "POST":
-        # user_form = UserForm(request.POST)
+        user_form = UserForm(request.POST)
         userprofile_form = UserProfileForm(request.POST)
-        # userinfo_form = UserInfoForm(request.POST)
-        if user_form.is_valid()*userprofile_form.is_valid()*userinfo_form.is_valid():
+        userinfo_form = UserInfoForm(request.POST)
+        if user_form.is_valid() * userprofile_form.is_valid() * userinfo_form.is_valid():
             user_cd = user_form.cleaned_data
             userprofile_cd = userprofile_form.cleaned_data
             userinfo_cd = userinfo_form.cleaned_data
@@ -84,11 +84,23 @@ def myself_edit(request):
             user.save()
             userprofile.save()
             userinfo.save()
-            return HttpResponseRedirect('/account/my-information/')
-        else:
-            user_form = UserForm(instance=request.user)
-            userprofile_form = UserProfileForm(initial={"birth":userprofile.birth, "phone":userprofile.phone})
-            userinfo_form = UserInfoForm(initial={"school":userinfo.school, "company":userinfo.company, "profession":userinfo.profession, "address":userinfo.address, "aboutme":userinfo.aboutme})
-            return render(request, "account/myself_edit.html", {"user_form":user_form, "userprofile_form":userprofile_form, "userinfo_form":userinfo_form})
+        return HttpResponseRedirect('/account/my-information/')
+    else:
+        user_form = UserForm(instance=request.user)
+        userprofile_form = UserProfileForm(initial={"birth": userprofile.birth, "phone": userprofile.phone})
+        userinfo_form = UserInfoForm(initial={"school": userinfo.school, "company": userinfo.company, "profession": userinfo.profession, "address": userinfo.address, "aboutme": userinfo.aboutme})
+        return render(request, "account/myself_edit.html", {"user_form": user_form, "userprofile_form": userprofile_form, "userinfo_form": userinfo_form})
 
-"""
+#def my_image(request):
+#    return render(request, "account/imagecrop.html",)
+#改为可由前端传入图片
+@login_required(login_url='/account/login/')
+def my_image(request):
+    if request.method == 'POST':
+        img = request.POST['img'] #得到前端以POST方式提交的图片信息
+        userinfo = UserInfo.objects.get(user=request.user.id)
+        userinfo.photo = img
+        userinfo.save()
+        return HttpResponse("1")
+    else:
+        return render(request, 'account/imagecrop.html',)

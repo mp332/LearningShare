@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User   #引入了Django 默认的用户模型 User 类
-from .models import UserProfile
+from .models import UserProfile, UserInfo
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -26,12 +26,12 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ("phone", "birth")
 
-'''class UserInfoForm(forms.ModelForm):
+class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ("school", "company", "profession", "address", "aboutme")
+        fields = ("school", "company", "profession", "address", "aboutme", "photo")
 
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("email",)'''
+        fields = ("email",)
