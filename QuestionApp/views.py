@@ -52,10 +52,9 @@ def ask(request):
         form = AskForm(request.POST)
 
         if form.is_valid():
-            # question_category_number = form.cleaned_data['category']
+            question_category = form.cleaned_data['category']
             question_title = form.cleaned_data['title']
             question_text = form.cleaned_data['question']
-            question_category = Category.objects.get(number=1) # 赋默认值
             question = Question(
                 user=user,
                 questionTitle=question_title,
