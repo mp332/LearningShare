@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+from AnswerApp.models import AnswerModel
 from .forms import AskForm
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -13,7 +15,14 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
-    questions = Question.objects.all()
+    #print(request.GET)
+    category_id = request.GET.get('category_id')
+    #print(category_id)
+
+    if len(request.GET)==0:
+        questions = Question.objects.all()
+    else:
+        questions = Question.objects.filter(questionCategory_id=category_id)
     categorys = Category.objects.all()
     context = {
         "questions": questions,
@@ -25,10 +34,14 @@ def index(request):
 
 def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
+    answer_list = AnswerModel.objects.filter(question_id=question_id)
+    context = {
+        "question": question,
+        "answer_list": answer_list
+    }
+    return render(request, "question/content.html",context=context )
 
-    return render(request, "question/content.html", {"question": question})
-
-
+@login_required(login_url='/account/login')
 def ask(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -71,6 +84,7 @@ def ask(request):
             return HttpResponse("问题添加失败")
     else:
         form = AskForm()
+        #category = Category.objects.all()
         return render(request, 'question/add_question.html', { "form": form})
 
 
@@ -87,3 +101,4 @@ def unlike(request, id):
     question.goodNum += 1
     question.grade = question.grade + 10
     question.save()
+
