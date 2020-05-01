@@ -5,22 +5,21 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
-from AnswerApp.models import AnswerModel
 from .forms import AskForm
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from AnswerApp.models import AnswerModel
 
 
 # Create your views here.
 
 
 def index(request):
-    #print(request.GET)
+    # print(request.GET)
     category_id = request.GET.get('category_id')
-    #print(category_id)
+    # print(category_id)
 
-    if len(request.GET)==0:
+    if len(request.GET) == 0:
         questions = Question.objects.all()
     else:
         questions = Question.objects.filter(questionCategory_id=category_id)
@@ -35,12 +34,13 @@ def index(request):
 
 def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
+
     answer_list = AnswerModel.objects.filter(question_id=question_id)
     context = {
         "question": question,
         "answer_list": answer_list
     }
-    return render(request, "question/content.html",context=context )
+    return render(request, "question/content.html", context=context)
 
 @login_required(login_url='/account/login')
 #@csrf_exempt
@@ -114,6 +114,15 @@ def search(request):
         err_msg = '请输入关键词'
         return render(request, 'question/search.html', {'err_msg': err_msg})
 
-    post_list = Question.objects.filter(questionTitle__icontains=keyword)
-    print(post_list)
-    return render(request, 'question/search.html', {'err_msg': err_msg, 'post_list': post_list, 'keyword': keyword})    
+    #按照赞数、时间、名称进行排序
+    question_list = Question.objects.filter(questionTitle__icontains=keyword).order_by('-goodNum', 'created', 'questionTitle')
+    #按照发布时间、问题进行排序
+    answer_list = AnswerModel.objects.filter(answer_text__icontains=keyword).order_by('-pub_date', 'question')
+    #按照用户名进行排序
+    user_list = User.objects.filter(username__icontains=keyword).order_by('-username')
+    print(user_list)
+    print(question_list)
+    print(answer_list)
+    return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
+                                                    'answer_list': answer_list, 'user_list': user_list,
+                                                    'keyword': keyword})
