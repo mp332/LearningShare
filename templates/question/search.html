@@ -38,10 +38,13 @@
 					<div class="col-md-12 column">
 						<blockquote>
 							<p style="font-size:20px">
-								<a href="{{ answer.id }}">{{answer.answer_text}}</a>
+								<a href="{{ answer.id }}">{{answer.question}}</a>
 							</p>
+                            <p style="font-size:17px">
+                                {{ answer.answer_text }}
+                            </p>
 							<p style="font-size:13px">
-								{{ answer.auther }}写于{{answer.pub_date}}
+								{{ answer.author }}写于{{answer.pub_date}}
 							</p>
 						</blockquote>
 					</div>
