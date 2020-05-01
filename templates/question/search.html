@@ -17,7 +17,7 @@
 					<div class="col-md-12 column">
 						<blockquote>
 							<p style="font-size:20px">
-								<a href="{{ question.id }}">{{question.questionTitle}}</a>
+								<a href="../{{question.id}}">{{question.questionTitle}}</a>
 							</p>
 							<p style="font-size:13px">
 								{{ question.user }}写于{{question.created}}
@@ -38,7 +38,7 @@
 					<div class="col-md-12 column">
 						<blockquote>
 							<p style="font-size:20px">
-								<a href="{{ answer.id }}">{{answer.question}}</a>
+								<a href="../{{ answer.question.id }}">{{answer.question}}</a>
 							</p>
                             <p style="font-size:17px">
                                 {{ answer.answer_text }}
