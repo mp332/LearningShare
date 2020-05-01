@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% block search %}
+
     {% if err_msg %}
         <p>{{ err_msg }}</p>
     {% endif %}
@@ -8,16 +9,61 @@
         <p>搜索关键字：{{ keyword }}</p>
     {% endif %}
 
-    {% for question in post_list %}
-          <div class="panel panel-default">
-              <div class="panel-body">
-                   <a href="{{ question.id }}">
-                   {{question.questionTitle}}
-                    </a>
+    <p>相关问题搜索结果：</p>
+    {% for question in question_list %}
 
+			<div class="container">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<blockquote>
+							<p style="font-size:20px">
+								<a href="{{ question.id }}">{{question.questionTitle}}</a>
+							</p>
+							<p style="font-size:13px">
+								{{ question.user }}写于{{question.created}}
+							</p>
+						</blockquote>
+					</div>
 				</div>
 			</div>
+
     {% empty %}
         <div class="no-post">道歉，没有找到相应的问题</div>
     {% endfor %}
+
+    <p>相关回答搜索结果：</p>
+    {% for answer in answer_list %}
+        <div class="container">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<blockquote>
+							<p style="font-size:20px">
+								<a href="{{ answer.id }}">{{answer.answer_text}}</a>
+							</p>
+							<p style="font-size:13px">
+								{{ answer.auther }}写于{{answer.pub_date}}
+							</p>
+						</blockquote>
+					</div>
+				</div>
+        </div>
+
+    {% empty %}
+        <div class="no-post">道歉，没有找到相应的回答</div>
+    {% endfor %}
+
+    <p>相关用户搜索结果：</p>
+    {% for user in user_list %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a href="{{ user.id }}">
+                    {{user.username}}
+                </a>
+                <p></p>
+            </div>
+        </div>
+    {% empty %}
+        <div class="no-post">道歉，没有找到相应的用户</div>
+    {% endfor %}
+
 {% endblock %}
