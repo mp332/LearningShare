@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.decorators.http import require_POST
+
 from .forms import AskForm
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -91,6 +93,33 @@ def ask(request):
             return render(request, 'question/add_question.html', {"category": category, "form": form})
 
 
+@csrf_exempt
+#@require_POST
+@login_required(login_url='/account/login')
+def like_question(request,id,action):
+    #question_id = request.POST.get("id")
+    #action = request.POST.get("action")
+
+    #print(request)
+    if id and action:
+        try:
+            question = Question.objects.get(id=id)
+            if action == "like":
+                question.users_like.add(request.user)
+                question.goodNum = question.goodNum+1
+                question.save()
+                return HttpResponse("点赞成功")
+            else:
+                question.users_like.remove(request.user)
+                question.badNum = question.badNum+1
+                question.save()
+                return HttpResponse("踩成功")
+        except:
+            return HttpResponse("no")
+    else:
+        return HttpResponse("操作失败")
+
+
 def like(request, id):
     question = Question.objects.get(id=id)
     question.goodNum += 1
@@ -126,3 +155,67 @@ def search(request):
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
                                                     'keyword': keyword})
+
+@csrf_exempt
+#@require_POST
+@login_required(login_url='/account/login')
+def collect(request,id,action):
+    # question_id = request.POST.get("id")
+    # action = request.POST.get("action")
+
+    # print(request)
+    if id and action:
+        try:
+            question = Question.objects.get(id=id)
+            if action == "收藏":
+                question.collect.add(request.user)
+                question.grade = question.grade+20
+                question.save()
+                return HttpResponse("收藏成功")
+            else:
+                question.collect.remove(request.user)
+                question.grade = question.grade-20
+                question.save()
+                return HttpResponse("取消收藏成功")
+        except:
+            return HttpResponse("no")
+    else:
+        return HttpResponse("操作失败")
+
+
+def my_questions(request):
+    username = request.user.username
+    is_logged_in = True
+    context = {
+        'username': username,
+        'is_logged_in': is_logged_in,
+    }
+    questions = request.user.questions.all()
+    answers = request.user.answers.all()
+    context['questions'] = questions
+    context['answers'] = answers
+    return render(request, 'question/my_questions.html', context)
+
+
+@login_required(login_url='/account/login')
+@csrf_exempt
+def redit_question(request,question_id):
+    if request.method == "GET":
+        question = Question.objects.get(id=question_id)
+
+        question_form = AskForm(initial={"title": question.questionTitle, "category": question.questionCategory})
+        return render(request, 'question/redit_question.html', {"question":question, "question_form": question_form})
+    else:
+        redit_question = Question.objects.get(id=question_id)
+        try:
+            redit_question.questionTitle = request.POST['title']
+            redit_question.questionDescription = request.POST['editormd-markdown-doc']
+            redit_question.save()
+            return HttpResponse("修改成功")
+        except:
+            print(request)
+            return HttpResponse("修改失败")
+
+
+def my_collections(request):
+    pass

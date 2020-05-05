@@ -13,5 +13,14 @@ urlpatterns = [
     # path('add_question',views.add_question,name='add_question')
     path('add_question/', views.ask, name='add_question'),
     path('search/', views.search, name='search'),
+    path('like-question/', views.like_question, name="like_question"),
+    path('like/<int:id>/<str:action>/', views.like_question, name='like_question'),
+    path('unlike/<int:id>/<str:action>/', views.like_question, name='like_question'),
+    path('collect/', views.collect, name='collect'),
+    path('my_questions/', views.my_questions, name='my_questions'),
+    path('redit-question/<int:question_id>/', views.redit_question, name="redit_question"),
+    path('collect/<int:id>/<str:action>/', views.collect, name='collect_question'),
+    path('collect/<int:id>/<str:action>/', views.collect, name='cancel_collect_question'),
+    path('my_questions/', views.my_collections, name='my_collections'),
 
 ]

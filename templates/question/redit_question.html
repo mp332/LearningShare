@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js'%}"></script>
+</head>
+<body>
+<div class="container">
+    {#    导航栏#}
+    {% include "head.html" %}
+    {% block add_question %}
+    {% block content %}
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
+<div>
+<div style="margin-left:10px">
+    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>标题:</span></div>
+            <div class="col-md-10 text-left">{{question_form.title}}</div>
+        </div>
+
+        <div  class="row" style="margin-top: 10px;">
+        	<div class="col-md-2 text-right"><span>内容:</span></div>
+        	<div id="editormd" class="col-md-10 text-left"><!--{{question.questionDescription}}-->
+                <textarea style="display:none;" id="id_body">
+{{question.questionDescription}}
+                </textarea>
+        	</div>
+        </div>
+        <div class="row">
+            {#  <input type="button" class="btn btn-primary btn-lg" value="发布" onclick="redit_article()">#}
+            <input type="submit" class="btn btn-primary btn-lg" value="发布" >
+        </div>
+    </form>
+
+</div>
+</div>
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src='{% static "editor/editormd.min.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js'%}"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("editormd", {
+            width   : "100%",
+            height  : 640,
+            //syncScrolling : "single",
+            path    : "{% static 'editor/lib/' %}",
+        });
+    });
+
+function redit_article(){
+    var title = $("#id_title").val();
+    var column_id = $("#which_column").val();
+    var body = $("#id_body").val();
+    $.ajax({
+        url: "{% url 'question:redit_question' question.id %}",
+        type: "POST",
+        data: {"title":title, "body":body, "column_id":column_id},
+        success: function(e){
+            if(e=="1"){
+                layer.msg("successful");
+
+            }else{
+        	layer.msg("sorry.");
+            }
+        },
+    });
+}
+
+</script>
+
+
+
+    {% endblock %}
+	{% endblock %}
+
+    {% block search %}{% endblock %}
+    {% include "footer.html" %}
+    {% block javascript %}{% endblock %}
+
+</div>
+
+</body>
+</html>

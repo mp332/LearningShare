@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+    <div id="fh5co-blog">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+					<h2>我提出的问题</h2>
+					<p>点击查看细节</p>
+				</div>
+			</div>
+			<div class="row">
+                {% for question in questions %}
+                <div class="col-lg-12 col-md-12">
+					<div class="fh5co-blog animate-box">
+						<div class="blog-text">
+							<h3><a href="{% url 'question:question_content' question_id=question.id %}">{{ question.questionTitle }}</a></h3>
+							<span class="posted_on">{{ question.publishDate | date:"F j, Y" }}</span>
+                            <span class="comment">&ensp;{{ question.badNum }}<i class="icon-thumbs-down"></i></span>
+                            <span class="comment">&ensp;{{ question.goodNum }}<i class="icon-thumbs-up"></i></span>
+                            <span class="comment">&ensp;{{ question.answers.all | length }}<i class="icon-speech-bubble"></i></span>
+                            <p>{{ question.questionDescription | truncatechars:"30" }}...</p>
+						</div>
+					</div>
+				</div>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

@@ -48,7 +48,9 @@
 <!--					</div>-->
 <!--				</div>-->
 			</div>
+
         {% block question_list %}
+            {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
 			{% for question in questions %}
 
 			<div class="container">
@@ -60,6 +62,7 @@
 							</p>
 							<p style="font-size:13px">
 								{{ question.user }}写于{{question.created}}
+                                <span style="margin-right:20px" class="glyphicon glyphicon-thumbs-up">{{ total_likes }}like{{ total_likes|pluralize }}</span>
 							</p>
 						</blockquote>
 					</div>
@@ -67,6 +70,7 @@
 			</div>
 
 			{% endfor %}
+            {%  endwith %}
         {% endblock %}
 <!--			<div class="panel panel-default">-->
 <!--				<div class="panel-heading">-->
