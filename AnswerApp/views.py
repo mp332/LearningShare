@@ -28,7 +28,7 @@ def answer(request, question_id):
         author = User.objects.get(id=request.user.id)
         answer_form = AnswerForm(request.POST)
         if answer_form.is_valid():
-            answer_text = answer_form.cleaned_data['answer_text']
+            answer_text = request.POST.get('editormd-markdown-doc')
             answer_data = AnswerModel(
                 author=author,
                 question=question,
