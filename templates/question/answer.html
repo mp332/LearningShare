@@ -1,9 +1,17 @@
 {% extends "question/content.html" %}
+{% load static %}
 {% block answer %}
+
+<!--markdown-->
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 <form class="form-horizontal" action="." method="post">{% csrf_token %}
     <div class="row" style="margin-top: 10px;">
         <div class="col-md-2 text-right"><span>你的回答：</span></div>
-        <div class="col-md-10 text-left">{{ answer_form.answer_text }}</div>
+            <div id="editormd" class="col-md-10 text-left">
+                            <textarea style="display: none;" id="id_body"></textarea>
+            </div>
+{#        <div class="col-md-10 text-left">{{ answer_form.answer_text }}</div>#}
 {#                content_of_answer为回答内容，随便改名字#}
     </div>
     <div class="row">
@@ -12,4 +20,18 @@
 
 
 </form>
+
+            <!--markdown-->
+<script type="text/javascript" src='{% static "editor/editormd.min.js" %}'></script>
+<script type="text/javascript">
+    $(function() {
+        var editor  = editormd("editormd",{
+            width : "100%",
+            height : 640,
+            syncScrolling : "single",
+            imageUpload : true,
+            path : "{% static 'editor/lib/' %}"
+        });
+    });
+</script>
 {% endblock %}
