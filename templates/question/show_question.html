@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block content %}
+
+    {% if user %}
+        <p>用户名：{{ user.username }}</p>
+    {% endif %}
+
+    {% for question in question_list %}
+
+			<div class="container">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<blockquote>
+							<p style="font-size:20px">
+								<a href="../{{question.id}}">{{question.questionTitle}}</a>
+							</p>
+							<p style="font-size:13px">
+								{{ question.user }}写于{{question.created}}
+							</p>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+
+    {% empty %}
+        <div class="no-post">该用户尚未发布问题</div>
+    {% endfor %}
+
+{% endblock %}
