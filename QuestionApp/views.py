@@ -126,3 +126,9 @@ def search(request):
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
                                                     'keyword': keyword})
+
+
+def questionContent(request):
+    user = request.GET.get('user')
+    question_list = Question.objects.filter(user=user)
+    return render(request, 'question/show_question.html', {'user':user, 'question_list':question_list})
