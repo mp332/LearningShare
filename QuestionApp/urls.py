@@ -13,5 +13,5 @@ urlpatterns = [
     # path('add_question',views.add_question,name='add_question')
     path('add_question/', views.ask, name='add_question'),
     path('search/', views.search, name='search'),
-
+    path('show_question/', views.questionContent, name='questionContent'),
 ]
