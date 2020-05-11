@@ -42,6 +42,7 @@
     </div>
     <a href="{% url 'answer:answer_question' question_id=question.id%}">回答</a>
     {% block answer %}{% endblock %}
+    {% block comment %}{% endblock %}
     {% for answer in answer_list %}
     <div class="container">
 	<div class="row clearfix">
@@ -56,8 +57,32 @@
 {#                加上 |safe 过滤器#}
 			</p>
 			<p>
-				 <a class="btn" href="#">View details »</a>
+                <div class="like-btn">
+                            <a id="like-it" href="{% url 'answer:like' answer_id=answer.id%}">
+                                <span class="glyphicon glyphicon-thumbs-up"> {{ answer.goodNum }}</span>
+                            </a>
+                    {% for user  in answer.user_like_answer.all %}
+                    <p class="text-center">{{ user.username }}</p>
+                    {% empty %}
+                    <p class="text-center">还没有人对此答案点赞</p>
+                    {% endfor %}
+                        </div>
+            <div class="unlike-btn">
+                <a id="unlike-it" href="{% url 'answer:unlike' answer_id=answer.id%}">
+                    <span class="glyphicon  glyphicon-thumbs-down"> {{ answer.badNum }}</span>
+                </a>
+                {% for user  in answer.user_unlike_answer.all %}
+                <p class="text-center">{{ user.username }}</p>
+                {% empty %}
+                <p class="text-center">还没有人对此答案踩过</p>
+                {% endfor %}
+            </div>
+            <a class="btn" href="{% url 'answer:answer_change' answer_id=answer.id %}"> 修改答案 </a>
+            <a class="btn" href="{% url 'answer:answer_comment' answer_id=answer.id %}"> 评论 </a>
+            <a class="btn" href="{% url 'answer:collect' answer_id=answer.id %}"> 收藏 </a>
+{#				 <a class="btn" href="#">View details »</a>#}
 			</p>
+
 		</div>
 		<div class="col-md-2 column">
 		</div>
