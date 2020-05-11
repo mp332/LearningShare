@@ -18,7 +18,8 @@ class Question(models.Model):
     goodNum = models.IntegerField(default=0,verbose_name='赞数')
     badNum = models.IntegerField(default=0, verbose_name='反对数')
     grade = models.IntegerField(default=0, verbose_name='综合质量')
-    collect = models.ManyToManyField(User, verbose_name='收藏')
+    collect = models.ManyToManyField(User, verbose_name='收藏',blank=True)
+    users_like = models.ManyToManyField(User, related_name="questions_like", blank=True)
 
     def __str__(self):
         return self.questionTitle
