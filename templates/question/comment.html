@@ -1,0 +1,16 @@
+{% extends "question/content.html" %}
+{% load static %}
+{% load markdown_extras %}
+{% block comment %}
+    <p>
+        {{ answer.answer_text | markdown | safe  }}
+    </p>
+    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-2 text-right"><span>你的评论：</span></div>
+        <div class="col-md-10 text-left">{{ comment_form.comment_text }}</div>
+        <button type="submit" class="btn btn-primary">评论</button>
+    </div>
+    </form>
+{% endblock %}
+
