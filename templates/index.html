@@ -8,95 +8,74 @@
     <title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 	<link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js'%}"></script>
 </head>
 <body>
+
 <div class="container">
-    {#    导航栏#}
-    {% include "head.html" %}
-    {% block add_question %}
-    {% block content %}
-
-
-
-	<div class="row clearfix">
-		<div class="col-md-2 column">
-		</div>
-		<div class="col-md-8 column">
-			<div class="tabbable" id="tabs-175642">
-				<ul class="nav nav-tabs">
-                    <li>
-                        <a href="{% url 'question:index'   %}">全部</a>
-                    </li>
-					{% for category in categorys %}
-					<li>
-						 <a href="/question/?category_id={{ category.id }}" >{{ category.name}}</a>
-					</li>
-					{% endfor %}
-				</ul>
-<!--				<div class="tab-content">-->
-<!--					<div class="tab-pane" id="panel-494703">-->
-<!--						<p>-->
-<!--							I'm in Section 1.-->
-<!--						</p>-->
-<!--					</div>-->
-<!--					<div class="tab-pane active" id="panel-75557">-->
-<!--						<p>-->
-<!--							Howdy, I'm in Section 2.-->
-<!--						</p>-->
-<!--					</div>-->
-<!--				</div>-->
-			</div>
-
-        {% block question_list %}
-            {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
-			{% for question in questions %}
-
-			<div class="container">
-				<div class="row clearfix">
-					<div class="col-md-12 column">
-						<blockquote>
-							<p style="font-size:20px">
-								<a href="{{ question.id }}">{{question.questionTitle}}</a>
-							</p>
-							<p style="font-size:13px">
-								{{ question.user }}写于{{question.created}}
-                                <span style="margin-right:20px" class="glyphicon glyphicon-thumbs-up">{{ total_likes }}like{{ total_likes|pluralize }}</span>
-							</p>
-						</blockquote>
-					</div>
-				</div>
-			</div>
-
+{% include "head.html" %}
+{% block add_question %}
+{% block content %}
+    <div class="col-sm-2">
+        <div class="list-group side-bar">
+            <a class="list-group-item" href="{% url 'question:index'%}">全部</a>
+			{% for category in categorys %}
+			<a class="list-group-item"href="/question/?category_id={{ category.id }}" >{{ category.name}}</a>
 			{% endfor %}
-            {%  endwith %}
-        {% endblock %}
-<!--			<div class="panel panel-default">-->
-<!--				<div class="panel-heading">-->
-<!--					<h3 class="panel-title">-->
-<!--						Panel title-->
-<!--					</h3>-->
-<!--				</div>-->
-<!--				<div class="panel-body">-->
-<!--					Panel content-->
-<!--				</div>-->
-<!--				<div class="panel-footer">-->
-<!--					Panel footer-->
-<!--				</div>-->
-<!--			</div>-->
+        </div>
+    </div>
+	<div class="col-sm-7">
+	{% block question_list %}
+        {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
+		{% for question in questions %}
+        <div class="post-list">
+            <div class="post-list-item">
+                <a href="{{ question.id }}">
+                    <div class="post-heading">{{question.questionTitle}}</div>
+                </a>
+                <p class="text-muted" >
+                    <span>{{ question.user }}</span> 
+                    <span>&nbspx评论&nbsp</span> 
+                    <span>&nbsp{{question.created}}&nbsp</span>
+					<span style="margin-right:20px" class="glyphicon glyphicon-thumbs-up">{{ total_likes }}like{{ total_likes|pluralize }}</span>
+                </p>
+            </div>
 		</div>
-		<div class="col-md-2 column">
-		</div>
+		{% endfor %}
+        {% endwith %}
 	</div>
-    {% endblock %}
+    {% block search %}
+	<div class="col-sm-3">
+      <div class="side-bar-well clearfix">
+        <div class="col-sm-5"><img src="../static/images/support.png"></div>
+        <div class="col-sm-7">
+          <p class="side-bar-well-title">技术支持</p>
+          <p>欢迎联系我们</p>
+        </div>
+      </div>
+      <div class="side-bar-well">
+        <strong class="side-bar-well-title">热门问题</strong>
+		{% for question in questions %}
+        <a href="{{ question.id }}" class="news-item">
+          <div class="news-title">{{question.questionTitle}}</div>
+		</a>
+          <div class="news-info">
+          	<span>{{ question.user }}</span> 
+			<span>&nbsp{{question.created}}&nbsp</span>
+          </div>
+        {% endfor %}
 	{% endblock %}
+      </div>
+    </div>
+	{% endblock %}	
+	
 
-    {% block search %}{% endblock %}
-    {% include "footer.html" %}
-    {% block javascript %}{% endblock %}
-
+{% endblock %}
+{% endblock %}
 </div>
-
+{% include "footer.html" %}
+{% block javascript %}{% endblock %}
 </body>
 </html>

@@ -1,95 +1,97 @@
 {% extends "index.html" %}
-
 {% load markdown_extras %}
-
 {% load static %}
 
-{% block title %} {{ question.questionTitle }}{% endblock %}
 {% block content %}
- {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
-<h1>{{ question.questionTitle }}</h1>
-<p>{{ question.user }}</p>
- {#     <p class="text-center">#}
-  {#           <a onclick="like_question({{question.id}},'like')" href="#"> #}
-  {#                <span class="glyphicon glyphicon-thumbs-up">like</span>#}
-  {#           </a>#}
-   {#   </p>#}
-   {#  <p class="text-center">#}
-     {#        <a onclick="like_question({{question.id}},'unlike')" href="#">#}
-      {#         <span  style="margin-left:15px;"class="glyphicon  glyphicon-thumbs-down">unlike</span>#}
-       {#       </a>#}
-   {#   </p>#}
-     <div class="like-btn">
-                            <a id="like-it" href="{% url 'question:like_question' id=question.id action='like'%}">
-                                <span class="glyphicon glyphicon-thumbs-up">{{ question.goodNum }}</span>
-                            </a>
-                            <a href="{% url 'question:collect_question' id=question.id action="收藏" %}">收藏</a>
+<div class="container">
+{% with total_likes=question.users_like.count  users_like=question.users_like.all %}
+    <div class="col-md-9 news">
+        <div class="ask">
+            <h1 class="title">{{ question.questionTitle }}</h1>
+            <p1 class="info">
+                <span>{{ question.user }}&nbsp</span> 
+                <span>&nbsp{{ question.created }}&nbsp</span>
+                <span class="like-btn">
+                    <a id="like-it" href="{% url 'question:like_question' id=question.id action='like'%}">
+                        <span class="glyphicon glyphicon-thumbs-up"></a>&nbsp{{ question.goodNum }}&nbsp</span>
+                </span>
+                <span class="unlike-btn">
+                    <a id="unlike-it" href="{% url 'question:like_question' id=question.id action='unlike'%}">
+                        <span class="glyphicon  glyphicon-thumbs-down"></a>&nbsp{{ question.badNum }}&nbsp</span>
+                </span>
+                <span>
+                    <a href="{% url 'question:collect_question' id=question.id action="收藏" %}">
+                        <div class="btn-group btn-group-xs">
+                            <input name="收藏" type="button" id="btn1" title="收藏" value="收藏" class="btn btn-default" />
                         </div>
-
-                        <div class="unlike-btn">
-                            <a id="unlike-it" href="{% url 'question:like_question' id=question.id action='unlike'%}">
-                                <span class="glyphicon  glyphicon-thumbs-down">{{ question.badNum }}</span>
-                            </a>
-                          <a href="{% url 'question:cancel_collect_question' id=question.id action="取消收藏" %}">取消收藏</a>
+                    </a>
+                    <a href="{% url 'question:cancel_collect_question' id=question.id action="取消收藏" %}">
+                        <div class="btn-group btn-group-xs">
+                            <input name="取消收藏" type="button" id="btn2" title="取消收藏" value="取消收藏" class="btn btn-default" />
                         </div>
-    <div>
-    <p class="text-center"><strong>点赞本问题的读者</strong></p>
-    {% for user  in question.users_like.all %}
-    <p class="text-center">{{ user.username }}</p>
-    {% empty %}
-    <p class="text-center">还没有人对此问题表态</p>
-    {% endfor %}
-    </div>
-    <a href="{% url 'answer:answer_question' question_id=question.id%}">回答</a>
-    {% block answer %}{% endblock %}
-    {% block comment %}{% endblock %}
-    {% for answer in answer_list %}
-    <div class="container">
-	<div class="row clearfix">
-		<div class="col-md-2 column">
-		</div>
-		<div class="col-md-8 column">
-{#			<h2>#}
-{#				Heading#}
-{#			</h2>#}
-			<p>
-				{{ answer.answer_text | markdown | safe  }}
-{#                加上 |safe 过滤器#}
-			</p>
-			<p>
-                <div class="like-btn">
-                            <a id="like-it" href="{% url 'answer:like' answer_id=answer.id%}">
-                                <span class="glyphicon glyphicon-thumbs-up"> {{ answer.goodNum }}</span>
-                            </a>
-                    {% for user  in answer.user_like_answer.all %}
-                    <p class="text-center">{{ user.username }}</p>
-                    {% empty %}
-                    <p class="text-center">还没有人对此答案点赞</p>
-                    {% endfor %}
-                        </div>
-            <div class="unlike-btn">
-                <a id="unlike-it" href="{% url 'answer:unlike' answer_id=answer.id%}">
-                    <span class="glyphicon  glyphicon-thumbs-down"> {{ answer.badNum }}</span>
-                </a>
-                {% for user  in answer.user_unlike_answer.all %}
-                <p class="text-center">{{ user.username }}</p>
-                {% empty %}
-                <p class="text-center">还没有人对此答案踩过</p>
-                {% endfor %}
+                    </a>
+                </span>  
+            </p1>
+            <div class="content">
+            <div>{{ question.questionDescription }}</div>
             </div>
-            <a class="btn" href="{% url 'answer:answer_change' answer_id=answer.id %}"> 修改答案 </a>
-            <a class="btn" href="{% url 'answer:answer_comment' answer_id=answer.id %}"> 评论 </a>
-            <a class="btn" href="{% url 'answer:collect' answer_id=answer.id %}"> 收藏 </a>
-{#				 <a class="btn" href="#">View details »</a>#}
-			</p>
-
-		</div>
-		<div class="col-md-2 column">
-		</div>
-	</div>
+        {% block answer %}
+            <div class="answerbuttom">
+                <a href="{% url 'answer:answer_question' question_id=question.id%}">
+                    <div class="btn-group btn-group-md">
+                        <input name="我要回答" type="button" id="btn3" title="我要回答" value="我要回答" class="btn btn-default" />
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% block comment %}
+        <div class="comment" >
+            <div class="answertitle">
+            精选回答
+            </div>
+        {% endblock %}
+        {% endblock %}
+        {% for answer in answer_list %}
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-xs-8 column">
+                        <p>{{ answer.answer_text | markdown | safe  }}{#加上 |safe 过滤器#}</p>
+                        <p2>
+                            <span class="like-btn">
+                                <a id="like-it" href="{% url 'answer:like' answer_id=answer.id%}">
+                                    <span class="glyphicon glyphicon-thumbs-up"></a> {{ answer.goodNum }}</span>    
+                            </span>
+                            <span class="unlike-btn">
+                                <a id="unlike-it" href="{% url 'answer:unlike' answer_id=answer.id%}">
+                                    <span class="glyphicon  glyphicon-thumbs-down"></a> {{ answer.badNum }}</span>
+                            </span>
+                            <span >
+                                <a href="{% url 'answer:answer_change' answer_id=answer.id %}">
+                                    <div class="btn-group btn-group-xs" >
+                                        <input name="修改答案" type="button" id="btn4" title="修改答案" value="修改答案" class="btn btn-default" />
+                                    </div>
+                                </a>
+                                <a href="{% url 'answer:answer_comment' answer_id=answer.id %}">
+                                    <div class="btn-group btn-group-xs">
+                                        <input name="评论" type="button" id="btn5" title="评论" value="评论" class="btn btn-default" />
+                                    </div>
+                                </a>
+                                <a href="{% url 'answer:collect' answer_id=answer.id %}">
+                                    <div class="btn-group btn-group-xs">
+                                        <input name="收藏" type="button" id="btn6" title="收藏" value="收藏" class="btn btn-default" />
+                                    </div>
+                                </a>
+                            </span>
+                            
+                            
+                        </p2>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 {% endwith %}
+</div>
 {% endblock %}
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>

@@ -1,0 +1,33 @@
+.news .content {
+  font-size: 16px;
+}
+.news-item {
+  display: block;
+  color: #666;
+}
+
+.side-bar-well > * {
+  padding: 10px;
+}
+
+.news-item:hover {
+  background: rgba(0,0,0,.03);
+}
+
+.news-info {
+  color: #999;
+  padding: 5px;
+}
+.news .info {
+  color: #999;
+  font-size: 16px;
+}
+
+.news h1 {
+  line-height: 1.5;
+}
+
+.news .content {
+  font-size: 16px;
+}
+
