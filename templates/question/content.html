@@ -7,7 +7,13 @@
 {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
     <div class="col-md-9 news">
         <div class="ask">
-            <h1 class="title">{{ question.questionTitle }}</h1>
+            <div class="tt-topic-list">
+                <div class="tt-list-header">
+                    <!-- <div class="tt-col-whitespace"></div> -->
+                    <div class="tt-col-topic">
+                        <h2>{{ question.questionTitle }}</h2>
+                    </div>
+                </div>
             <p1 class="info">
                 <span>{{ question.user }}&nbsp</span> 
                 <span>&nbsp{{ question.created }}&nbsp</span>

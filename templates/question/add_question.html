@@ -50,11 +50,19 @@
     <!--markdown-->
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="tt-topic-list">
+    <div class="tt-list-header">
+        <!-- <div class="tt-col-whitespace"></div> -->
+        <div class="tt-col-topic">
+            <h2>Asking</h2>
+        </div>
+    </div>
+</div>
 	<div id="fh5co-contact" >
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 animate-box">
-					<h2>Asking</h2>
 					<form action="." method="post">
                         {% csrf_token %}
                     <div class="form-group">
