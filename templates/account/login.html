@@ -1,10 +1,14 @@
 {% extends "index.html" %}
 {% load static %}
-{% block title %}Login{% endblock %}
-{% block content %}
-<div class="row text-center vertical-middle-sm">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% block title %}
+<div class="tt-col-topic text-center">
     <h1>Login</h1>
     <p>Input your username and password</p>
+</div>
+{% endblock %}
+{% block content %}
+<div class="col text-center vertical-middle-sm">
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
     <!--{{ form.as_p }}-->
         <div class="form-group">
