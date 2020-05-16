@@ -2,31 +2,44 @@
 {% load static %}
 
 {% block content %}
-    <div id="fh5co-blog">
-		<div class="container">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>我提出的问题</h2>
-					<p>点击查看细节</p>
+<main id="tt-pageContent" class="tt-offset-small">
+    <div class="container">
+        <div class="tt-topic-list">
+			<div class="tt-list-header">
+                <div class="tt-col-topic text-center">
+					<h1>我提出的问题</h1>
+					<p>点击查看详细</p>
 				</div>
-			</div>
-			<div class="row">
-                {% for question in questions %}
-                <div class="col-lg-12 col-md-12">
-					<div class="fh5co-blog animate-box">
-						<div class="blog-text">
-							<h3><a href="{% url 'question:question_content' question_id=question.id %}">{{ question.questionTitle }}</a></h3>
-							<span class="posted_on">{{ question.publishDate | date:"F j, Y" }}</span>
-                            <span class="comment">&ensp;{{ question.badNum }}<i class="icon-thumbs-down"></i></span>
-                            <span class="comment">&ensp;{{ question.goodNum }}<i class="icon-thumbs-up"></i></span>
-                            <span class="comment">&ensp;{{ question.answers.all | length }}<i class="icon-speech-bubble"></i></span>
-                            <p>{{ question.questionDescription | truncatechars:"30" }}...</p>
-						</div>
-					</div>
-				</div>
-                {% endfor %}
-			</div>
+            </div>
+            {% for question in questions %}
+            <div class="tt-item">
+                <div class="tt-single-topic">
+                    <div class="tt-item-header pt-noborder">
+                        <div class="tt-item-header info-top">
+                            <div class="tt-avater-title">
+                                <a href="#">author: {{ question.user }}</a>
+                            </div>
+                            <div class="tt-item-title">
+                                <a href="../{{question.id}}">{{question.questionTitle}}</a>
+                            </div>
+                            <div class="tt-item-tag">
+                                <ul class="tt-list-badge">
+                                    <li><a href="#"><span
+												class="tt-color09 tt-badge">发表于{{ question.created }}</span></a></li>
+									<li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ question.goodNum }}</span></a></li>
+									<li><a href="#"><span class="tt-color02 tt-badge">反对 {{ question.badNum }}</span></a></li>			
+                                </ul>
+							</div>
+							<div class="tt-item-title">
+                                <p>{{ question.questionDescription | truncatechars:"30"}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			{% endfor %}
 		</div>
 	</div>
+</main>
 {% endblock %}
 
