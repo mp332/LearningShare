@@ -23,6 +23,15 @@
             </div>
         </div>
         {% endif %}
+
+        <div class="tt-item" style="position: fixed; left: 15px; top: 75px;">
+                            <ul class="nav nav-pills nav-stacked"">
+                                <li role="presentation" ><a href="#1">问题搜索结果：</a></li>
+                                <li role="presentation"><a href="#2">回答搜索结果：</a></li>
+                                <li role="presentation"><a href="#3">用户搜索结果：</a></li>
+                            </ul>
+        </div>
+
         {% if keyword %}
         <div class="tt-item">
             <div class="tt-info-box">
@@ -35,6 +44,13 @@
             </div>
         </div>
         {% endif %}
+
+        <div class="tt-item">
+                    <div class="tt-info-box">
+                        <a name="1"><p style="color:#3399CC;">有关问题搜索结果：</p></a>
+                        <hr />
+                    </div>
+        </div>
         {% for question in question_list %}
         <div class="tt-item">
             <div class="tt-single-topic">
@@ -66,6 +82,12 @@
         </div>
         {% endfor %}
     
+        <div class="tt-item">
+                    <div class="tt-info-box">
+                         <a name="2"><p style="color:#3399CC;">有关回答搜索结果：</p></a>
+                        <hr />
+                    </div>
+        </div>
         {% for answer in answer_list %}
         <div class="tt-item">
             <div class="tt-single-topic">
@@ -97,6 +119,12 @@
         </div>
         {% endfor %}
     
+        <div class="tt-item">
+                    <div class="tt-info-box">
+                         <a name="3"><p style="color:#3399CC;">有关用户搜索结果：</p></a>
+                        <hr />
+                    </div>
+        </div>
         {% for user in user_list %}
         <div class="tt-item">
             <div class="tt-single-topic">
