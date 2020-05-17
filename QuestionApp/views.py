@@ -38,10 +38,13 @@ def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
 
     answer_list = AnswerModel.objects.filter(question_id=question_id)
+    questions = Question.objects.all()
     context = {
         "question": question,
-        "answer_list": answer_list
+        "answer_list": answer_list,
+        "questions": questions
     }
+    
     return render(request, "question/content.html", context=context)
 
 @login_required(login_url='/account/login')
@@ -90,7 +93,8 @@ def ask(request):
     else:
             form = AskForm()
             category = Category.objects.all()
-            return render(request, 'question/add_question.html', {"category": category, "form": form})
+            questions = Question.objects.all()
+            return render(request, 'question/add_question.html', {"category": category, "form": form, "questions": questions})
 
 
 @csrf_exempt
@@ -152,9 +156,10 @@ def search(request):
     print(user_list)
     print(question_list)
     print(answer_list)
+    questions = Question.objects.all()
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
-                                                    'keyword': keyword})
+                                                    'keyword': keyword, 'questions': questions})
 
 
 
