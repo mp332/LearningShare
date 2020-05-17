@@ -35,5 +35,5 @@ urlpatterns = [
     url(r'^my-information/$', views.myself, name="my_information"),
     url(r'^edit-my-information/$', views.myself_edit, name="edit_my_information"),
     url(r'^my-image/$', views.my_image, name="my_image"),
-
+    url(r'^my-collections/$', views.my_collect, name="my_collections")
 ]

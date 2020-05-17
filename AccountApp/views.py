@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile, UserInfo
 from django.contrib.auth.models import User
 from .forms import UserProfileForm, UserInfoForm, UserForm
-
+from QuestionApp.models import *
 
 
 # Create your views here.
@@ -58,6 +58,7 @@ def myself(request):
     userinfo = UserInfo.objects.get(user=user)
     return render(request, "account/myself.html", {"user": user, "userinfo": userinfo, "userprofile": userprofile})
 
+
 @login_required(login_url='/account/login/')
 def myself_edit(request):
     user = User.objects.get(username=request.user.username)
@@ -88,19 +89,34 @@ def myself_edit(request):
     else:
         user_form = UserForm(instance=request.user)
         userprofile_form = UserProfileForm(initial={"birth": userprofile.birth, "phone": userprofile.phone})
-        userinfo_form = UserInfoForm(initial={"school": userinfo.school, "company": userinfo.company, "profession": userinfo.profession, "address": userinfo.address, "aboutme": userinfo.aboutme})
-        return render(request, "account/myself_edit.html", {"user_form": user_form, "userprofile_form": userprofile_form, "userinfo_form": userinfo_form})
+        userinfo_form = UserInfoForm(
+            initial={"school": userinfo.school, "company": userinfo.company, "profession": userinfo.profession,
+                     "address": userinfo.address, "aboutme": userinfo.aboutme})
+        return render(request, "account/myself_edit.html",
+                      {"user_form": user_form, "userprofile_form": userprofile_form, "userinfo_form": userinfo_form})
 
-#def my_image(request):
+
+# def my_image(request):
 #    return render(request, "account/imagecrop.html",)
-#改为可由前端传入图片
+# 改为可由前端传入图片
 @login_required(login_url='/account/login/')
 def my_image(request):
     if request.method == 'POST':
-        img = request.POST['img'] #得到前端以POST方式提交的图片信息
+        img = request.POST['img']  # 得到前端以POST方式提交的图片信息
         userinfo = UserInfo.objects.get(user=request.user.id)
         userinfo.photo = img
         userinfo.save()
         return HttpResponse("1")
     else:
-        return render(request, 'account/imagecrop.html',)
+        return render(request, 'account/imagecrop.html', )
+
+
+@login_required(login_url='/account/login/')
+def my_collect(request):
+    user = User.objects.get(id=request.user.id)
+    collect_answers = user.collect_answer.all()
+    collect_questions = user.collect_question.all()
+    return render(request, 'account/collections.html',
+                  {"collect_answers": collect_answers, "collect_questions":collect_questions, })
+
+
