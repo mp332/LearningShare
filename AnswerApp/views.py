@@ -16,6 +16,8 @@ def answer(request, question_id):
     先检测用户是否登录，问题是否存在
     根据请求类型，显示答案，或者编写答案
     """
+    user = User.objects.get(id=request.user.id)
+    print(user.collect_answer.all())
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'GET':
         # print(request.GET)
@@ -70,6 +72,7 @@ def answer_change(request, answer_id):
 
 @login_required(login_url='/account/login/')
 def like(request, answer_id):
+    print(answer_id)
     like_answer = AnswerModel.objects.get(id=answer_id)
     if request.user in like_answer.user_like_answer.all():
         return HttpResponse("您已点赞")
@@ -129,3 +132,12 @@ def comment(request, answer_id):
             comment_data.save()
             comments = Comment.objects.filter(answer=comment_answer)
             return HttpResponseRedirect(reverse('question:question_content', args=(comment_answer.question.id,)))
+
+
+def delete_answer(request, answer_id):
+    answer_delete = AnswerModel.objects.get(id=answer_id)
+    if request.user.id != answer_delete.author.id:
+        return HttpResponse("对不起，您没有权限")
+    else:
+        answer_delete.delete()
+    return HttpResponseRedirect(reverse('question:question_content', args=(answer_delete.question.id,)))

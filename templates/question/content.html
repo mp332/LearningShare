@@ -104,6 +104,8 @@
                                         <span class="tt-badge">收藏</span></a></li>
                                 <li><a href="{% url 'answer:answer_change' answer_id=answer.id %}">
                                         <span class="tt-badge">修改答案</span></a></li>
+                                <li><a href="{% url 'answer:answer_delete' answer_id=answer.id %}">
+                                    <span class="tt-badge">删除答案</span></a></li>
                                 <li><a href="#"><span class="tt-color04 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
                             </ul>
                         </div>
