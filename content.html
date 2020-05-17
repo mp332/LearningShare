@@ -1,0 +1,161 @@
+{% extends "index.html" %}
+{% load markdown_extras %}
+{% load static %}
+
+{% block content %}
+<div class="col-sm-9">
+    <!-- <main id="tt-pageContent">
+        <div class="container"> -->
+    <div class="tt-single-topic-list">
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-header">
+                    <div class="tt-item-info info-top">
+                        <div class="tt-avater-title">
+                            <a href="#">{{ question.user }}</a>
+                        </div>
+                        <a href="#" class="tt-info-time">
+                            <i class="tt-icon"><svg>
+                                    <use xlink:href="#icon-time"></use>
+                                </svg></i>{{timezone.now}}
+                        </a>
+                    </div>
+                    <h1 class="tt-item-title">
+                        <h2>{{ question.questionTitle }}</h2>
+                    </h1>
+                    <div class="tt-item-tag">
+                        <ul class="tt-list-badge">
+                            <li><a href="#"><span class="tt-color07 tt-badge">{{ question.questionCategory }}</span></a>
+                            </li>
+                            <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ question.created }}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tt-item-tag">
+                        <ul class="tt-list-badge">
+                            <li><a id="like-it" href="{% url 'question:like_question' id=question.id action='like'%}">
+                                    <span class="tt-badge">赞同 {{ question.goodNum }}</span></a></li>
+                            <li><a id="unlike-it"
+                                    href="{% url 'question:like_question' id=question.id action='unlike'%}">
+                                    <span class="tt-badge">反对 {{ question.badNum }}</span></a></li>
+                            <li><a href="{% url 'question:collect_question' id=question.id action='收藏' %}">
+                                    <span class="tt-badge">收藏</span></a></li>
+                            <li><a href="{% url 'question:cancel_collect_question' id=question.id action='取消收藏' %}">
+                                    <span class="tt-badge">取消收藏</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tt-item-description">
+                    <h6 class="tt-title">题目描述：</h6>
+                    <p>{{ question.questionDescription }}</p>
+                </div>
+                <div class="tt-item-info info-bottom">
+                    <!-- <a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                                <span class="tt-text">赞同 {{ question.goodNum }}</span>
+                            <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                            <span class="tt-text">反对 {{ question.badNum }}</span>
+                        </a> -->
+                    <div class="tt-item-tag">
+                        <ul class="tt-list-badge">
+                            <li><a href="{% url 'answer:answer_question' question_id=question.id%}">
+                                    <span class="tt-color03 tt-badge">我要回答</span></a></li>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block answer %}
+        {% block comment %}
+        {% if answer_list %}
+        <div class="tt-item">
+            <h2 class="tt-item-title">精选回答:</h2>
+        </div>
+        {% else %}
+        <div class="tt-item">
+            <h4 class="tt-item-title">该问题尚未有用户回答</h4>
+        </div>
+        {% endif %}
+        {% for answer in answer_list %}
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-header pt-noborder">
+                    <div class="tt-item-header info-top">
+                        <div class="tt-avater-title">
+                            <h4>author: {{ answer.author }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="tt-item-description">
+                    <p>{{ answer.answer_text | markdown | safe }}</p>
+                </div>
+                <div class="tt-item-info info-bottom">
+                    <!-- <a href="#" class="tt-icon-btn">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                                    <span class="tt-text">赞同 {{ answer.goodNum }}</span>
+                                <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                                <span class="tt-text">反对 {{ answer.badNum }}</span>
+                            </a> -->
+                    <ul class="tt-list-badge">
+                        <li><a id="like-it" href="{% url 'answer:like' answer_id=answer.id%}">
+                                <span class="tt-badge">赞同 {{ answer.goodNum }}</span></a></li>
+                        <li><a id="unlike-it" href="{% url 'answer:unlike' answer_id=answer.id%}">
+                                <span class="tt-badge">反对 {{ answer.badNum }}</span></a></li>
+                        <li><a href="{% url 'answer:answer_comment' answer_id=answer.id %}">
+                                <span class="tt-badge">评论</span></a></li>
+                        <li><a href="{% url 'answer:collect' answer_id=answer.id %}">
+                                <span class="tt-badge">收藏</span></a></li>
+                        <li><a href="{% url 'answer:answer_change' answer_id=answer.id %}">
+                                <span class="tt-badge">修改答案</span></a></li>
+                        <li><a href="{% url 'answer:answer_delete' answer_id=answer.id %}">
+                                <span class="tt-badge">删除答案</span></a></li>
+                        <li><a href="#"><span class="tt-color04 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endblock %}
+        {% endblock %}
+    </div>
+
+
+    <!-- </div>
+    </main> -->
+</div>
+{% endblock %}
+
+
+
+<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript" src="{% static "js/csrf.js" %}"></script>
+<script>
+    function like_question(id, action) {
+        $.ajax(
+            {
+                url: "{% url 'question:like_question' %}",
+                type: "POST",
+                data: { "id": id, "action": action },
+                success: function (e) {
+                    if (e === 1) {
+                        layer.msg("感谢点赞");
+                        window.location.reload();
+
+                    } else {
+                        layer.msg("我会继续努力");
+                        window.location.reload();
+                    }
+
+                },
+                error: function (e) {
+                    layer.msg("发送失败");
+
+                }
+            });
+
+
+    }
+</script>
