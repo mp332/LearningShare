@@ -70,9 +70,15 @@
                 </div>
                 {% block answer %}
                 {% block comment %}
+                {% if answer_list %}
                 <div class="tt-item">
                     <h2 class="tt-item-title">精选回答:</h2>
                 </div>
+                {% else %}
+                <div class="tt-item">
+                    <h4 class="tt-item-title">该问题尚未有用户回答</h4>
+                </div>
+                {% endif %}
                 {% for answer in answer_list %}
                 <div class="tt-item">
                     <div class="tt-single-topic">
