@@ -1,97 +1,45 @@
 {% extends 'index.html' %}
 {% load static %}
-{% block add_question %}
-{#    <div class="container">#}
-{#	<div class="row clearfix">#}
-{#		<div class="col-md-2 column">#}
-{#		</div>#}
-{#		<div class="col-md-8 column">#}
-{#			<div class="btn-group">#}
-{#				 <button class="btn btn-default">Action</button> <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>#}
-{#				<ul class="dropdown-menu">#}
-{#					<li>#}
-{#						 <a href="#">操作</a>#}
-{#					</li>#}
-{#					<li class="disabled">#}
-{#						 <a href="#">另一操作</a>#}
-{#					</li>#}
-{#					<li class="divider">#}
-{#					</li>#}
-{#					<li>#}
-{#						 <a href="#">其它</a>#}
-{#					</li>#}
-{#				</ul>#}
-{#			</div>#}
-{#			<form role="form">#}
-{#				<div class="form-group">#}
-{#					 <label for="exampleInputEmail1">标题</label><input class="form-control" id="exampleInputEmail1" type="email" />#}
-{#				</div>#}
-{#				<div class="form-group">#}
-{#					 <label for="exampleInputPassword1">Password</label><input class="form-control" id="exampleInputPassword1" type="password" />#}
-{#				</div>#}
-{#				<div class="form-group">#}
-{#					 <label for="exampleInputFile">File input</label><input id="exampleInputFile" type="file" />#}
-{#					<p class="help-block">#}
-{#						Example block-level help text here.#}
-{#					</p>#}
-{#				</div>#}
-{#				<div class="checkbox">#}
-{#					 <label><input type="checkbox" />Check me out</label>#}
-{#				</div> <button class="btn btn-default" type="submit">Submit</button>#}
-{#			</form>#}
-{#		</div>#}
-{#		<div class="col-md-2 column">#}
-{#		</div>#}
-{#	</div>#}
-{#</div>#}
-
-
-{#老齐#}
-    <!--markdown-->
+{% block content %}
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<div class="tt-topic-list">
-    <div class="tt-list-header">
-        <!-- <div class="tt-col-whitespace"></div> -->
-        <div class="tt-col-topic">
-            <h2>Asking</h2>
+<div class="col-sm-9">
+    <div class="tt-topic-list">
+        <div class="tt-list-header">
+            <!-- <div class="tt-col-whitespace"></div> -->
+            <div class="tt-col-topic">
+                <h2>Asking</h2>
+            </div>
         </div>
     </div>
-</div>
-	<div id="fh5co-contact" >
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 animate-box">
-					<form action="." method="post">
-                        {% csrf_token %}
-                    <div class="form-group">
-                        <label for="{{ form.category.id_for_label }}">请选择问题种类</label>
-                        {{ form.category }}
-                    </div>
-                     <div class="form-group">
-                        <label for="{{ form.title.id_for_label }}">题目</label>
-                        {{ form.title }}
-                    </div>
-                    <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-2 text-right"><span>详细描述：</span></div>
-                        <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
+        <div id="fh5co-contact" >
+            <div class="container">
+                <form action="." method="post">
+                    {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.category.id_for_label }}">请选择问题种类</label>
+                    {{ form.category }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">题目</label>
+                    {{ form.title }}
+                </div>
+                <div class="miaoshu"><span>详细描述：</span></div>
+                    <!--<div class="col-md-10 text-left">{{ form.question }}</div>-->
 
-                        <div id="editormd" class="col-md-10 text-left">
-                        <textarea style="display: none;" id="id_body"></textarea>
+                    <div id="editormd" class=" text-left">
+                    <textarea style="display: none;" id="id_body"></textarea>
+                </div>
+                    <div class="row text-center vertical-middle-sm" >
+                        {{ askMessage }}
+                        <button type="submit" class="btn btn-default btn-lg" >提交</button>
+                        <!--<p><a class="btn btn-primary btn-lg" href="../ask2">提交</a><p>-->
                     </div>
+                </form>
+            </div>
         </div>
-
-    					<div class="row text-center vertical-middle-sm" >
-                            {{ askMessage }}
-                            <button type="submit" class="btn btn-default btn-lg" >提交</button>
-							<!--<p><a class="btn btn-primary btn-lg" href="../ask2">提交</a><p>-->
-                        </div>
-    				</form>
-    			</div>
-			</div>
-		</div>
-	</div>
+</div>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>

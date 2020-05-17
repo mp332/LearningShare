@@ -7,7 +7,7 @@
 </div>
 <hr>
 {% endblock %}
-{% block content %}
+{% block register %}
 <div class="row text-center vertical-middle-sm">
     <form class="col-md-9 form-horizontal" action="." method="post">{% csrf_token %}
         <div class="form-group">
@@ -39,7 +39,7 @@
         </div> -->
     </form>
     <div class="col-md-12">
-        <input type="submit" class="btn btn-primary btn-lg" value="REGISTER">
+        <input type="submit" class="btn btn-primary btn-lg" style="display:block;margin:0 auto" value="REGISTER" >
     </div>
 </div>
 {% endblock %}
