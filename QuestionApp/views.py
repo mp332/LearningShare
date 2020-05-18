@@ -164,10 +164,11 @@ def search(request):
 
 
 def questionContent(request):
-    user = request.GET.get('user')
-    question_list = Question.objects.filter(user=user)
+    id = request.GET.get('user')
+    username = User.objects.get(id=id)
+    question_list = Question.objects.filter(user=id)
     questions = Question.objects.all()
-    return render(request, 'question/show_question.html', {'user':user, 'question_list':question_list, "questions": questions})
+    return render(request, 'question/show_question.html', {'username':username, 'question_list':question_list, "questions": questions})
 
 @csrf_exempt
 #@require_POST
