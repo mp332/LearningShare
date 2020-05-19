@@ -171,3 +171,11 @@ def delete_answer(request, answer_id):
     else:
         answer_delete.delete()
     return HttpResponseRedirect(reverse('question:question_content', args=(answer_delete.question.id,)))
+
+
+def show_comment(request, answer_id):
+    # answer_id = request.GET.get('answer_id')
+    answer = AnswerModel.objects.get(id=answer_id)
+    comment_list = Comment.objects.filter(answer=answer_id)
+    return render(request, 'question/show_comment.html',
+                  {"comment_list": comment_list, "answer_id": answer_id, "answer": answer})

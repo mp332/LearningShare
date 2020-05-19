@@ -1,0 +1,51 @@
+{% extends "question/content.html" %}
+{% load static %}
+{% load markdown_extras %}
+{% block content %}
+<div class="col-sm-9">
+    <div class="tt-topic-list">
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-info info-top">
+                    <div class="tt-avater-title">
+                        <h2>回答描述：</h2>
+                    </div>
+                </div>
+                <div class="tt-item-description">
+                    <p>
+                        {{ answer | markdown | safe  }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="tt-list-header">
+            <div class="tt-col-topic">
+                <h2>Show comment</h2>
+                <hr />
+            </div>
+        </div>
+        {% for comment in comment_list %}
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-header pt-noborder">
+                    <div class="tt-item-header info-top">
+                        <div class="tt-item-title">
+                            <p>{{ comment }}</p>
+                            <a href="#"><span class="tt-badge">{{ comment.commenter }}发表于{{comment.pubDate}}</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="tt-item">
+            <div class="tt-info-box">
+                <div class="row-object-inline form-default">
+                    <h6 class="tt-title">尚没有评论</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -13,4 +13,5 @@ urlpatterns = [
     path('answer/change-answer/<int:answer_id>/', views.answer_change, name='answer_change'),
     path('answer/comment/<int:answer_id>/', views.comment, name='answer_comment'),
     path('answer/delete-answer/<int:answer_id>/', views.delete_answer, name='answer_delete'),
+    path('answer/show_comment/<int:answer_id>/', views.show_comment, name='show_comment'),
 ]

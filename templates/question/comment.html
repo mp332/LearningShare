@@ -6,12 +6,12 @@
         {{ answer.answer_text | markdown | safe  }}
     </p>
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
-    <div class="row" style="margin-top: 10px;">
+    <div class="col" style="margin-top: 10px;">
         <div class="text-left" style="margin:10px">
             {{ comment_form.comment_text }}
         </div>
 
-        <div class="row text-center vertical-middle-sm" >
+        <div class="col text-center vertical-middle-sm" >
             <button type="submit" class="btn btn-default btn-lg" >评论</button>
 		</div>
         
