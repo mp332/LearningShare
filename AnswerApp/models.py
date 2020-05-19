@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 from QuestionApp.models import Question
 from CategoryApp.models import Category
 
@@ -22,6 +24,9 @@ class AnswerModel(models.Model):
 
     class Meta:
         ordering = ("-grade",)
+
+    def get_absolute_url(self):
+        return reverse('question:question_content', kwargs={'question_id': self.question.id})
 
 
 class Comment(models.Model):

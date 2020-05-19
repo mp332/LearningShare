@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from notifications.signals import notify
 
 
 @login_required(login_url='/account/login/')
@@ -80,6 +81,13 @@ def like(request, answer_id):
         like_answer.user_like_answer.add(request.user)
         like_answer.grade += 10
         like_answer.goodNum += 1
+        if request.user != like_answer.author:
+            notify.send(
+                request.user,
+                recipient=like_answer.author,
+                verb='赞了你的回答',
+                target=like_answer,
+            )
         like_answer.save()
         return HttpResponseRedirect(reverse('question:question_content', args=(like_answer.question.id,)))
 
@@ -93,6 +101,13 @@ def unlike(request, answer_id):
         unlike_answer.user_unlike_answer.add(request.user)
         unlike_answer.badNum += 1
         unlike_answer.grade -= 7
+        if request.user != unlike_answer.author:
+            notify.send(
+                request.user,
+                recipient=unlike_answer.author,
+                verb='踩了你的回答',
+                target=unlike_answer,
+            )
         unlike_answer.save()
         return HttpResponseRedirect(reverse('question:question_content', args=(unlike_answer.question.id,)))
 
@@ -105,6 +120,13 @@ def collect(request, answer_id):
     else:
         collect_answer.collect.add(request.user)
         collect_answer.save()
+        if request.user != collect_answer.author:
+            notify.send(
+                request.user,
+                recipient=collect_answer.author,
+                verb='收藏了你的回答',
+                target=collect_answer,
+            )
         return HttpResponseRedirect(reverse('question:question_content', args=(collect_answer.question.id,)))
 
 
@@ -129,6 +151,14 @@ def comment(request, answer_id):
                 answer=comment_answer,
                 comment_text=comment_text
             )
+            if request.user != comment_answer.author:
+                notify.send(
+                    request.user,
+                    recipient=comment_answer.author,
+                    verb='回复了你',
+                    target=comment_answer,
+                    action_object=comment_data,
+                )
             comment_data.save()
             comments = Comment.objects.filter(answer=comment_answer)
             return HttpResponseRedirect(reverse('question:question_content', args=(comment_answer.question.id,)))

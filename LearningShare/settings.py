@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'QuestionApp',
     'CategoryApp',
     'AccountApp',
+    'notifications',
+    'notice',
 ]
 
 MIDDLEWARE = [
