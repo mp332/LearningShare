@@ -1,0 +1,37 @@
+{% extends "question/my_center.html" %}
+{% load static %}
+{% block list %}
+<div class="tt-list-header">
+                    <div class="tt-col-topic text-center">
+                        <h1>我的回答</h1>
+                        <p>点击查看详细</p>
+                    </div>
+                </div>
+                {% for answer in answers %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-avater-title">
+                                    <a href="#">author: {{ answer.author }}</a>
+                                </div>
+                                <div class="tt-item-title">
+                                    <a href="../{{answer.question.id}}">{{answer.question.questionTitle}}</a>
+                                </div>
+                                <div class="tt-item-tag">
+                                    <ul class="tt-list-badge">
+                                        <li><a href="#"><span
+                                                    class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
+                                        <li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ answer.goodNum }}</span></a></li>
+                                        <li><a href="#"><span class="tt-color02 tt-badge">反对 {{ answer.badNum }}</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="tt-item-title">
+                                    <p>{{ answer.answer_text | truncatechars:"30"}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+{% endblock %}
