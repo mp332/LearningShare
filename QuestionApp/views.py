@@ -273,7 +273,7 @@ def my_center(request):
         'is_logged_in': is_logged_in,
     }
     questions = request.user.questions.all()
-    answers = request.user.answers.all()
+
     context['questions'] = questions
     return render(request,'question/my_center.html',context=context)
 
@@ -285,7 +285,6 @@ def my_answers(request):
         'username': username,
         'is_logged_in': is_logged_in,
     }
-    questions = request.user.questions.all()
     answers = request.user.answers.all()
     context['answers'] = answers
     return render(request, 'question/my_answers.html', context=context)
