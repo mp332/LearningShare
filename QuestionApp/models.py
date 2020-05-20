@@ -20,7 +20,8 @@ class Question(models.Model):
     grade = models.IntegerField(default=0, verbose_name='综合质量')
     collect = models.ManyToManyField(User, related_name='collect_question', verbose_name='收藏',blank=True)
     users_like = models.ManyToManyField(User, related_name="questions_like", blank=True)
-    views = models.IntegerField(default=0,verbose_name="阅读次数")
+    users_unlike = models.ManyToManyField(User, related_name="questions_unlike", blank=True)
+    views = models.IntegerField(default=0, verbose_name="阅读次数")
 
     def __str__(self):
         return self.questionTitle

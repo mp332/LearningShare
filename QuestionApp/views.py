@@ -22,10 +22,10 @@ def index(request):
     # print(category_id)
 
     if len(request.GET) == 0:
-        question_1 = Question.objects.all().order_by('-goodNum', 'created', 'questionTitle')
+        question_1 = Question.objects.all().order_by('-grade', 'created', 'questionTitle')
         question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     else:
-        question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-goodNum', 'created', 'questionTitle')
+        question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-grade', 'created', 'questionTitle')
         question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
                                                                                        'questionTitle')
     categorys = Category.objects.all()
@@ -115,15 +115,34 @@ def like_question(request,id,action):
         try:
             question = Question.objects.get(id=id)
             if action == "like":
-                question.users_like.add(request.user)
-                question.goodNum = question.goodNum+1
-                question.save()
-                return HttpResponse("点赞成功")
+                if request.user not in question.users_like.all():
+                    question.users_like.add(request.user)
+                    if request.user_ in question.users_unlike.all():
+                        question.users_unlike.remove(request.user)
+                        question.badNum = question.badNum - 1
+                        question.grade = question.grade - 10
+
+                    question.goodNum = question.goodNum+1
+                    question.grade = question.grade + 10
+                    question.save()
+                    return HttpResponse("点赞成功")
+                else :
+                    return HttpResponse("您已点赞")
+
             else:
-                question.users_like.remove(request.user)
-                question.badNum = question.badNum+1
-                question.save()
-                return HttpResponse("踩成功")
+                if request.user not in question.users_unlike.all():
+
+                    question.users_unlike.add(request.user)
+                    if request.user  in question.users_like.all():
+                        question.users_like.remove(request.user)
+                        question.goodNum = question.goodNum-1
+                        question.grade = question.grade-10
+                    question.badNum = question.badNum+1
+                    question.grade = question.grade -10
+                    question.save()
+                    return HttpResponse("踩成功")
+                else:
+                    return HttpResponse("您已经反对")
         except:
             return HttpResponse("no")
     else:
@@ -240,3 +259,8 @@ def redit_question(request,question_id):
 def my_collections(request):
     pass
 
+def delete_question(request, question_id):
+    question_delete = Question.objects.get(id=question_id)
+    question_delete.delete()
+    #return HttpResponse("删除成功")
+    return HttpResponseRedirect(reverse('question:my_questions', ))

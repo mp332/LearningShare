@@ -30,7 +30,7 @@
                                         <li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ question.goodNum }}</span></a></li>
                                         <li><a href="#"><span class="tt-color02 tt-badge">反对 {{ question.badNum }}</span></a></li>
                                         <li><a href="{%  url 'question:redit_question' question_id=question.id %}"><span class="tt-badge">修改问题</span> </a> </li>
-
+                                        <li><a href="{%  url 'question:delete_question' question_id=question.id %}"><span class="tt-badge">删除问题</span> </a> </li>
                                     </ul>
                                 </div>
                                 <div class="tt-item-title">
