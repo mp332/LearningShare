@@ -42,6 +42,8 @@
                                     <span class="tt-badge">收藏</span></a></li>
                             <li><a href="{% url 'question:cancel_collect_question' id=question.id action='取消收藏' %}">
                                     <span class="tt-badge">取消收藏</span></a></li>
+                         <li><a  href="#"><span class="tt-badge"> {{ question.views }}view{{ question.views|pluralize }}
+                                    </span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -102,8 +104,10 @@
                                 <span class="tt-badge">赞同 {{ answer.goodNum }}</span></a></li>
                         <li><a id="unlike-it" href="{% url 'answer:unlike' answer_id=answer.id%}">
                                 <span class="tt-badge">反对 {{ answer.badNum }}</span></a></li>
+
                         <li><a href="{% url 'answer:answer_comment' answer_id=answer.id %}">
                                 <span class="tt-badge">评论</span></a></li>
+
                         <li><a href="{% url 'answer:collect' answer_id=answer.id %}">
                                 <span class="tt-badge">收藏</span></a></li>
                         <li><a href="{% url 'answer:answer_change' answer_id=answer.id %}">

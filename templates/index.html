@@ -41,7 +41,7 @@
                         </div>
                         {% block question_list %}{% endblock %}
                         {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
-                        {% for question in questions %}
+                        {% for question in question_1 %}
                         <div class="tt-item">
                             <div class="tt-row-descrption">
                                 <h4 class="tt-title"><a href="{{ question.id }}">
@@ -81,7 +81,7 @@
                     </div>
                     <div class="side-bar-well">
                         <strong class="side-bar-well-title">热门问题</strong>
-                        {% for question in questions %}
+                        {% for question in question_2 %}
                         <a href="{{ question.id }}" class="news-item">
                             <div class="news-title">{{question.questionTitle}}</div>
                         </a>

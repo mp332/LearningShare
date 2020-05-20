@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Question
+from .models import Question,Category
 import re
 
 
@@ -11,7 +11,7 @@ class AskForm(forms.Form):
          fields=('questionTitle', 'category', 'questionDescription')
 
     """
-    category = forms.ChoiceField(choices=[(0,'物理'),(1,'数学'),(2,'语言'),(3,'金融')],required=True, widget=forms.RadioSelect)
+    category = forms.ChoiceField(choices=Category.objects.values_list('number', 'name'), required=True, widget=forms.RadioSelect)
     title = forms.CharField(label='请输入问题题目(60字以内):', max_length=60,required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     #question = forms.CharField(label='请输入问题内容(2000字以内):', max_length=2000, required=True,widget=forms.Textarea(attrs={"class":"form-control"}))
     

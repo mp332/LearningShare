@@ -22,12 +22,16 @@ def index(request):
     # print(category_id)
 
     if len(request.GET) == 0:
-        questions = Question.objects.all()
+        question_1 = Question.objects.all().order_by('-goodNum', 'created', 'questionTitle')
+        question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     else:
-        questions = Question.objects.filter(questionCategory_id=category_id)
+        question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-goodNum', 'created', 'questionTitle')
+        question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
+                                                                                       'questionTitle')
     categorys = Category.objects.all()
     context = {
-        "questions": questions,
+        "question_1": question_1,
+        "question_2": question_2,
         "categorys": categorys
     }
 
@@ -36,7 +40,8 @@ def index(request):
 
 def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
-
+    question.views=question.views+1
+    question.save()
     answer_list = AnswerModel.objects.filter(question_id=question_id)
     questions = Question.objects.all()
     context = {
@@ -46,6 +51,7 @@ def question_content(request, question_id):
     }
     
     return render(request, "question/content.html", context=context)
+
 
 @login_required(login_url='/account/login')
 #@csrf_exempt
