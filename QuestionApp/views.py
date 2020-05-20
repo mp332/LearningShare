@@ -264,3 +264,28 @@ def delete_question(request, question_id):
     question_delete.delete()
     #return HttpResponse("删除成功")
     return HttpResponseRedirect(reverse('question:my_questions', ))
+
+def my_center(request):
+    username = request.user.username
+    is_logged_in = True
+    context = {
+        'username': username,
+        'is_logged_in': is_logged_in,
+    }
+    questions = request.user.questions.all()
+    answers = request.user.answers.all()
+    context['questions'] = questions
+    return render(request,'question/my_center.html',context=context)
+
+
+def my_answers(request):
+    username = request.user.username
+    is_logged_in = True
+    context = {
+        'username': username,
+        'is_logged_in': is_logged_in,
+    }
+    questions = request.user.questions.all()
+    answers = request.user.answers.all()
+    context['answers'] = answers
+    return render(request, 'question/my_answers.html', context=context)
