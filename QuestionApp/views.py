@@ -14,7 +14,11 @@ from AnswerApp.models import AnswerModel
 
 
 # Create your views here.
-
+global keyword
+global question_list
+global answer_list
+global user_list
+keyword = ''
 
 def index(request):
     # print(request.GET)
@@ -165,26 +169,38 @@ def unlike(request, id):
 
     
 def search(request):
-    keyword = request.GET.get('keyword')
+    global keyword
+    global question_list
+
+    key = request.GET.get('keyword')
+    if key is not None:
+        keyword = key
     err_msg = ''
+
+    t = request.GET.get('type')
+    type = t
+    # type = ''
 
     if not keyword:
         err_msg = '请输入关键词'
         return render(request, 'question/search.html', {'err_msg': err_msg})
 
     #按照赞数、时间、名称进行排序
-    question_list = Question.objects.filter(questionTitle__icontains=keyword).order_by('-goodNum', 'created', 'questionTitle')
+    q = Question.objects.filter(questionTitle__icontains=keyword).order_by('-goodNum', 'created', 'questionTitle')
+    if q != '':
+        question_list = q
     #按照发布时间、问题进行排序
-    answer_list = AnswerModel.objects.filter(answer_text__icontains=keyword).order_by('-pub_date', 'question')
+    a = AnswerModel.objects.filter(answer_text__icontains=keyword).order_by('-pub_date', 'question')
+    if a != '':
+        answer_list = a
     #按照用户名进行排序
-    user_list = User.objects.filter(username__icontains=keyword).order_by('-username')
-    print(user_list)
-    print(question_list)
-    print(answer_list)
-    questions = Question.objects.all()
+    u = User.objects.filter(username__icontains=keyword).order_by('-username')
+    if u != '':
+        user_list = u
+
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
-                                                    'keyword': keyword, 'questions': questions})
+                                                    'keyword': keyword, 'type': type})
 
 
 
