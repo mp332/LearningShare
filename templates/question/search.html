@@ -11,7 +11,7 @@
     <div class="tt-topic-list">
         <div class="tt-list-header">
             <!-- <div class="tt-col-whitespace"></div> -->
-            <div class="tt-col-topic">
+            <div class="tt-col-topic" style="margin-left:130px">
                 <h2>Search</h2>
             </div>
         </div>
@@ -26,239 +26,241 @@
             </div>
         </div>
         {% else %}
-
-        <div class="tt-item" style="position: fixed; left: 15px; top: 75px;">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li role="presentation"><a href="../search/?type=question">问题搜索结果：</a></li>
-                                <li role="presentation"><a href="../search/?type=answer">回答搜索结果：</a></li>
-                                <li role="presentation"><a href="../search/?type=user">用户搜索结果：</a></li>
-                            </ul>
+        <div class="col-sm-2">
+            <div class="tt-item" style="position: fixed; left: 15px; top: 75px;">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation"><a href="../search/?type=question">问题搜索结果</a></li>
+                    <li role="presentation"><a href="../search/?type=answer">回答搜索结果</a></li>
+                    <li role="presentation"><a href="../search/?type=user">用户搜索结果</a></li>
+                </ul>
         </div>
-
-        {% if keyword %}
-        <div class="tt-item">
-            <div class="tt-info-box">
-                <div class="row-object-inline form-default">
-                    <h6 class="tt-title">关键字:</h6>
-                    <ul class="tt-list-badge tt-size-lg">
-                        <li><a href="#"><span class="tt-color02 tt-badge">{{ keyword }}</span></a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
-        {% endif %}
-
-
-        {% if type is None %}
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                            <a name="1"><p style="color:#3399CC;">有关问题搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for question in question_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-avater-title">
-                                <a href="#">author: {{ question.user }}</a>
-                            </div>
-                            <div class="tt-item-title">
-                                <a href="../{{question.id}}">{{question.questionTitle}}</a>
-                            </div>
-                            <div class="tt-item-tag">
-                                <ul class="tt-list-badge">
-                                    <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ question.created }}</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
+        
+        <div class="col-sm-9">
+            {% if keyword %}
             <div class="tt-item">
                 <div class="tt-info-box">
                     <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的问题</h6>
+                        <h6 class="tt-title">关键字:</h6>
+                        <ul class="tt-list-badge tt-size-lg">
+                            <li><a href="#"><span class="tt-color02 tt-badge">{{ keyword }}</span></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            {% endif %}
 
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                             <a name="2"><p style="color:#3399CC;">有关回答搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for answer in answer_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-avater-title">
-                                <a href="#">author: {{ answer.author }}</a>
-                            </div>
-                            <div class="tt-item-title">
-                                <a href="../{{ answer.question.id }}">{{answer.question}}</a>
-                                <p>{{ answer.answer_text }}</p>
-                            </div>
-                            <div class="tt-item-tag">
-                                <ul class="tt-list-badge">
-                                    <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="tt-item">
-                <div class="tt-info-box">
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的回答</h6>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-    
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                             <a name="3"><p style="color:#3399CC;">有关用户搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for user in user_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-item-title">
-                                <a href="../show_question/?user={{user.id}}">{{user.username}}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="tt-item">
-                <div class="tt-info-box">
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的用户</h6>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
 
-        {% elif type == 'question' %}
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                            <a name="1"><p style="color:#3399CC;">有关问题搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for question in question_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-avater-title">
-                                <a href="#">author: {{ question.user }}</a>
+            {% if type is None %}
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="1"><p style="color:#3399CC;">有关问题搜索结果：</p></a>
+                                <hr />
                             </div>
-                            <div class="tt-item-title">
-                                <a href="../{{question.id}}">{{question.questionTitle}}</a>
-                            </div>
-                            <div class="tt-item-tag">
-                                <ul class="tt-list-badge">
-                                    <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ question.created }}</span></a>
-                                    </li>
-                                </ul>
+                </div>
+                {% for question in question_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-avater-title">
+                                    <a href="#">author: {{ question.user }}</a>
+                                </div>
+                                <div class="tt-item-title">
+                                    <a href="../{{question.id}}">{{question.questionTitle}}</a>
+                                </div>
+                                <div class="tt-item-tag">
+                                    <ul class="tt-list-badge">
+                                        <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ question.created }}</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-            <div class="tt-item">
-                <div class="tt-info-box">
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的问题</h6>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的问题</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
 
-        {% elif type == 'answer' %}
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                             <a name="2"><p style="color:#3399CC;">有关回答搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for answer in answer_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-avater-title">
-                                <a href="#">author: {{ answer.author }}</a>
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="2"><p style="color:#3399CC;">有关回答搜索结果：</p></a>
+                                <hr />
                             </div>
-                            <div class="tt-item-title">
-                                <a href="../{{ answer.question.id }}">{{answer.question}}</a>
-                                <p>{{ answer.answer_text }}</p>
-                            </div>
-                            <div class="tt-item-tag">
-                                <ul class="tt-list-badge">
-                                    <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
-                                </ul>
+                </div>
+                {% for answer in answer_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-avater-title">
+                                    <a href="#">author: {{ answer.author }}</a>
+                                </div>
+                                <div class="tt-item-title">
+                                    <a href="../{{ answer.question.id }}">{{answer.question}}</a>
+                                    <p>{{ answer.answer_text }}</p>
+                                </div>
+                                <div class="tt-item-tag">
+                                    <ul class="tt-list-badge">
+                                        <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-            <div class="tt-item">
-                <div class="tt-info-box">
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的回答</h6>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的回答</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+        
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="3"><p style="color:#3399CC;">有关用户搜索结果：</p></a>
+                                <hr />
+                            </div>
+                </div>
+                {% for user in user_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-item-title">
+                                    <a href="../show_question/?user={{user.id}}">{{user.username}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的用户</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
 
-        {% else %}
-            <div class="tt-item">
-                        <div class="tt-info-box">
-                             <a name="3"><p style="color:#3399CC;">有关用户搜索结果：</p></a>
-                            <hr />
-                        </div>
-            </div>
-            {% for user in user_list %}
-            <div class="tt-item">
-                <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-header info-top">
-                            <div class="tt-item-title">
-                                <a href="../show_question/?user={{user.id}}">{{user.username}}</a>
+            {% elif type == 'question' %}
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="1"><p style="color:#3399CC;">有关问题搜索结果：</p></a>
+                                <hr />
+                            </div>
+                </div>
+                {% for question in question_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-avater-title">
+                                    <a href="#">author: {{ question.user }}</a>
+                                </div>
+                                <div class="tt-item-title">
+                                    <a href="../{{question.id}}">{{question.questionTitle}}</a>
+                                </div>
+                                <div class="tt-item-tag">
+                                    <ul class="tt-list-badge">
+                                        <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ question.created }}</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-            <div class="tt-item">
-                <div class="tt-info-box">
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">道歉，没有找到相应的用户</h6>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的问题</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-        {% endif %}
-        {% endif %}
+                {% endfor %}
 
+            {% elif type == 'answer' %}
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="2"><p style="color:#3399CC;">有关回答搜索结果：</p></a>
+                                <hr />
+                            </div>
+                </div>
+                {% for answer in answer_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-avater-title">
+                                    <a href="#">author: {{ answer.author }}</a>
+                                </div>
+                                <div class="tt-item-title">
+                                    <a href="../{{ answer.question.id }}">{{answer.question}}</a>
+                                    <p>{{ answer.answer_text }}</p>
+                                </div>
+                                <div class="tt-item-tag">
+                                    <ul class="tt-list-badge">
+                                        <li><a href="#"><span class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的回答</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            {% else %}
+                <div class="tt-item">
+                            <div class="tt-info-box">
+                                <a name="3"><p style="color:#3399CC;">有关用户搜索结果：</p></a>
+                                <hr />
+                            </div>
+                </div>
+                {% for user in user_list %}
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-header info-top">
+                                <div class="tt-item-title">
+                                    <a href="../show_question/?user={{user.id}}">{{user.username}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="tt-item">
+                    <div class="tt-info-box">
+                        <div class="row-object-inline form-default">
+                            <h6 class="tt-title">道歉，没有找到相应的用户</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endif %}
+        </div>
 
     
         <!-- </div>
