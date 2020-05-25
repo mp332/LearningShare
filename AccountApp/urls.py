@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path, reverse_lazy
 from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'AccountApp'
 
@@ -37,3 +39,5 @@ urlpatterns = [
     url(r'^my-image/$', views.my_image, name="my_image"),
     url(r'^my-collections/$', views.my_collect, name="my_collections")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

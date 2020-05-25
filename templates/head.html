@@ -99,7 +99,16 @@
                                                             ></circle>
                                                 </svg>
                                             {% endif %}
-                                            <span>{{user.username}}</span></a>
+                                            <span>
+                                            {% if user.userinfo.photo %}
+                                            <img src="{{ user.userinfo.photo | striptags }}" height="50" width="50"
+                                                 class="img-circle" id="my_photo" name="user_face">
+                                            {% else %}
+                                            <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                                 class="img-circle" width="270px" id="my_photo">
+                                            {% endif %}
+                                            </span>
+                                            </a>
                                         <ul>
                                             <li><a href="{% url "question:my_center" %}">我的主页</a></li>
                                             <li><a href="{% url "notice:list" %}">通知

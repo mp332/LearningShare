@@ -85,6 +85,13 @@
                 <div class="tt-item-header pt-noborder">
                     <div class="tt-item-header info-top">
                         <div class="tt-avater-title">
+                            {% if answer.author.userinfo.photo %}
+                                <img src="{{ answer.author.userinfo.photo | striptags }}" height="50" width="50"
+                                     class="img-circle" id="my_photo" name="user_face">
+                                {% else %}
+                                <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                     class="img-circle" width="270px" id="my_photo">
+                            {% endif %}
                             <h4>author: {{ answer.author }}</h4>
                         </div>
                     </div>
