@@ -7,10 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
 
+from AccountApp.models import UserInfo, UserProfile
 from .forms import AskForm
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from AnswerApp.models import AnswerModel
+
 
 
 # Create your views here.
@@ -280,7 +282,6 @@ def delete_question(request, question_id):
     question_delete.delete()
     #return HttpResponse("删除成功")
     return HttpResponseRedirect(reverse('question:my_questions', ))
-
 def my_center(request):
     username = request.user.username
     is_logged_in = True
@@ -289,7 +290,11 @@ def my_center(request):
         'is_logged_in': is_logged_in,
     }
     questions = request.user.questions.all()
-
+    user = User.objects.get(username=request.user.username)
+    userprofile = UserProfile.objects.get(user=user)
+    userinfo = UserInfo.objects.get(user=user)
+    context['userprofile'] = userprofile
+    context['userinfo'] = userinfo
     context['questions'] = questions
     return render(request,'question/my_center.html',context=context)
 
@@ -302,5 +307,11 @@ def my_answers(request):
         'is_logged_in': is_logged_in,
     }
     answers = request.user.answers.all()
+    user = User.objects.get(username=request.user.username)
+    userprofile = UserProfile.objects.get(user=user)
+    userinfo = UserInfo.objects.get(user=user)
+    context['userprofile'] = userprofile
+    context['userinfo'] = userinfo
     context['answers'] = answers
     return render(request, 'question/my_answers.html', context=context)
+
