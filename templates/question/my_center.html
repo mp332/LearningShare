@@ -1,7 +1,98 @@
 {% extends "index.html" %}
 {% load static %}
-{% block content %}
 
+{% block content %}
+<div class="container">
+
+
+			<div class="jumbotron" >
+                <div class="row text-center vertical-middle-sm">
+                <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-4 column">
+            <div class="col-md-6" >
+            <!--<p>picture</p>-->
+            {% load static %}
+            <div style="margin-right: 100px">
+                {% if userinfo.photo %}
+                <img src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
+                {% else %}
+                <img name="user_face" src="{% static 'images/newton.jpg' %}" class="img-circle" width="270px" id="my_photo">
+                {% endif %}
+            </div>
+            <div style="margin-right: 100px"><button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload my photo</button></div>
+        </div>
+		</div>
+		<div class="col-md-8 column">
+             <div class="row">
+        <div class="col-md-6" >
+            <div class="row">
+                <div class="col-md-4 text-right"><span>用户名：</span></div>
+                <div class="col-md-8 text-left">{{user.username}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>邮箱：</span></div>
+                <div class="col-md-8 text-left">{{user.email}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>生日：</span></div>
+                <div class="col-md-8 text-left">{{userprofile.birth}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>电话：</span></div>
+                <div class="col-md-8 text-left">{{userprofile.phone}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>毕业学校：</span></div>
+                <div class="col-md-8 text-left">{{userinfo.school}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>工作单位：</span></div>
+                <div class="col-md-8 text-left">{{userinfo.company}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>职业：</span></div>
+                <div class="col-md-8 text-left">{{userinfo.profession}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>地址：</span></div>
+                <div class="col-md-8 text-left">{{userinfo.address}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>个人介绍：</span></div>
+                <div class="col-md-8 text-left">{{userinfo.aboutme}}</div>
+            </div>
+            <a href="{% url 'account:edit_my_information' %}"><button class="btn btn-primary btn-lg">edit my information</button> </a>
+        </div>
+
+    </div>
+		</div>
+	</div>
+</div>
+
+
+</div>
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js'%}"></script>
+<script>
+function upload_image_layer(){
+    /*layer.open({
+        //content:"<p>hello world</p>",
+        title:"上传头像",
+        area: ['650px', '600px'],
+        type:2,
+        content:"{% url 'account:my_image' %}",
+    });*/
+    location.href= "{% url 'account:my_image' %}"
+}
+</script>
+			</div>
+
+
+</div>
+
+
+<div>
     <div class="col-sm-2">
         <div class="side-bar">
             <a class="list-group-item" href="{% url "question:my_center" %}">我的提问</a>
@@ -9,6 +100,7 @@
             <a class="list-group-item" href="{% url "account:my_collections" %}">我的收藏</a>
         </div>
     </div>
+
 
     <div class="col-sm-9">
         <main id="tt-pageContent" class="tt-offset-small">
@@ -85,7 +177,8 @@
         </div>
     </main>
 </div>
-
+</div>
     {% block left %} {% endblock %}
 
 {% endblock %}
+
