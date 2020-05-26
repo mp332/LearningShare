@@ -116,7 +116,12 @@ def my_collect(request):
     user = User.objects.get(id=request.user.id)
     collect_answers = user.collect_answer.all()
     collect_questions = user.collect_question.all()
-    return render(request, 'account/collections.html',
-                  {"collect_answers": collect_answers, "collect_questions":collect_questions, })
+    context={"collect_answers": collect_answers, "collect_questions":collect_questions, }
+    user = User.objects.get(username=request.user.username)
+    userprofile = UserProfile.objects.get(user=user)
+    userinfo = UserInfo.objects.get(user=user)
+    context['userprofile'] = userprofile
+    context['userinfo'] = userinfo
+    return render(request, 'account/collections.html',context=context)
 
 
