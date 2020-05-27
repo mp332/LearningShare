@@ -101,10 +101,10 @@
                                             {% endif %}
                                             <span>
                                             {% if user.userinfo.photo %}
-                                            <img src="{{ user.userinfo.photo | striptags }}" height="50" width="50"
+                                            <img src="{{ user.userinfo.photo | striptags }}" height="35" width="35"
                                                  class="img-circle" id="my_photo" name="user_face">
                                             {% else %}
-                                            <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                            <img name="user_face" src="{% static 'images/default.jpg' %}" height="35" width="35"
                                                  class="img-circle" width="270px" id="my_photo">
                                             {% endif %}
                                             </span>

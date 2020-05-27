@@ -80,32 +80,26 @@
         </div>
         {% endif %}
         {% for answer in answer_list %}
+
         <div class="tt-item">
-            <div class="tt-single-topic">
-                <div class="tt-item-header pt-noborder">
-                    <div class="tt-item-header info-top">
-                        <div class="tt-avater-title">
-                            {% if answer.author.userinfo.photo %}
+                 <div class="tt-single-topic">
+                    <div class="tt-item-header pt-noborder">
+                        <div class="tt-item-info info-top">
+                            <div class="tt-avatar-icon">
+                                {% if answer.author.userinfo.photo %}
                                 <img src="{{ answer.author.userinfo.photo | striptags }}" height="50" width="50"
                                      class="img-circle" id="my_photo" name="user_face">
                                 {% else %}
                                 <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
                                      class="img-circle" width="270px" id="my_photo">
-                            {% endif %}
-                            <h4>author: {{ answer.author }}</h4>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="tt-item-description">
-                    <p>{{ answer.answer_text | markdown | safe }}</p>
-                </div>
-                <div class="tt-item-info info-bottom">
-                    <!-- <a href="#" class="tt-icon-btn">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-                                    <span class="tt-text">赞同 {{ answer.goodNum }}</span>
-                                <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-                                <span class="tt-text">反对 {{ answer.badNum }}</span>
-                            </a> -->
+                    <div class="tt-item-description">
+                         <p>{{ answer.answer_text | markdown | safe }}</p>
+                    </div>
+                    <div class="tt-item-info info-bottom">
                     <ul class="tt-list-badge">
                         <li><a id="like-it" href="{% url 'answer:like' answer_id=answer.id%}">
                                 <span class="tt-badge">赞同 {{ answer.goodNum }}</span></a></li>
@@ -126,8 +120,10 @@
                         <li><a href="#"><span class="tt-color04 tt-badge">发表于{{ answer.pub_date }}</span></a></li>
                     </ul>
                 </div>
+
+
+                </div>
             </div>
-        </div>
         {% endfor %}
         {% endblock %}
         {% endblock %}
