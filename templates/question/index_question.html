@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+</head>
+
+<body>
+    {% include "head.html" %}
+    <main id="tt-pageContent" class="tt-offset-small">
+        <div class="container">
+            {% block title %}{% endblock %}
+            {% block register %}
+            <div class="row">
+            {% block content %}
+                <div class="col-sm-2">
+                    <div class="side-bar">
+                        <a class="list-group-item" href="{% url 'question:index' page_id=1 %}">全部</a>
+                        {% for category in categorys %}
+                        <a class="list-group-item" href="/question/1/?category_id={{ category.id }}">{{ category.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="tt-topic-list">
+                        <div class="tt-list-header">
+                            <!-- <div class="tt-col-whitespace"></div> -->
+                            <div class="tt-col-topic">
+                                <h2>Question List</h2>
+                            </div>
+                        </div>
+                        {% block question_list %}{% endblock %}
+                        {% with total_likes=question.users_like.count  users_like=question.users_like.all %}
+                        {% for question in page_of_questions %}
+                        <div class="tt-item">
+                            <div class="tt-row-descrption">
+                                <h4 class="tt-title"><a href="{{ question.id }}">
+                                        {{question.questionTitle}}
+                                </a></h4>
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col-11">
+                                        <ul class="tt-list-badge">
+                                            <li><a href="#"><span class="tt-badge">赞同 {{ question.users_like.count }}</span></a></li>
+                                            <!-- <li><a href="#"><span class="tt-badge">{{ question.created }}</span></a></li> -->
+                                            <!-- <li><a href="#"><span class="tt-badge">{{ question.user }}</span></a></li> -->
+                                        </ul>
+                                    </div>
+                                    <div class="col-1 ml-auto show-mobile">
+                                        <div class="tt-value">1d</div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="tt-col-category"><span
+                                    class="tt-color04 tt-badge">{{ question.questionCategory }}</span></div>
+                            <!-- <div class="tt-col-value hide-mobile">{{ question.goodNum }}</div> -->
+                            <!-- <div class="tt-col-value hide-mobile">{{ question.created }}</div> -->
+                            <div class="col-ms-3">{{ question.user }}发表于{{ question.created }}</div>
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+                {% endblock %}
+                <div class="col-sm-3">
+                    <div class="side-bar-well clearfix">
+                        <div class="col-sm-5"><img src="{% static 'images/support.png' %}"></div>
+                        <div class="col-sm-7">
+                            <p class="side-bar-well-title">技术支持</p>
+                            <p>欢迎联系我们</p>
+                        </div>
+                    </div>
+                    <div class="side-bar-well">
+                        <strong class="side-bar-well-title">热门问题</strong>
+                        {% for question in question_2 %}
+                        <a href="{{ question.id }}" class="news-item">
+                            <div class="news-title">{{question.questionTitle}}</div>
+                        </a>
+                        <div class="news-info">
+                            <span>{{ question.user }}</span>
+                            <span>&nbsp{{question.created}}&nbsp</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+       
+        </div>
+         <div class="text-center">
+            <ul class="pagination" >
+            <li>
+                {# 上一页 #}
+                {% if page_of_questions.has_previous %}
+                    <a href="{% url 'question:index' page_id=page_of_questions.previous_page_number %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% else %}
+                    <span aria-hidden="true">&laquo;</span>
+                {% endif %}
+            </li>
+                {# 页码 #}
+                {% for page_num in page_range %}
+                    {% if page_num == page_of_questions.number %}
+                        <li class="active"><a href="{% url 'question:index' page_id=page_num %}">{{ page_num }}</a></li>
+                    {% else %}
+                        {% if page_num == '...' %}
+                            <li><span>{{ page_num }}</span></li>
+                        {% else %}
+                            <li><a href="{% url 'question:index' page_id=page_num %}">{{ page_num }}</a></li>
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+            <li>
+                {# 下一页 #}
+                {% if page_of_questions.has_next %}
+                    <a href="{% url 'question:index' page_id=page_of_questions.next_page_number %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                 {% else %}
+                    <span aria-hidden="true">&raquo;</span>
+                 {% endif %}
+            </li>
+            </ul>
+            </div>>
+    
+    </main>
+
+    {% include "footer.html" %}
+    {% block javascript %}{% endblock %}
+</body>
+
+</html>
