@@ -1,21 +1,16 @@
+# Create your views here.
+
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect ,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
-from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.views.decorators.http import require_POST
-
-from AccountApp.models import UserInfo, UserProfile
 from .forms import AskForm
 from .models import *
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from AnswerApp.models import AnswerModel
+import easygui
 
 
-
-# Create your views here.
 global keyword
 global question_list
 global answer_list
@@ -23,9 +18,7 @@ global user_list
 keyword = ''
 
 def index(request):
-    # print(request.GET)
     category_id = request.GET.get('category_id')
-    # print(category_id)
 
     if len(request.GET) == 0:
         question_1 = Question.objects.all().order_by('-grade', 'created', 'questionTitle')
@@ -60,7 +53,6 @@ def question_content(request, question_id):
 
 
 @login_required(login_url='/account/login')
-#@csrf_exempt
 def ask(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -78,12 +70,9 @@ def ask(request):
         if user:
             pass
         else:
-            # return HttpResponseRedirect(reverse('question_and_answer:index'))
             return HttpResponse("1")
 
         form = AskForm(request.POST)
-        #print(user)
-        #print(request.POST)
         if form.is_valid():
             question_category_number = request.POST.get('category')
             question_title = request.POST.get('title')
@@ -96,11 +85,13 @@ def ask(request):
                 questionDescription=question_text,
             )
             question.save()
-            # return HttpResponseRedirect(reverse('question_and_answer:detail', args=(question.id,)))
+
+
             return HttpResponse("添加成功")
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()
+
             return HttpResponse("问题添加失败")
     else:
             form = AskForm()
@@ -110,16 +101,14 @@ def ask(request):
 
 
 @csrf_exempt
-#@require_POST
 @login_required(login_url='/account/login')
 def like_question(request,id,action):
-    #question_id = request.POST.get("id")
-    #action = request.POST.get("action")
 
-    #print(request)
     if id and action:
         try:
+
             question = Question.objects.get(id=id)
+
             if action == "like":
                 if request.user not in question.users_like.all():
                     question.users_like.add(request.user)
@@ -131,10 +120,11 @@ def like_question(request,id,action):
                     question.goodNum = question.goodNum+1
                     question.grade = question.grade + 10
                     question.save()
-                    return HttpResponse("点赞成功")
-                else :
-                    return HttpResponse("您已点赞")
-
+                    easygui.msgbox(msg='点赞成功', title='提示',image='3.gif')
+                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                else:
+                    easygui.msgbox(msg='点赞成功', title='提示',image='3.gif')
+                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
             else:
                 if request.user not in question.users_unlike.all():
 
@@ -146,13 +136,18 @@ def like_question(request,id,action):
                     question.badNum = question.badNum+1
                     question.grade = question.grade -10
                     question.save()
-                    return HttpResponse("踩成功")
+                    easygui.msgbox(u'踩成功', u'提示')
+                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
                 else:
-                    return HttpResponse("您已经反对")
+                    easygui.msgbox(u'您已经反对', u'提示')
+                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
         except:
-            return HttpResponse("no")
+
+                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
     else:
-        return HttpResponse("操作失败")
+
+             easygui.msgbox(u'操作失败', u'提示')
+             return HttpResponseRedirect(reverse('question:question_content',args=[id]))
 
 
 def like(request, id):
@@ -160,7 +155,6 @@ def like(request, id):
     question.goodNum += 1
     question.grade = question.grade + 10
     question.save()
-    # return HttpResponseRedirect(reverse('question_and_answer:detail', args=(id,)))
 
 
 def unlike(request, id):
@@ -214,13 +208,9 @@ def questionContent(request):
     return render(request, 'question/show_question.html', {'username':username, 'question_list':question_list, "questions": questions})
 
 @csrf_exempt
-#@require_POST
 @login_required(login_url='/account/login')
 def collect(request,id,action):
-    # question_id = request.POST.get("id")
-    # action = request.POST.get("action")
 
-    # print(request)
     if id and action:
         try:
             question = Question.objects.get(id=id)
@@ -228,16 +218,24 @@ def collect(request,id,action):
                 question.collect.add(request.user)
                 question.grade = question.grade+20
                 question.save()
-                return HttpResponse("收藏成功")
+                #return HttpResponse("收藏成功")
+                easygui.msgbox(u'收藏成功', u'提示')
+                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
             else:
                 question.collect.remove(request.user)
                 question.grade = question.grade-20
                 question.save()
-                return HttpResponse("取消收藏成功")
+                #return HttpResponse("取消收藏成功")
+                easygui.msgbox(u'取消收藏成功', u'提示')
+                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
         except:
-            return HttpResponse("no")
+            #return HttpResponse("no")
+            easygui.msgbox(u'no', u'提示')
+            return HttpResponseRedirect(reverse('question:question_content',args=[id]))
     else:
-        return HttpResponse("操作失败")
+        #return HttpResponse("操作失败")
+        easygui.msgbox(u'操作失败', u'提示')
+        return HttpResponseRedirect(reverse('question:question_content',args=[id]))
 
 
 def my_questions(request):
@@ -269,6 +267,7 @@ def redit_question(request,question_id):
             redit_question.questionDescription = request.POST['editormd-markdown-doc']
             redit_question.save()
             return HttpResponse("修改成功")
+
         except:
             print(request)
             return HttpResponse("修改失败")
@@ -280,8 +279,8 @@ def my_collections(request):
 def delete_question(request, question_id):
     question_delete = Question.objects.get(id=question_id)
     question_delete.delete()
-    #return HttpResponse("删除成功")
     return HttpResponseRedirect(reverse('question:my_questions', ))
+
 def my_center(request):
     username = request.user.username
     is_logged_in = True
@@ -290,11 +289,7 @@ def my_center(request):
         'is_logged_in': is_logged_in,
     }
     questions = request.user.questions.all()
-    user = User.objects.get(username=request.user.username)
-    userprofile = UserProfile.objects.get(user=user)
-    userinfo = UserInfo.objects.get(user=user)
-    context['userprofile'] = userprofile
-    context['userinfo'] = userinfo
+
     context['questions'] = questions
     return render(request,'question/my_center.html',context=context)
 
@@ -307,11 +302,7 @@ def my_answers(request):
         'is_logged_in': is_logged_in,
     }
     answers = request.user.answers.all()
-    user = User.objects.get(username=request.user.username)
-    userprofile = UserProfile.objects.get(user=user)
-    userinfo = UserInfo.objects.get(user=user)
-    context['userprofile'] = userprofile
-    context['userinfo'] = userinfo
     context['answers'] = answers
     return render(request, 'question/my_answers.html', context=context)
 
+ 
