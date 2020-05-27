@@ -27,7 +27,7 @@
                     <div class="side-bar">
                         <a class="list-group-item" href="{% url 'question:index' page_id=1 %}">全部</a>
                         {% for category in categorys %}
-                        <a class="list-group-item" href="/question/1/?category_id={{ category.id }}">{{ category.name}}</a>
+                        <a class="list-group-item" href="/question/question_index/1/?category_id={{ category.id }}">{{ category.name}}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         {% for question in page_of_questions %}
                         <div class="tt-item">
                             <div class="tt-row-descrption">
-                                <h4 class="tt-title"><a href="{{ question.id }}">
+                                <h4 class="tt-title"><a href="{% url 'question:question_content' question_id=question.id %}">
                                         {{question.questionTitle}}
                                 </a></h4>
                                 <div class="row align-items-center no-gutters">
@@ -82,7 +82,7 @@
                     <div class="side-bar-well">
                         <strong class="side-bar-well-title">热门问题</strong>
                         {% for question in question_2 %}
-                        <a href="{{ question.id }}" class="news-item">
+                        <a href="{% url 'question:question_content' question_id=question.id %}" class="news-item">
                             <div class="news-title">{{question.questionTitle}}</div>
                         </a>
                         <div class="news-info">
