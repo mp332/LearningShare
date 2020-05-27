@@ -55,3 +55,21 @@ class AnswerViewTests(TestCase):
         response = self.client.get(url)
         self.assertIs(like_answer.goodNum, 1)
         # 检查同一用户重复点赞，赞数是否不变
+
+    def test_delete_answer(self):
+        category, question, answer, author = create_category_question_answer()
+        # 数据库初始化
+        answer_delete = AnswerModel.objects.get(id=answer.id)
+        self.assertEqual(answer_delete.author, answer.author)
+        # 检查当前用户是不是回答用户
+
+        url = reverse('answer:answer_delete', args=(answer.id,))
+        # 获取删除的网址
+        self.client.force_login(author)
+        # 登录用户author，删除函数需要用户登录
+        response = self.client.get(url)
+        # 向url对应的视图发起请求并获得了响应response，即调用了views里面的answer_delete函数
+        answer_delete = AnswerModel.objects.filter(id=answer.id)
+        # 更新answer_delete
+        self.assertIs(answer_delete.count(), 0)
+        # 检查该问题是否被删除
