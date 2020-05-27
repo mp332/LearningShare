@@ -20,7 +20,7 @@ from django.conf.urls import url, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='question/')),
+    path('', RedirectView.as_view(url='question/question_index/1')),
     path('admin/', admin.site.urls),
     url(r'^account/', include('AccountApp.urls', namespace='account')),
     url(r'^question/', include('QuestionApp.urls', namespace='question')),
