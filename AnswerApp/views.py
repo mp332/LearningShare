@@ -21,9 +21,6 @@ def answer(request, question_id):
     print(user.collect_answer.all())
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'GET':
-        # print(request.GET)
-        # answers = AnswerModel.objects.filter(question=question)
-        # 找到该问题的所有答案,并按照时间顺序排序
         answer_form = AnswerForm()
         return render(request, "question/answer.html",
                       {'answer_form': answer_form, 'question': question})
@@ -61,19 +58,9 @@ def answer_change(request, answer_id):
                 change_answer.save()
                 return HttpResponseRedirect(reverse('question:question_content', args=(change_answer.question.id,)))
 
-            # @login_required(login_url='/account/login/')
-
-
-# def answer_list(request):
-#     print('1')
-#     answers = AnswerModel.objects.filter(question=request.question)
-#     question = Question.objects.filter(id=request.question.id)
-#     return render(request, "question/answer.html", {"answers": answers, "question": question})
-
 
 @login_required(login_url='/account/login/')
 def like(request, answer_id):
-    print(answer_id)
     like_answer = AnswerModel.objects.get(id=answer_id)
     if request.user in like_answer.user_like_answer.all():
         return HttpResponse("您已点赞")
@@ -132,9 +119,6 @@ def collect(request, answer_id):
 
 @login_required(login_url='/account/login/')
 def comment(request, answer_id):
-    """
-    显示评论的方式暂未确定
-    """
     comment_answer = get_object_or_404(AnswerModel, id=answer_id)
     if request.method == 'GET':
         # comments = Comment.objects.filter(answer=comment_answer)
@@ -160,7 +144,6 @@ def comment(request, answer_id):
                     action_object=comment_data,
                 )
             comment_data.save()
-            comments = Comment.objects.filter(answer=comment_answer)
             return HttpResponseRedirect(reverse('question:question_content', args=(comment_answer.question.id,)))
 
 
@@ -174,7 +157,6 @@ def delete_answer(request, answer_id):
 
 
 def show_comment(request, answer_id):
-    # answer_id = request.GET.get('answer_id')
     answer = AnswerModel.objects.get(id=answer_id)
     comment_list = Comment.objects.filter(answer=answer_id)
     return render(request, 'question/show_comment.html',
