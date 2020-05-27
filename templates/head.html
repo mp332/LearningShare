@@ -29,18 +29,18 @@
                     <!-- /toggle mobile menu -->
                     <!-- logo -->
                     <div class="tt-logo">
-                        <a href="{% url 'question:index' %}"><img src="{% static 'images/test.png' %}" alt=""></a>
+                        <a href="{% url 'question:index' page_id=1  %}"><img src="{% static 'images/test.png' %}" alt=""></a>
                     </div>
 
                     <div class="tt-title">
-                        <a href="{% url 'question:index' %}"><span>LearningShare</span></a>
+                        <a href="{% url 'question:index' page_id=1 %}"><span>LearningShare</span></a>
                     </div>
 
                     <!-- menu -->
                     <div class="tt-desktop-menu">
                         <nav>
                             <ul>
-                                <!-- <li><a href="{% url 'question:index' %}"><span>LearningShare</span></a></li> -->
+                                <!-- <li><a href="{% url 'question:index' page_id=1 %}"><span>LearningShare</span></a></li> -->
                                 <li><a href="#"><span>Link</span></a></li>
                                 <li><a href="#"><span>Link</span></a></li>
                                 <li><a href="#"><span>Link</span></a></li>
@@ -132,7 +132,7 @@
     <!-- <div class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <a href="{% url 'question:index' %}" class="navbar-brand">LearningShare</a>
+                <a href="{% url 'question:index' page_id=1 %}" class="navbar-brand">LearningShare</a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="#">Link</a></li>

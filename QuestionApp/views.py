@@ -16,7 +16,7 @@ from AnswerApp.models import AnswerModel
 # Create your views here.
 
 
-def index(request):
+def index(request, page_id):
     # print(request.GET)
     category_id = request.GET.get('category_id')
     # print(category_id)
@@ -26,16 +26,40 @@ def index(request):
         question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     else:
         question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-grade', 'created', 'questionTitle')
-        question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
-                                                                                       'questionTitle')
+        question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created','questionTitle')
+        #question_list=Question.objects.filter(question_category__number=category_id).order_by( '-pub_date')[:20]
+
+
+    paginator = Paginator(question_1, 3)
+    #page_num = request.GET.get('page', 1)
+    page_of_questions = paginator.page(page_id)
+
+    current_page_num = page_of_questions.number
+
+    page_range = list(range(max(current_page_num - 2, 1), current_page_num)) + list(range(current_page_num, min(current_page_num + 2, paginator.num_pages) + 1))
+    # page_range = list(range())
+    if page_range[0] - 1 >= 2:
+            page_range.insert(0, '...')
+    if page_range[-1] <= paginator.num_pages - 2:
+            page_range.insert(len(page_range), '...')
+    # page_range.append(paginator.num_pages)
+    if page_range[0] != 1:
+            page_range.insert(0, 1)
+    if page_range[-1] != paginator.num_pages:
+        page_range.append(paginator.num_pages)
+
+
+
     categorys = Category.objects.all()
     context = {
         "question_1": question_1,
         "question_2": question_2,
-        "categorys": categorys
+        "categorys": categorys,
+        'page_of_questions': page_of_questions,
+        'page_range': page_range,
     }
 
-    return render(request, "index.html", context=context)
+    return render(request, "question/index_question.html", context=context)
 
 
 def question_content(request, question_id):
