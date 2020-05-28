@@ -106,7 +106,9 @@ def collect(request, answer_id):
         return HttpResponse("您已收藏过")
     else:
         collect_answer.collect.add(request.user)
+        collect_answer.grade +=2
         collect_answer.save()
+        
         if request.user != collect_answer.author:
             notify.send(
                 request.user,

@@ -56,6 +56,25 @@ class AnswerViewTests(TestCase):
         self.assertIs(like_answer.goodNum, 1)
         # 检查同一用户重复点赞，赞数是否不变
 
+    def test_collect_answer(self):
+        category, question, answer, author = create_category_question_answer()
+        # 数据库初始化
+        collect_answer = AnswerModel.objects.get(id=answer.id)
+        self.assertIs(collect_answer.grade, 0)
+        # 检查初始答案的热度是否为0
+        url = reverse('answer:collect', args=(answer.id,))
+        # 获取收藏的网址
+        self.client.force_login(author)
+        # 登录用户author, 收藏函数有检查用户是否登录，所以这一步是必须的
+        response = self.client.get(url)
+        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的collect函数
+        collect_answer = AnswerModel.objects.get(id=answer.id)
+        # 更新collect_answer
+        self.assertIs(collect_answer.grade, 2)
+        # 检查收藏后答案的热度是否为2
+
+        
+
     def test_delete_answer(self):
         category, question, answer, author = create_category_question_answer()
         # 数据库初始化
