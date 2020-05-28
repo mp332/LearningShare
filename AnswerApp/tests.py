@@ -34,6 +34,9 @@ def create_category_question_answer():
 
 class AnswerViewTests(TestCase):
     def test_like_answer(self):
+        """
+            测试用户点赞功能
+        """
         category, question, answer, author = create_category_question_answer()
         # 数据库初始化
         like_answer = AnswerModel.objects.get(id=answer.id)
@@ -57,38 +60,70 @@ class AnswerViewTests(TestCase):
         # 检查同一用户重复点赞，赞数是否不变
 
     def test_collect_answer(self):
+        """
+            测试答案收藏功能
+        """
         category, question, answer, author = create_category_question_answer()
-        # 数据库初始化
         collect_answer = AnswerModel.objects.get(id=answer.id)
         self.assertIs(collect_answer.grade, 0)
         # 检查初始答案的热度是否为0
         url = reverse('answer:collect', args=(answer.id,))
-        # 获取收藏的网址
         self.client.force_login(author)
-        # 登录用户author, 收藏函数有检查用户是否登录，所以这一步是必须的
-        response = self.client.get(url)
-        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的collect函数
+        self.client.get(url)
         collect_answer = AnswerModel.objects.get(id=answer.id)
-        # 更新collect_answer
         self.assertIs(collect_answer.grade, 2)
-        # 检查收藏后答案的热度是否为2
+        self.assertIs((author in collect_answer.collect.all()), True)
+        # 检查collect_answer中是否有收藏者author
+        self.assertIs((collect_answer in author.collect_answer.all()), True)
+        # 检查collect_answer中是否在author收藏的答案中
 
-        
+        # 测试重复收藏无效功能
+        response = self.client.get(url)
+        collect_answer2 = AnswerModel.objects.get(id=answer.id)
+        self.assertIs(collect_answer2.grade, 2)
+        self.assertContains(response, '您已收藏过')
 
     def test_delete_answer(self):
         category, question, answer, author = create_category_question_answer()
-        # 数据库初始化
+        guest = User.objects.create(username='user2', password='test_password')
         answer_delete = AnswerModel.objects.get(id=answer.id)
-        self.assertEqual(answer_delete.author, answer.author)
-        # 检查当前用户是不是回答用户
-
         url = reverse('answer:answer_delete', args=(answer.id,))
-        # 获取删除的网址
-        self.client.force_login(author)
-        # 登录用户author，删除函数需要用户登录
-        response = self.client.get(url)
-        # 向url对应的视图发起请求并获得了响应response，即调用了views里面的answer_delete函数
-        answer_delete = AnswerModel.objects.filter(id=answer.id)
-        # 更新answer_delete
-        self.assertIs(answer_delete.count(), 0)
+
+        # 检查非作者不能删除答案功能
+        self.client.force_login(guest)
+        self.client.get(url)
+        self.assertEqual(AnswerModel.objects.get(id=answer.id), answer_delete)
         # 检查该问题是否被删除
+
+        # 检查作者删除答案功能
+        self.client.force_login(author)
+        self.client.get(url)
+        self.assertEqual((AnswerModel.objects.filter(id=answer.id)).count(), 0)
+
+        # 检查删除不存在问题
+        response = self.client.get(url)
+        self.assertContains(response, '该答案不存在')
+
+    def test_author_change_answer(self):
+        """
+            测试删除答案是否正常
+        """
+        category, question, answer, author = create_category_question_answer()
+        self.client.force_login(author)
+        url = reverse('answer:answer_change', args=(answer.id,))
+        self.client.post(url, {'question': question, 'editormd-markdown-doc': 'change-answer'})
+        answer_change = AnswerModel.objects.get(id=answer.id)
+        self.assertEqual(answer_change.answer_text, 'change-answer')
+
+    def test_guest_change_answer(self):
+        """
+            测试非回答者不能更改答案
+        """
+        category, question, answer, author = create_category_question_answer()
+        guest = User.objects.create(username='user2', password='test_password')
+        self.client.force_login(guest)
+        url = reverse('answer:answer_change', args=(answer.id,))
+        response = self.client.post(url, {'question': question, 'editormd-markdown-doc': 'guest-try'})
+        guest_change_answer = AnswerModel.objects.get(id=answer.id)
+        self.assertEqual(guest_change_answer.answer_text, 'test')
+        self.assertContains(response, '对不起，您没有权限')
