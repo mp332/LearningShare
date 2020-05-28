@@ -106,9 +106,9 @@ def collect(request, answer_id):
         return HttpResponse("您已收藏过")
     else:
         collect_answer.collect.add(request.user)
-        collect_answer.grade +=2
+        collect_answer.grade += 2
         collect_answer.save()
-        
+
         if request.user != collect_answer.author:
             notify.send(
                 request.user,
@@ -150,7 +150,10 @@ def comment(request, answer_id):
 
 
 def delete_answer(request, answer_id):
-    answer_delete = AnswerModel.objects.get(id=answer_id)
+    try:
+        answer_delete = AnswerModel.objects.get(id=answer_id)
+    except:
+        return HttpResponse("该答案不存在")
     if request.user.id != answer_delete.author.id:
         return HttpResponse("对不起，您没有权限")
     else:
