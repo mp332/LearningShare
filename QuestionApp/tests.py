@@ -54,3 +54,50 @@ class QuestionViewTests(TestCase):
         self.assertIs(collect_question.grade, 20)
         # 检查同一用户重复收藏，热度是否不变
 
+class QuestionViewTests(TestCase):
+    def test_like_question(self):
+        category, question, answer, author = create_category_question_answer()
+        # 数据库初始化
+
+        self.assertIs(question.goodNum, 0)
+        # 上述函数检查question.goodNum是否为0, 即新创建的问题赞数是否为0
+        self.assertIs(question.badNum, 0)
+        # 上述函数检查question.badNum是否为0, 即新创建的问题踩数是否为0
+
+        action = 'like'
+
+        url = reverse('question:like_question', args=(question.id, action,))
+        # 获取点赞的网址
+        self.client.force_login(author)
+        # 登录用户author, 点赞函数有检查用户是否登录，所以这一步是必须的
+        response = self.client.get(url)
+        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的like_question函数
+        question = Question.objects.get(id=question.id)
+        # 更新question
+        self.assertIs(question.goodNum, 1)
+        # 检查question赞数是否为1
+
+        question = Question.objects.get(id=question.id)
+        response = self.client.get(url)
+        self.assertIs(question.goodNum, 1)
+        # 检查同一用户重复点赞，赞数是否不变
+
+        action = 'unlike'
+
+        url = reverse('question:like_question', args=(question.id, action,))
+        # 获取点赞的网址
+        self.client.force_login(author)
+        # 登录用户author, 点赞函数有检查用户是否登录，所以这一步是必须的
+        response = self.client.get(url)
+        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的like_question函数
+        question = Question.objects.get(id=question.id)
+        # 更新question
+        self.assertIs(question.badNum, 1)
+        # 检查question踩数是否为1
+        self.assertIs(question.goodNum, 0)
+        #点踩之后先前的赞应被取消，所以赞数又变回0
+
+        question = Question.objects.get(id=question.id)
+        response = self.client.get(url)
+        self.assertIs(question.badNum, 1)
+        # 检查同一用户重复点赞，踩数是否不变
