@@ -1,4 +1,4 @@
-# 2020软件工程 2组 \<LearningShare\>
+# 📓2020软件工程 2组 \<LearningShare\>
 ### It's a learning share platform
 
 **功能：** 
