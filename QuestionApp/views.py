@@ -64,6 +64,7 @@ def index(request, page_id):
 
 
 def question_content(request, question_id):
+    question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     question = Question.objects.get(id=question_id)
     question.views = question.views + 1
     question.save()
@@ -72,7 +73,8 @@ def question_content(request, question_id):
     context = {
         "question": question,
         "answer_list": answer_list,
-        "questions": questions
+        "questions": questions,
+        "question_2": question_2
     }
 
     return render(request, "question/content.html", context=context)
@@ -80,6 +82,7 @@ def question_content(request, question_id):
 
 @login_required(login_url='/account/login')
 def ask(request):
+    question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     if request.user.is_authenticated:
         username = request.user.username
         is_logged_in = True
@@ -123,7 +126,7 @@ def ask(request):
         category = Category.objects.all()
         questions = Question.objects.all()
         return render(request, 'question/add_question.html',
-                      {"category": category, "form": form, "questions": questions})
+                      {"category": category, "form": form, "questions": questions,"question_2": question_2})
 
 
 @csrf_exempt
@@ -178,6 +181,7 @@ def search(request):
     global keyword
     global question_list
 
+    question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     key = request.GET.get('keyword')
     if key is not None:
         keyword = key
@@ -206,6 +210,7 @@ def search(request):
 
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
+                                                    'question_2': question_2,
                                                     'keyword': keyword, 'type': type})
 
 
