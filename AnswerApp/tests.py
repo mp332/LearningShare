@@ -32,6 +32,27 @@ def create_category_question_answer():
     return category_test, question, answer, author
 
 
+def create_category_question():
+    """
+    新建category,question,user
+    以便测试
+    """
+    category_test = Category(
+        name='测试',
+        number=1
+    )
+    category_test.save()
+    author = User.objects.create(username='user1', password='test_password')
+    question = Question(
+        user=author,
+        questionCategory=category_test,
+        questionTitle='Title',
+        questionDescription='test_question',
+    )
+    question.save()
+    return category_test, question, author
+
+
 class AnswerViewTests(TestCase):
     def test_like_answer(self):
         """
@@ -183,4 +204,31 @@ class AnswerViewTests(TestCase):
         #查看评论
         response = self.client.get(url)
         self.assertEqual(response.status_code,200)
+
+        def test_answer(self):
+        category, question, author = create_category_question()
+
+        # 登录
+        self.client.force_login(author)
+        answers = AnswerModel.objects.filter(question=question)
+        # 判断初始1回答
+        self.assertEqual(len(answers), 0)
+        url = reverse('answer:answer_question', args=(question.id,))
+        # 打开回答页面
+        response1 = self.client.get(url)
+        self.assertEqual(response1.status_code, 200)
+        # 回答
+        response2 = self.client.post(url,{'question':question, 'editormd-markdown-doc': 'text_answer'})
+
+        # 回答后判断
+        # 判断回答是否成功
+        answer1 = AnswerModel.objects.filter(question=question)
+        self.assertEqual(len(answer1),1)
+        answer = answer1.first()
+        self.assertEqual(answer.answer_text, 'text_answer')
+
+        # 回答后重定向是否正确
+        self.assertEqual(response2.status_code, 302)
+        url = reverse('question:question_content', args=(question.id,))
+        self.assertEqual(response2.url, url)
         
