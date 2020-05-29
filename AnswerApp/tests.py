@@ -58,7 +58,26 @@ class AnswerViewTests(TestCase):
         response = self.client.get(url)
         self.assertIs(like_answer.goodNum, 1)
         # 检查同一用户重复点赞，赞数是否不变
+      
+    
+    def test_unlike_answer(self):
+        """
+           测试用户踩功能
+        """
+        category,question,answer,author = create_category_questiion_answer() #数据库初始化
+        unlike_answer = AnswerModel.objects.get(id=answer.id)
+        self.assertIs(unlike_answer.goodNum, 0)    # 上述函数检查unlike_answer.goodNum是否为0, 即新创建的答案踩数是否为0
+        url = reverse('answer:unlike', args=(answer.id,)      # 获取踩的网址
+        self.client.force_login(author)   # 登录用户author, 踩函数有检查用户是否登录
+        response = self.client.get(url)   # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的unlike函数
+        unlike_answer = AnswerModel.objects.get(id=answer.id)  # 更新unlike_answer
+        self.assertIs(unlike_answer.goodNum, 1)        # 检查unlike_answer赞数是否为1
+        unlike_answer = AnswerModel.objects.get(id=answer.id)
+        response = self.client.get(url)
+        self.assertIs(unlike_answer.goodNum, 1)       # 检查同一用户重复点赞，赞数是否不变
+        
 
+        
     def test_collect_answer(self):
         """
             测试答案收藏功能
