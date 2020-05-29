@@ -23,7 +23,6 @@ urlpatterns = [
     path('redit-question/<int:question_id>/', views.redit_question, name="redit_question"),
     path('collect/<int:id>/<str:action>/', views.collect, name='collect_question'),
     path('collect/<int:id>/<str:action>/', views.collect, name='cancel_collect_question'),
-    path('my_questions/', views.my_collections, name='my_collections'),
     path('delete-question/<int:question_id>/', views.delete_question, name="delete_question"),
     
     path('my_center/',views.my_center,name='my_center'),
