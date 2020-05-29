@@ -12,9 +12,22 @@
                     </div>
                 </div>
                 <div class="tt-item-description">
-                    <p>
-                        {{ answer | markdown | safe  }}
-                    </p>
+                    <div class="tt-item-header pt-noborder">
+                        <div class="tt-item-info info-top">
+                            <div class="tt-avatar-icon">
+                                {% if answer.author.userinfo.photo %}
+                                <img src="{{ answer.author.userinfo.photo | striptags }}" height="50" width="50"
+                                     class="img-circle" id="my_photo" name="user_face">
+                                {% else %}
+                                <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                     class="img-circle" width="270px" id="my_photo">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tt-item-description">
+                         <p>{{ answer.answer_text | markdown | safe }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,6 +42,15 @@
             <div class="tt-single-topic">
                 <div class="tt-item-header pt-noborder">
                     <div class="tt-item-header info-top">
+                         <div class="tt-avatar-icon">
+                                {% if comment.commenter.userinfo.photo %}
+                                <img src="{{ comment.commenter.userinfo.photo | striptags }}" height="50" width="50"
+                                     class="img-circle" id="my_photo" name="user_face">
+                                {% else %}
+                                <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                     class="img-circle" width="270px" id="my_photo">
+                                {% endif %}
+                         </div>
                         <div class="tt-item-title">
                             <p>{{ comment }}</p>
                             <a href="#"><span class="tt-badge">{{ comment.commenter }}发表于{{comment.pubDate}}</span></a>
