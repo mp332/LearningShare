@@ -25,15 +25,7 @@
 **需要安装的拓展包：**
 1. Markdown(`version: 3.2.1`)
 1. Pillow(`version: 7.1.2`)
-1. asgiref(`version: 3.2.7`)
-1. django-model-utils(`version: 4.0.0`)
 1. django-notifications-hq(`version: 1.6.0`)
-1. jsonfield(`version: 3.1.0`)
-1. pip(`version: 20.1`)
-1. pytz(`version: 2020.1`)
-1. setuptools(`version: 46.1.3`)
-1. sqlparse(`version: 0.3.1`)
-1. swapper(`version: 1.1.2.post1`)
 
 **版本信息：**
 1. python(`version: 3.7.0`)
