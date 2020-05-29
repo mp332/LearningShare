@@ -17,8 +17,6 @@ def answer(request, question_id):
     先检测用户是否登录，问题是否存在
     根据请求类型，显示答案，或者编写答案
     """
-    user = User.objects.get(id=request.user.id)
-    print(user.collect_answer.all())
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'GET':
         answer_form = AnswerForm()
@@ -36,7 +34,6 @@ def answer(request, question_id):
                 answer_text=answer_text,
             )
             answer_data.save()
-            answers = AnswerModel.objects.filter(question=question).order_by("pub_date")
             return HttpResponseRedirect(reverse('question:question_content', args=(question.id,)))
         else:
             return HttpResponse("error")
