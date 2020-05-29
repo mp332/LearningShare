@@ -127,3 +127,41 @@ class AnswerViewTests(TestCase):
         guest_change_answer = AnswerModel.objects.get(id=answer.id)
         self.assertEqual(guest_change_answer.answer_text, 'test')
         self.assertContains(response, '对不起，您没有权限')
+        
+     def test_can_comment(self):
+        category, question, answer, author = create_category_question_answer()
+
+        #登录
+        self.client.force_login(author)
+        comments = Comment.objects.filter(answer=answer)
+        #判断初始无评论
+        self.assertEqual(len(comments), 0)
+        url = reverse('answer:answer_comment', args=(answer.id,))
+        #打开评论页面
+        response1 = self.client.get(url)
+        self.assertEqual(response1.status_code,200)
+        #评论
+        response2 = self.client.post(url,{'comment_text':'test_comment'})
+
+        #评论后判断
+        #判断评论是否成功
+        comments2 = Comment.objects.filter(answer=answer)
+        self.assertEqual(len(comments2),1)
+        comment = comments.first()
+        self.assertEqual(comment.comment_text, 'test_comment')
+
+        #评论后的重定向是否正确
+        self.assertEqual(response2.status_code,302)
+        url=reverse('question:question_content',args=(question.id,))
+        self.assertEqual(response2.url,url)
+
+    def test_show_comment(self):
+        category, question, answer, author = create_category_question_answer()
+        #登录
+        self.client.force_login(author)
+        comments = Comment.objects.filter(answer=answer)
+        url = reverse('answer:show_comment', args=(answer.id,))
+        #查看评论
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+        
