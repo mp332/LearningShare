@@ -3,6 +3,7 @@ from .models import *
 from QuestionApp.models import Question
 from django.urls import reverse
 from CategoryApp.models import Category
+from AnswerApp.models import AnswerModel
 
 
 def create_category_question_answer():
@@ -36,25 +37,24 @@ class QuestionViewTests(TestCase):
     def test_collect_question(self):
         category, question, answer, author = create_category_question_answer()
         # 数据库初始化
-        collect_question = QuestionModel.objects.get(id=question.id)
+        collect_question = Question.objects.get(id=question.id)
         self.assertIs(collect_question.grade, 0)
         # 检查初始问题的热度是否为0
-        url = reverse('question:collect', args=(question.id,))
+        url = reverse('question:collect_question', args=(question.id, "收藏"))
         # 获取收藏的网址
         self.client.force_login(author)
         # 登录用户author, 收藏函数有检查用户是否登录，所以这一步是必须的
         response = self.client.get(url)
         # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的collect函数
-        collect_question = QuestionModel.objects.get(id=question.id)
+        collect_question = Question.objects.get(id=question.id)
         # 更新collect_answer
         self.assertIs(collect_question.grade, 20)
         # 检查收藏后问题的热度是否为20
-        collect_question = QuestionModel.objects.get(id=question.id)
+        collect_question = Question.objects.get(id=question.id)
         response = self.client.get(url)
         self.assertIs(collect_question.grade, 20)
         # 检查同一用户重复收藏，热度是否不变
 
-class QuestionViewTests(TestCase):
     def test_like_question(self):
         category, question, answer, author = create_category_question_answer()
         # 数据库初始化
@@ -95,7 +95,7 @@ class QuestionViewTests(TestCase):
         self.assertIs(question.badNum, 1)
         # 检查question踩数是否为1
         self.assertIs(question.goodNum, 0)
-        #点踩之后先前的赞应被取消，所以赞数又变回0
+        # 点踩之后先前的赞应被取消，所以赞数又变回0
 
         question = Question.objects.get(id=question.id)
         response = self.client.get(url)

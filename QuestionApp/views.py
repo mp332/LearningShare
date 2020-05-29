@@ -1,7 +1,7 @@
 # Create your views here.
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect ,HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -10,13 +10,12 @@ from .models import *
 from AnswerApp.models import AnswerModel
 import easygui
 
-
-
 global keyword
 global question_list
 global answer_list
 global user_list
 keyword = ''
+
 
 def index(request, page_id):
     # print(request.GET)
@@ -27,30 +26,30 @@ def index(request, page_id):
         question_1 = Question.objects.all().order_by('-grade', 'created', 'questionTitle')
         question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     else:
-        question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-grade', 'created', 'questionTitle')
-        question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created','questionTitle')
-        #question_list=Question.objects.filter(question_category__number=category_id).order_by( '-pub_date')[:20]
-
+        question_1 = Question.objects.filter(questionCategory_id=category_id).order_by('-grade', 'created',
+                                                                                       'questionTitle')
+        question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
+                                                                                       'questionTitle')
+        # question_list=Question.objects.filter(question_category__number=category_id).order_by( '-pub_date')[:20]
 
     paginator = Paginator(question_1, 3)
-    #page_num = request.GET.get('page', 1)
+    # page_num = request.GET.get('page', 1)
     page_of_questions = paginator.page(page_id)
 
     current_page_num = page_of_questions.number
 
-    page_range = list(range(max(current_page_num - 2, 1), current_page_num)) + list(range(current_page_num, min(current_page_num + 2, paginator.num_pages) + 1))
+    page_range = list(range(max(current_page_num - 2, 1), current_page_num)) + list(
+        range(current_page_num, min(current_page_num + 2, paginator.num_pages) + 1))
     # page_range = list(range())
     if page_range[0] - 1 >= 2:
-            page_range.insert(0, '...')
+        page_range.insert(0, '...')
     if page_range[-1] <= paginator.num_pages - 2:
-            page_range.insert(len(page_range), '...')
+        page_range.insert(len(page_range), '...')
     # page_range.append(paginator.num_pages)
     if page_range[0] != 1:
-            page_range.insert(0, 1)
+        page_range.insert(0, 1)
     if page_range[-1] != paginator.num_pages:
         page_range.append(paginator.num_pages)
-
-
 
     categorys = Category.objects.all()
     context = {
@@ -66,7 +65,7 @@ def index(request, page_id):
 
 def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
-    question.views=question.views+1
+    question.views = question.views + 1
     question.save()
     answer_list = AnswerModel.objects.filter(question_id=question_id)
     questions = Question.objects.all()
@@ -75,7 +74,7 @@ def question_content(request, question_id):
         "answer_list": answer_list,
         "questions": questions
     }
-    
+
     return render(request, "question/content.html", context=context)
 
 
@@ -113,7 +112,6 @@ def ask(request):
             )
             question.save()
 
-
             return HttpResponse("添加成功")
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
@@ -121,16 +119,16 @@ def ask(request):
 
             return HttpResponse("问题添加失败")
     else:
-            form = AskForm()
-            category = Category.objects.all()
-            questions = Question.objects.all()
-            return render(request, 'question/add_question.html', {"category": category, "form": form, "questions": questions})
+        form = AskForm()
+        category = Category.objects.all()
+        questions = Question.objects.all()
+        return render(request, 'question/add_question.html',
+                      {"category": category, "form": form, "questions": questions})
 
 
 @csrf_exempt
 @login_required(login_url='/account/login')
-def like_question(request,id,action):
-
+def like_question(request, id, action):
     if id and action:
         try:
 
@@ -139,58 +137,43 @@ def like_question(request,id,action):
             if action == "like":
                 if request.user not in question.users_like.all():
                     question.users_like.add(request.user)
-                    if request.user_ in question.users_unlike.all():
+                    if request.user in question.users_unlike.all():
                         question.users_unlike.remove(request.user)
                         question.badNum = question.badNum - 1
                         question.grade = question.grade - 10
-
-                    question.goodNum = question.goodNum+1
+                    question.goodNum = question.goodNum + 1
                     question.grade = question.grade + 10
                     question.save()
-                    easygui.msgbox(msg='点赞成功', title='提示',image='3.gif')
-                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                    easygui.msgbox(msg='点赞成功', title='提示', image='3.gif')
+                    return HttpResponseRedirect(reverse('question:question_content', args=[id]))
                 else:
-                    easygui.msgbox(msg='点赞成功', title='提示',image='3.gif')
-                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                    easygui.msgbox(msg='点赞成功', title='提示', image='3.gif')
+                    return HttpResponseRedirect(reverse('question:question_content', args=[id]))
             else:
                 if request.user not in question.users_unlike.all():
 
                     question.users_unlike.add(request.user)
-                    if request.user  in question.users_like.all():
+                    if request.user in question.users_like.all():
                         question.users_like.remove(request.user)
-                        question.goodNum = question.goodNum-1
-                        question.grade = question.grade-10
-                    question.badNum = question.badNum+1
-                    question.grade = question.grade -10
+                        question.goodNum = question.goodNum - 1
+                        question.grade = question.grade - 10
+                    question.badNum = question.badNum + 1
+                    question.grade = question.grade - 10
                     question.save()
                     easygui.msgbox(u'踩成功', u'提示')
-                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                    return HttpResponseRedirect(reverse('question:question_content', args=[id]))
                 else:
                     easygui.msgbox(u'您已经反对', u'提示')
-                    return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                    return HttpResponseRedirect(reverse('question:question_content', args=[id]))
         except:
 
-                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+            return HttpResponseRedirect(reverse('question:question_content', args=[id]))
     else:
 
-             easygui.msgbox(u'操作失败', u'提示')
-             return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+        easygui.msgbox(u'操作失败', u'提示')
+        return HttpResponseRedirect(reverse('question:question_content', args=[id]))
 
 
-def like(request, id):
-    question = Question.objects.get(id=id)
-    question.goodNum += 1
-    question.grade = question.grade + 10
-    question.save()
-
-
-def unlike(request, id):
-    question = Question.objects.get(id=id)
-    question.goodNum += 1
-    question.grade = question.grade + 10
-    question.save()
-
-    
 def search(request):
     global keyword
     global question_list
@@ -208,15 +191,15 @@ def search(request):
         err_msg = '请输入关键词'
         return render(request, 'question/search.html', {'err_msg': err_msg})
 
-    #按照赞数、时间、名称进行排序
+    # 按照赞数、时间、名称进行排序
     q = Question.objects.filter(questionTitle__icontains=keyword).order_by('-goodNum', 'created', 'questionTitle')
     if q != '':
         question_list = q
-    #按照发布时间、问题进行排序
+    # 按照发布时间、问题进行排序
     a = AnswerModel.objects.filter(answer_text__icontains=keyword).order_by('-pub_date', 'question')
     if a != '':
         answer_list = a
-    #按照用户名进行排序
+    # 按照用户名进行排序
     u = User.objects.filter(username__icontains=keyword).order_by('-username')
     if u != '':
         user_list = u
@@ -226,43 +209,43 @@ def search(request):
                                                     'keyword': keyword, 'type': type})
 
 
-
 def questionContent(request):
     id = request.GET.get('user')
     username = User.objects.get(id=id)
     question_list = Question.objects.filter(user=id)
     questions = Question.objects.all()
-    return render(request, 'question/show_question.html', {'username':username, 'question_list':question_list, "questions": questions})
+    return render(request, 'question/show_question.html',
+                  {'username': username, 'question_list': question_list, "questions": questions})
+
 
 @csrf_exempt
 @login_required(login_url='/account/login')
-def collect(request,id,action):
-
+def collect(request, id, action):
     if id and action:
         try:
             question = Question.objects.get(id=id)
             if action == "收藏":
                 question.collect.add(request.user)
-                question.grade = question.grade+20
+                question.grade = question.grade + 20
                 question.save()
-                #return HttpResponse("收藏成功")
+                # return HttpResponse("收藏成功")
                 easygui.msgbox(u'收藏成功', u'提示')
-                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                return HttpResponseRedirect(reverse('question:question_content', args=[id]))
             else:
                 question.collect.remove(request.user)
-                question.grade = question.grade-20
+                question.grade = question.grade - 20
                 question.save()
-                #return HttpResponse("取消收藏成功")
+                # return HttpResponse("取消收藏成功")
                 easygui.msgbox(u'取消收藏成功', u'提示')
-                return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+                return HttpResponseRedirect(reverse('question:question_content', args=[id]))
         except:
-            #return HttpResponse("no")
+            # return HttpResponse("no")
             easygui.msgbox(u'no', u'提示')
-            return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+            return HttpResponseRedirect(reverse('question:question_content', args=[id]))
     else:
-        #return HttpResponse("操作失败")
+        # return HttpResponse("操作失败")
         easygui.msgbox(u'操作失败', u'提示')
-        return HttpResponseRedirect(reverse('question:question_content',args=[id]))
+        return HttpResponseRedirect(reverse('question:question_content', args=[id]))
 
 
 def my_questions(request):
@@ -281,12 +264,12 @@ def my_questions(request):
 
 @login_required(login_url='/account/login')
 @csrf_exempt
-def redit_question(request,question_id):
+def redit_question(request, question_id):
     if request.method == "GET":
         question = Question.objects.get(id=question_id)
 
         question_form = AskForm(initial={"title": question.questionTitle, "category": question.questionCategory})
-        return render(request, 'question/redit_question.html', {"question":question, "question_form": question_form})
+        return render(request, 'question/redit_question.html', {"question": question, "question_form": question_form})
     else:
         redit_question = Question.objects.get(id=question_id)
         try:
@@ -303,10 +286,12 @@ def redit_question(request,question_id):
 def my_collections(request):
     pass
 
+
 def delete_question(request, question_id):
     question_delete = Question.objects.get(id=question_id)
     question_delete.delete()
     return HttpResponseRedirect(reverse('question:my_questions', ))
+
 
 def my_center(request):
     username = request.user.username
@@ -318,7 +303,7 @@ def my_center(request):
     questions = request.user.questions.all()
 
     context['questions'] = questions
-    return render(request,'question/my_center.html',context=context)
+    return render(request, 'question/my_center.html', context=context)
 
 
 def my_answers(request):
@@ -331,5 +316,3 @@ def my_answers(request):
     answers = request.user.answers.all()
     context['answers'] = answers
     return render(request, 'question/my_answers.html', context=context)
-
- 

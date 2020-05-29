@@ -19,7 +19,6 @@ urlpatterns = [
     path('like-question/', views.like_question, name="like_question"),
     path('like/<int:id>/<str:action>/', views.like_question, name='like_question'),
     path('unlike/<int:id>/<str:action>/', views.like_question, name='like_question'),
-    path('collect/', views.collect, name='collect'),
     path('my_questions/', views.my_questions, name='my_questions'),
     path('redit-question/<int:question_id>/', views.redit_question, name="redit_question"),
     path('collect/<int:id>/<str:action>/', views.collect, name='collect_question'),
