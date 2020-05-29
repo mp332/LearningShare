@@ -1,6 +1,5 @@
 from django.test import TestCase
-from .models import *
-from QuestionApp.models import Question
+from QuestionApp.models import *
 from django.urls import reverse
 from CategoryApp.models import Category
 from AnswerApp.models import AnswerModel
@@ -38,7 +37,7 @@ class QuestionViewTests(TestCase):
         category, question, answer, author = create_category_question_answer()
         collect_question = Question.objects.get(id=question.id)
         self.assertIs(collect_question.grade, 0)
-        
+
         # 检查初始问题的热度是否为0
         url = reverse('question:collect_question', args=(question.id, "收藏"))
         # 获取收藏的网址
@@ -48,31 +47,27 @@ class QuestionViewTests(TestCase):
         # 更新collect_answer
         self.assertIs(collect_question.grade, 20)
         # 检查收藏后问题的热度是否为20
-        self.assertIs((author in collect_answer.collect.all()), True)
+        self.assertIs((author in collect_question.collect.all()), True)
         # 检查collect_question中是否有收藏者author
         self.assertIs((collect_question in author.collect_question.all()), True)
         # 检查collect_question中是否在author收藏的问题中
 
         # 测试重复收藏无效功能
         response = self.client.get(url)
-        collect_question2 = QuestionModel.objects.get(id=question.id)
-        self.assertIs(collect_question2.grade, 2)
+        collect_question2 = Question.objects.get(id=question.id)
+        self.assertIs(collect_question2.grade, 20)
 
-        #测试取消收藏功能
+        # 测试取消收藏功能
         url = reverse('question:collect_question', args=(question.id, "取消收藏"))
         self.client.force_login(author)
         self.client.get(url)
         collect_question = Question.objects.get(id=question.id)
         self.assertIs(collect_question.grade, 0)
         # 检查收藏后问题的热度是否为0
-        self.assertIs((author in collect_answer.collect.all()), False)
+        self.assertIs((author in collect_question.collect.all()), False)
         # 检查collect_question中是否有收藏者author
         self.assertIs((collect_question in author.collect_question.all()), False)
         # 检查collect_question中是否在author收藏的问题中
-        
-        
-        
-        
 
     def test_like_question(self):
         category, question, answer, author = create_category_question_answer()
@@ -102,17 +97,10 @@ class QuestionViewTests(TestCase):
         # 检查同一用户重复点赞，赞数是否不变
 
         action = 'unlike'
-
-        url = reverse('question:like_question', args=(question.id, action,))
-        # 获取点赞的网址
         self.client.force_login(author)
-        # 登录用户author, 点赞函数有检查用户是否登录，所以这一步是必须的
-        response = self.client.get(url)
-        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的like_question函数
+        response = self.client.get(reverse('question:like_question', args=(question.id, action,)))
         question = Question.objects.get(id=question.id)
-        # 更新question
         self.assertIs(question.badNum, 1)
-        # 检查question踩数是否为1
         self.assertIs(question.goodNum, 0)
         # 点踩之后先前的赞应被取消，所以赞数又变回0
 
