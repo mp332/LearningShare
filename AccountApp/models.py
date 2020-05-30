@@ -30,10 +30,4 @@ class UserInfo(models.Model):
         return 'user {}'.format(self.user.username)
 
 
-# 信号接收函数，每当新建 User 实例时自动调用
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserInfo.objects.create(user=instance)
-        UserProfile.objects.create(user=instance)
 

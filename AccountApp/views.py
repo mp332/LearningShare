@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login  # 1从 Django 默认的（或者说是内置的）用户认证和管理应用中引入的两个方法。
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 from .models import UserProfile, UserInfo
 from .forms import LoginForm, RegistrationForm
 from .forms import UserProfileForm, UserInfoForm, UserForm
@@ -42,9 +44,9 @@ def register(request):
             new_profile.user = new_user
             new_profile.save()
             UserInfo.objects.create(user=new_user)
-            return HttpResponse("successfully")
+            return HttpResponseRedirect(reverse('index'))
         else:
-            return HttpResponse("sorry,your can not register.")
+            return HttpResponseRedirect(reverse('account:user_register'))
     else:
         user_form = RegistrationForm()
         userprofile_form = UserProfileForm()
