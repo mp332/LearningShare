@@ -43,7 +43,7 @@ def answer_change(request, answer_id):
     change_answer = AnswerModel.objects.get(id=answer_id)
     question = Question.objects.get(id=change_answer.question.id)
     if request.user.id != change_answer.author.id:
-        return HttpResponse("对不起，您没有权限")
+        return HttpResponseRedirect(reverse('question:question_content', args=(change_answer.question.id,)))
     else:
         if request.method == 'GET':
             return render(request, "question/change-answer.html",
@@ -62,7 +62,7 @@ def answer_change(request, answer_id):
 def like(request, answer_id):
     like_answer = AnswerModel.objects.get(id=answer_id)
     if request.user in like_answer.user_like_answer.all():  # 您已点赞，不再重复点赞
-        return HttpResponse("您已点赞")
+        return HttpResponseRedirect(reverse('question:question_content', args=(like_answer.question.id,)))
     else:
         like_answer.user_like_answer.add(request.user)  # 进行点赞，分数加10，赞数加1
         like_answer.grade += 10
@@ -82,7 +82,7 @@ def like(request, answer_id):
 def unlike(request, answer_id):
     unlike_answer = AnswerModel.objects.get(id=answer_id)
     if request.user in unlike_answer.user_unlike_answer.all():
-        return HttpResponse("您已踩过")
+        return HttpResponseRedirect(reverse('question:question_content', args=(unlike_answer.question.id,)))
     else:
         unlike_answer.user_unlike_answer.add(request.user)
         unlike_answer.badNum += 1
@@ -102,7 +102,7 @@ def unlike(request, answer_id):
 def collect(request, answer_id):
     collect_answer = AnswerModel.objects.get(id=answer_id)
     if request.user in collect_answer.collect.all():
-        return HttpResponse("您已收藏过")
+        return HttpResponseRedirect(reverse('question:question_content', args=(collect_answer.question.id,)))
     else:
         collect_answer.collect.add(request.user)
         collect_answer.grade += 2  # 收藏后分数+2
@@ -154,7 +154,7 @@ def delete_answer(request, answer_id):
     except:
         return HttpResponse("该答案不存在")
     if request.user.id != answer_delete.author.id:  # 非自己回答则不可删除
-        return HttpResponse("对不起，您没有权限")
+        return HttpResponseRedirect(reverse('question:question_content', args=(answer_delete.question.id,)))
     else:
         answer_delete.delete()
     return HttpResponseRedirect(reverse('question:question_content', args=(answer_delete.question.id,)))

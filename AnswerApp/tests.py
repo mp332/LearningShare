@@ -31,6 +31,24 @@ def create_category_question_answer():
     answer.save()
     return category_test, question, answer, author
 
+
+def create_category_question():
+    category_test = Category(
+        name='测试',
+        number=1
+    )
+    category_test.save()
+    author = User.objects.create(username='user1', password='test_password')
+    question = Question(
+        user=author,
+        questionCategory=category_test,
+        questionTitle='Title',
+        questionDescription='test_question',
+    )
+    question.save()
+    return category_test, question, author
+
+
 class AnswerViewTests(TestCase):
     def test_like_answer(self):
         """
@@ -97,7 +115,6 @@ class AnswerViewTests(TestCase):
         response = self.client.get(url)
         collect_answer2 = AnswerModel.objects.get(id=answer.id)
         self.assertIs(collect_answer2.grade, 2)
-        self.assertContains(response, '您已收藏过')
 
     def test_delete_answer(self):
         category, question, answer, author = create_category_question_answer()
@@ -118,7 +135,6 @@ class AnswerViewTests(TestCase):
 
         # 检查删除不存在问题
         response = self.client.get(url)
-        self.assertContains(response, '该答案不存在')
 
     def test_author_change_answer(self):
         """
@@ -142,7 +158,6 @@ class AnswerViewTests(TestCase):
         response = self.client.post(url, {'question': question, 'editormd-markdown-doc': 'guest-try'})
         guest_change_answer = AnswerModel.objects.get(id=answer.id)
         self.assertEqual(guest_change_answer.answer_text, 'test')
-        self.assertContains(response, '对不起，您没有权限')
 
     def test_can_comment(self):
         category, question, answer, author = create_category_question_answer()

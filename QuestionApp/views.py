@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import AskForm
 from .models import *
 from AnswerApp.models import AnswerModel
-import easygui
+# import easygui
 
 global keyword
 global question_list
@@ -107,12 +107,12 @@ def ask(request):
                 questionDescription=question_text,
             )
             question.save()
-            easygui.msgbox(u'添加成功', u'提示')
+            # easygui.msgbox(u'添加成功', u'提示')
             return HttpResponseRedirect(reverse('question:index'))
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()
-            easygui.msgbox(u'问题添加失败', u'提示')
+            # easygui.msgbox(u'问题添加失败', u'提示')
             return HttpResponseRedirect(reverse('question:index'))
     else:
         form = AskForm()
@@ -138,10 +138,10 @@ def like_question(request, id, action):   #赞踩函数
                 question.goodNum = question.goodNum + 1
                 question.grade = question.grade + 10
                 question.save()
-                easygui.msgbox(msg='点赞成功', title='提示')
+                # easygui.msgbox(msg='点赞成功', title='提示')
                 return HttpResponseRedirect(reverse('question:question_content', args=[id]))
             else:
-                easygui.msgbox(msg='点赞成功', title='提示')
+                # easygui.msgbox(msg='点赞成功', title='提示')
                 return HttpResponseRedirect(reverse('question:question_content', args=[id]))
         else:
             if request.user not in question.users_unlike.all():
@@ -154,14 +154,14 @@ def like_question(request, id, action):   #赞踩函数
                 question.badNum = question.badNum + 1
                 question.grade = question.grade - 10
                 question.save()
-                easygui.msgbox(u'踩成功', u'提示')
+                # easygui.msgbox(u'踩成功', u'提示')
                 return HttpResponseRedirect(reverse('question:question_content', args=[id]))
             else:
-                easygui.msgbox(u'您已经反对', u'提示')
+                # easygui.msgbox(u'您已经反对', u'提示')
                 return HttpResponseRedirect(reverse('question:question_content', args=[id]))
     else:
 
-        easygui.msgbox(u'操作失败', u'提示')
+        # easygui.msgbox(u'操作失败', u'提示')
         return HttpResponseRedirect(reverse('question:question_content', args=[id]))
 
 
@@ -221,19 +221,19 @@ def collect(request, id, action):
                     question.collect.add(request.user)
                     question.grade = question.grade + 20
                     question.save()
-                    easygui.msgbox(u'收藏成功', u'提示')
+                    # easygui.msgbox(u'收藏成功', u'提示')
                     return HttpResponseRedirect(reverse('question:question_content', args=[id]))
             else:
                 question.collect.remove(request.user)
                 question.grade = question.grade - 20
                 question.save()
-                easygui.msgbox(u'取消收藏成功', u'提示')
+                # easygui.msgbox(u'取消收藏成功', u'提示')
                 return HttpResponseRedirect(reverse('question:question_content', args=[id]))
         except:
-            easygui.msgbox(u'no', u'提示')
+            # easygui.msgbox(u'no', u'提示')
             return HttpResponseRedirect(reverse('question:question_content', args=[id]))
     else:
-        easygui.msgbox(u'操作失败', u'提示')
+        # easygui.msgbox(u'操作失败', u'提示')
         return HttpResponseRedirect(reverse('question:question_content', args=[id]))
 
 
