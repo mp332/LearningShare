@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import AskForm
 from .models import *
 from AnswerApp.models import AnswerModel
+
 # import easygui
 
 global keyword
@@ -68,7 +69,7 @@ def question_content(request, question_id):
         "question": question,
         "answer_list": answer_list,
         "questions": questions,
-        "question_2":question_2
+        "question_2": question_2
     }
 
     return render(request, "question/content.html", context=context)
@@ -124,13 +125,13 @@ def ask(request):
 
 @csrf_exempt
 @login_required(login_url='/account/login')
-def like_question(request, id, action):   #赞踩函数
-    if id and action:    #action用于判断是赞还是踩
+def like_question(request, id, action):  # 赞踩函数
+    if id and action:  # action用于判断是赞还是踩
         question = Question.objects.get(id=id)
         if action == "like":
             if request.user not in question.users_like.all():
                 question.users_like.add(request.user)
-                if request.user in question.users_unlike.all():   #若该点赞用户之前点过踩，则将之前的踩去除
+                if request.user in question.users_unlike.all():  # 若该点赞用户之前点过踩，则将之前的踩去除
                     question.users_unlike.remove(request.user)
                     question.badNum = question.badNum - 1
                     question.grade = question.grade - 10
@@ -179,7 +180,11 @@ def search(request):
 
     if not keyword:
         err_msg = '请输入关键词'
-        return render(request, 'question/search.html', {'err_msg': err_msg})
+        return render(request, 'question/search.html', {'err_msg': err_msg,
+                                                        'question_2': Question.objects.all().order_by('-views',
+                                                                                                      'created',
+                                                                                                      'questionTitle')[
+                                                                      :10]})
 
     # 按照赞数、时间、名称进行排序
     q = Question.objects.filter(questionTitle__icontains=keyword).order_by('-goodNum', 'created', 'questionTitle')
@@ -196,7 +201,8 @@ def search(request):
 
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
-                                                    'keyword': keyword, 'type': type})
+                                                    'keyword': keyword, 'type': type,
+                                                    'question_2':Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
 
 
 def questionContent(request):
@@ -205,7 +211,8 @@ def questionContent(request):
     question_list = Question.objects.filter(user=id)
     questions = Question.objects.all()
     return render(request, 'question/show_question.html',
-                  {'username': username, 'question_list': question_list, "questions": questions})
+                  {'username': username, 'question_list': question_list, "questions": questions,
+                   'question_2':Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
 
 
 @csrf_exempt
@@ -253,7 +260,7 @@ def my_questions(request):
 
 @login_required(login_url='/account/login')
 @csrf_exempt
-def redit_question(request, question_id):   #修改问题
+def redit_question(request, question_id):  # 修改问题
     if request.method == "GET":
         question = Question.objects.get(id=question_id)
 
@@ -272,7 +279,7 @@ def redit_question(request, question_id):   #修改问题
             return HttpResponse("修改失败")
 
 
-def delete_question(request, question_id):    #删除问题
+def delete_question(request, question_id):  # 删除问题
     question_delete = Question.objects.get(id=question_id)
     question_delete.delete()
     return HttpResponseRedirect(reverse('question:my_questions', ))
