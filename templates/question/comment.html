@@ -2,9 +2,37 @@
 {% load static %}
 {% load markdown_extras %}
 {% block comment %}
-    <p>
-        {{ answer.answer_text | markdown | safe  }}
-    </p>
+    <div class="tt-topic-list">
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-info info-top">
+                    <div class="tt-avater-title">
+                        <h2>回答描述：</h2>
+                    </div>
+                </div>
+                <div class="tt-item-description">
+                    <div class="tt-item-header pt-noborder">
+                        <div class="tt-item-info info-top">
+                            <div class="tt-avatar-icon">
+                                {% if answer.author.userinfo.photo %}
+                                <img src="{{ answer.author.userinfo.photo | striptags }}" height="50" width="50"
+                                     class="img-circle" id="my_photo" name="user_face">
+                                {% else %}
+                                <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
+                                     class="img-circle" width="270px" id="my_photo">
+                                {% endif %}
+                            </div>
+                        <div class="tt-avater-title">
+                                <h4><strong>作者： {{ answer.author }}</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tt-item-description">
+                         <p>{{ answer.answer_text | markdown | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
     <div class="col" style="margin-top: 10px;">
         <div class="text-left" style="margin:10px">
