@@ -103,13 +103,13 @@ def ask(request):
 
 @csrf_exempt
 @login_required(login_url='/account/login')
-def like_question(request, id, action):
-    if id and action:
+def like_question(request, id, action):   #赞踩函数
+    if id and action:    #action用于判断是赞还是踩
         question = Question.objects.get(id=id)
         if action == "like":
             if request.user not in question.users_like.all():
                 question.users_like.add(request.user)
-                if request.user in question.users_unlike.all():
+                if request.user in question.users_unlike.all():   #若该点赞用户之前点过踩，则将之前的踩去除
                     question.users_unlike.remove(request.user)
                     question.badNum = question.badNum - 1
                     question.grade = question.grade - 10
@@ -232,7 +232,7 @@ def my_questions(request):
 
 @login_required(login_url='/account/login')
 @csrf_exempt
-def redit_question(request, question_id):
+def redit_question(request, question_id):   #修改问题
     if request.method == "GET":
         question = Question.objects.get(id=question_id)
 
@@ -251,7 +251,7 @@ def redit_question(request, question_id):
             return HttpResponse("修改失败")
 
 
-def delete_question(request, question_id):
+def delete_question(request, question_id):    #删除问题
     question_delete = Question.objects.get(id=question_id)
     question_delete.delete()
     return HttpResponseRedirect(reverse('question:my_questions', ))
