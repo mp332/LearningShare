@@ -1,5 +1,5 @@
 # Create your views here.
-
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +17,7 @@ global user_list
 keyword = ''
 
 
-def index(request):
+def index(request, page_id):
     category_id = request.GET.get('category_id')
 
     if len(request.GET) == 0:
@@ -28,14 +28,33 @@ def index(request):
                                                                                        'questionTitle')
         question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
                                                                                        'questionTitle')
+
+    paginator = Paginator(question_1, 3)
+    page_of_questions = paginator.page(page_id)
+
+    current_page_num = page_of_questions.number
+
+    page_range = list(range(max(current_page_num - 2, 1), current_page_num)) + list(
+        range(current_page_num, min(current_page_num + 2, paginator.num_pages) + 1))
+    if page_range[0] - 1 >= 2:
+        page_range.insert(0, '...')
+    if page_range[-1] <= paginator.num_pages - 2:
+        page_range.insert(len(page_range), '...')
+    if page_range[0] != 1:
+        page_range.insert(0, 1)
+    if page_range[-1] != paginator.num_pages:
+        page_range.append(paginator.num_pages)
+
     categorys = Category.objects.all()
     context = {
         "question_1": question_1,
         "question_2": question_2,
-        "categorys": categorys
+        "categorys": categorys,
+        'page_of_questions': page_of_questions,
+        'page_range': page_range,
     }
 
-    return render(request, "index.html", context=context)
+    return render(request, "question/index_question.html", context=context)
 
 
 def question_content(request, question_id):
