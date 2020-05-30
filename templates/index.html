@@ -18,6 +18,9 @@
 <body>
     {% include "head.html" %}
     <main id="tt-pageContent" class="tt-offset-small">
+        <div class="blank">
+            <p>&nbsp</p>
+        </div>
         <div class="container">
             {% block title %}{% endblock %}
             {% block register %}
@@ -101,7 +104,9 @@
     
     </main>
 
+    {% block footer %}
     {% include "footer.html" %}
+    {% endblock %}
     {% block javascript %}{% endblock %}
 </body>
 
