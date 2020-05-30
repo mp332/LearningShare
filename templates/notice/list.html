@@ -5,7 +5,7 @@
 {#    通知#}
 {#{% endblock title %}#}
 
-{% block content %}
+{% block register %}
 <div class="container">
     <div class="row mt-4 ml-4">
         <a href="{% url "notice:update" %}" class="btn btn-warning" role="button">清空所有通知</a>
@@ -39,6 +39,9 @@
         color: lightgrey;
     }
 </style>
-{% endblock content %}
-{% block left %}
-{%endblock%}
+{% endblock %}
+{% block footer %}
+<footer id="tt-pagefooter" class="tt-offset">
+    <p>&nbsp</p>
+</footer> 
+{% endblock %}
