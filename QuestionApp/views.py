@@ -109,7 +109,7 @@ def ask(request):
             )
             question.save()
             # easygui.msgbox(u'添加成功', u'提示')
-            return HttpResponseRedirect('question/question_index/1/')
+            return HttpResponseRedirect(reverse('question:index', args=[1]))
         else:
             context['askMessage'] = "您的输入含有非法字符, 请重试!"
             form = AskForm()

@@ -44,7 +44,7 @@ def register(request):
             new_profile.user = new_user
             new_profile.save()
             UserInfo.objects.create(user=new_user)
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('question:index', args=[1]))
         else:
             return HttpResponseRedirect(reverse('account:user_register'))
     else:
@@ -97,6 +97,7 @@ def myself_edit(request):
         return render(request, "account/myself_edit.html",
                       {"user_form": user_form, "userprofile_form": userprofile_form, "userinfo_form": userinfo_form})
 
+
 # 改为可由前端传入图片
 @login_required(login_url='/account/login/')
 def my_image(request):
@@ -115,7 +116,7 @@ def my_collect(request):
     user = User.objects.get(id=request.user.id)
     collect_answers = user.collect_answer.all()
     collect_questions = user.collect_question.all()
-    context = {"collect_answers": collect_answers, "collect_questions":collect_questions, }
+    context = {"collect_answers": collect_answers, "collect_questions": collect_questions, }
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
     userinfo = UserInfo.objects.get(user=user)
