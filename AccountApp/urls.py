@@ -19,7 +19,7 @@ urlpatterns = [
          {"post_change_redirect": "account/password-change-done"}, name='password_change'),
     path('password-change-done/',
          auth_views.PasswordChangeDoneView.as_view(template_name='account/password_change_done.html'),
-         name='password_change_done'),
+         name='account/password_change_done'),
     url(r'^password-reset/$', auth_views.PasswordResetView.as_view(template_name="account/password_reset_form.html", success_url=reverse_lazy('account:password_reset_done'),
         email_template_name='account/password_reset_email.html', subject_template_name='account/password_reset_subject.txt'),  name="password_reset"),
     url(r'^password-reset-done/$', auth_views.PasswordResetDoneView.as_view(template_name="account/password_reset_done.html"),
