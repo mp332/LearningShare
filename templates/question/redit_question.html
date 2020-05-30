@@ -29,14 +29,13 @@
 
         <div  class="row" style="margin-top: 10px;">
         	<div class="col-md-2 text-right"><span>内容:</span></div>
-        	<div id="editormd" class="col-md-10 text-left"><!--{{question.questionDescription}}-->
+        	<div id="editormd" class="col-md-10 text-left">
                 <textarea style="display:none;" id="id_body">
 {{question.questionDescription}}
                 </textarea>
         	</div>
         </div>
         <div class="row">
-            {#  <input type="button" class="btn btn-primary btn-lg" value="发布" onclick="redit_article()">#}
             <input type="submit" class="btn btn-primary btn-lg" value="发布" >
         </div>
     </form>
@@ -51,7 +50,6 @@
         var editor = editormd("editormd", {
             width   : "100%",
             height  : 640,
-            //syncScrolling : "single",
             path    : "{% static 'editor/lib/' %}",
         });
     });
@@ -77,14 +75,9 @@ function redit_article(){
 
 </script>
 
-
-
     {% endblock %}
 	{% endblock %}
 
-    {% block search %}{% endblock %}
-    {% include "footer.html" %}
-    {% block javascript %}{% endblock %}
 
 </div>
 

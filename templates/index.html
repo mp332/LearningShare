@@ -37,7 +37,6 @@
                 <div class="col-sm-7">
                     <div class="tt-topic-list">
                         <div class="tt-list-header">
-                            <!-- <div class="tt-col-whitespace"></div> -->
                             <div class="tt-col-topic">
                                 <h2>Question List</h2>
                             </div>
@@ -54,8 +53,6 @@
                                     <div class="col-11">
                                         <ul class="tt-list-badge">
                                             <li><a href="#"><span class="tt-badge">赞同 {{ question.users_like.count }}</span></a></li>
-                                            <!-- <li><a href="#"><span class="tt-badge">{{ question.created }}</span></a></li> -->
-                                            <!-- <li><a href="#"><span class="tt-badge">{{ question.user }}</span></a></li> -->
                                         </ul>
                                     </div>
                                     <div class="col-1 ml-auto show-mobile">
@@ -65,8 +62,7 @@
                             </div>
                             <div class="tt-col-category"><span
                                     class="tt-color04 tt-badge">{{ question.questionCategory }}</span></div>
-                            <!-- <div class="tt-col-value hide-mobile">{{ question.goodNum }}</div> -->
-                            <!-- <div class="tt-col-value hide-mobile">{{ question.created }}</div> -->
+
                             <div class="col-ms-3">{{ question.user }}发表于{{ question.created }}</div>
                         </div>
                         {% endfor %}
@@ -104,9 +100,6 @@
     
     </main>
 
-    {% block footer %}
-    {% include "footer.html" %}
-    {% endblock %}
     {% block javascript %}{% endblock %}
 </body>
 

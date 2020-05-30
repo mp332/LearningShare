@@ -4,8 +4,6 @@
 
 {% block content %}
 <div class="col-sm-9">
-    <!-- <main id="tt-pageContent">
-        <div class="container"> -->
     <div class="tt-single-topic-list">
         <div class="tt-item">
             <div class="tt-single-topic">
@@ -52,12 +50,6 @@
                     <p>{{ question.questionDescription | markdown | safe }}</p>
                 </div>
                 <div class="tt-item-info info-bottom">
-                    <!-- <a href="#" class="tt-icon-btn">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-                                <span class="tt-text">赞同 {{ question.goodNum }}</span>
-                            <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-                            <span class="tt-text">反对 {{ question.badNum }}</span>
-                        </a> -->
                     <div class="tt-item-tag">
                         <ul class="tt-list-badge">
                             <li><a href="{% url 'answer:answer_question' question_id=question.id%}">
@@ -131,10 +123,6 @@
         {% endblock %}
         {% endblock %}
     </div>
-
-
-    <!-- </div>
-    </main> -->
 </div>
 {% endblock %}
 {% block left %}
@@ -160,8 +148,6 @@
     </div>
 </div>
 {% endblock %}
-
-
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>

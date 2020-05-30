@@ -11,7 +11,6 @@
 	<div class="row clearfix">
 		<div class="col-md-4 column">
             <div class="col-md-6" >
-            <!--<p>picture</p>-->
             {% load static %}
             <div style="margin-right: 100px">
                 {% if user.userinfo.photo %}
@@ -76,13 +75,6 @@
 <script type="text/javascript" src="{% static 'js/layer.js'%}"></script>
 <script>
 function upload_image_layer(){
-    /*layer.open({
-        //content:"<p>hello world</p>",
-        title:"上传头像",
-        area: ['650px', '600px'],
-        type:2,
-        content:"{% url 'account:my_image' %}",
-    });*/
     location.href= "{% url 'account:my_image' %}"
 }
 </script>
@@ -141,39 +133,6 @@ function upload_image_layer(){
                 </div>
                 {% endfor %}
                     {% endblock %}
-{#            <div class="tt-list-header">#}
-{#                    <div class="tt-col-topic text-center">#}
-{#                        <h1>我的回答</h1>#}
-{#                        <p>点击查看详细</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#                {% for answer in answers %}#}
-{#                <div class="tt-item">#}
-{#                    <div class="tt-single-topic">#}
-{#                        <div class="tt-item-header pt-noborder">#}
-{#                            <div class="tt-item-header info-top">#}
-{#                                <div class="tt-avater-title">#}
-{#                                    <a href="#">author: {{ answer.author }}</a>#}
-{#                                </div>#}
-{#                                <div class="tt-item-title">#}
-{#                                    <a href="../{{answer.question.id}}">{{answer.question.questionTitle}}</a>#}
-{#                                </div>#}
-{#                                <div class="tt-item-tag">#}
-{#                                    <ul class="tt-list-badge">#}
-{#                                        <li><a href="#"><span#}
-{#                                                    class="tt-color09 tt-badge">发表于{{ answer.pub_date }}</span></a></li>#}
-{#                                        <li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ answer.goodNum }}</span></a></li>#}
-{#                                        <li><a href="#"><span class="tt-color02 tt-badge">反对 {{ answer.badNum }}</span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="tt-item-title">#}
-{#                                    <p>{{ answer.answer_text | truncatechars:"30"}}</p>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                {% endfor %}#}
             </div>
         </div>
     </main>
