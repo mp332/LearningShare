@@ -1,7 +1,7 @@
 from django.test import TestCase
 from .models import *
-from QuestionApp.models import Question
 from django.urls import reverse
+from QuestionApp.models import Question
 from CategoryApp.models import Category
 
 
@@ -30,28 +30,6 @@ def create_category_question_answer():
     )
     answer.save()
     return category_test, question, answer, author
-
-
-def create_category_question():
-    """
-    新建category,question,user
-    以便测试
-    """
-    category_test = Category(
-        name='测试',
-        number=1
-    )
-    category_test.save()
-    author = User.objects.create(username='user1', password='test_password')
-    question = Question(
-        user=author,
-        questionCategory=category_test,
-        questionTitle='Title',
-        questionDescription='test_question',
-    )
-    question.save()
-    return category_test, question, author
-
 
 class AnswerViewTests(TestCase):
     def test_like_answer(self):
@@ -92,6 +70,7 @@ class AnswerViewTests(TestCase):
         response = self.client.get(url)  # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的unlike函数
         unlike_answer = AnswerModel.objects.get(id=answer.id)  # 更新unlike_answer
         self.assertIs(unlike_answer.badNum, 1)  # 检查unlike_answer赞数是否为1
+
         unlike_answer = AnswerModel.objects.get(id=answer.id)
         response = self.client.get(url)
         self.assertIs(unlike_answer.badNum, 1)  # 检查同一用户重复点赞，赞数是否不变
@@ -180,8 +159,7 @@ class AnswerViewTests(TestCase):
         # 评论
         response2 = self.client.post(url, {'comment_text': 'test_comment'})
 
-        # 评论后判断
-        # 判断评论是否成功
+        # 评论后判断,判断评论是否成功
         comments2 = Comment.objects.filter(answer=answer)
         self.assertEqual(len(comments2), 1)
         comment = comments.first()
@@ -217,8 +195,7 @@ class AnswerViewTests(TestCase):
         # 回答
         response2 = self.client.post(url, {'question': question, 'editormd-markdown-doc': 'text_answer'})
 
-        # 回答后判断
-        # 判断回答是否成功
+        # 回答后判断,判断回答是否成功
         answer1 = AnswerModel.objects.filter(question=question)
         self.assertEqual(len(answer1), 1)
         answer = answer1.first()

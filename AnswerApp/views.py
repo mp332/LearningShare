@@ -56,16 +56,16 @@ def answer_change(request, answer_id):
                 return HttpResponseRedirect(reverse('question:question_content', args=(change_answer.question.id,)))
 
 
-@login_required(login_url='/account/login/')
+@login_required(login_url='/account/login/')  #以登录为前提
 def like(request, answer_id):
     like_answer = AnswerModel.objects.get(id=answer_id)
-    if request.user in like_answer.user_like_answer.all():
+    if request.user in like_answer.user_like_answer.all():  #您已点赞，不再重复点赞
         return HttpResponse("您已点赞")
     else:
-        like_answer.user_like_answer.add(request.user)
+        like_answer.user_like_answer.add(request.user)    #进行点赞，分数加10，赞数加1
         like_answer.grade += 10
         like_answer.goodNum += 1
-        if request.user != like_answer.author:
+        if request.user != like_answer.author:   #向回答所有者发送通知
             notify.send(
                 request.user,
                 recipient=like_answer.author,
@@ -85,7 +85,7 @@ def unlike(request, answer_id):
         unlike_answer.user_unlike_answer.add(request.user)
         unlike_answer.badNum += 1
         unlike_answer.grade -= 7
-        if request.user != unlike_answer.author:
+        if request.user != unlike_answer.author:   #向回答所有者发送通知
             notify.send(
                 request.user,
                 recipient=unlike_answer.author,
@@ -103,10 +103,10 @@ def collect(request, answer_id):
         return HttpResponse("您已收藏过")
     else:
         collect_answer.collect.add(request.user)
-        collect_answer.grade += 2
+        collect_answer.grade += 2     #收藏后分数+2
         collect_answer.save()
 
-        if request.user != collect_answer.author:
+        if request.user != collect_answer.author:   #向回答所有者发送通知
             notify.send(
                 request.user,
                 recipient=collect_answer.author,
@@ -120,7 +120,6 @@ def collect(request, answer_id):
 def comment(request, answer_id):
     comment_answer = get_object_or_404(AnswerModel, id=answer_id)
     if request.method == 'GET':
-        # comments = Comment.objects.filter(answer=comment_answer)
         comment_form = CommentForm()
         return render(request, "question/comment.html",
                       {"answer": comment_answer, "comment_form": comment_form, "question": comment_answer.question})
@@ -151,7 +150,7 @@ def delete_answer(request, answer_id):
         answer_delete = AnswerModel.objects.get(id=answer_id)
     except:
         return HttpResponse("该答案不存在")
-    if request.user.id != answer_delete.author.id:
+    if request.user.id != answer_delete.author.id:   #非自己回答则不可删除
         return HttpResponse("对不起，您没有权限")
     else:
         answer_delete.delete()
