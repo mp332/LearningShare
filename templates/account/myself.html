@@ -15,15 +15,15 @@
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>生日：</span></div>
-                <div class="col-md-8 text-left">{{userprofile.birth}}</div>
+                <div class="col-md-8 text-left">{{user.userprofile.birth}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>电话：</span></div>
-                <div class="col-md-8 text-left">{{userprofile.phone}}</div>
+                <div class="col-md-8 text-left">{{user.userprofile.phone}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>毕业学校：</span></div>
-                <div class="col-md-8 text-left">{{userinfo.school}}</div>
+                <div class="col-md-8 text-left">{{user.userinfo.school}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>工作单位：</span></div>
@@ -47,10 +47,10 @@
             <!--<p>picture</p>-->
             {% load static %}
             <div style="margin-right: 100px">
-                {% if userinfo.photo %}
-                <img src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
+                {% if user.userinfo.photo %}
+                <img src="{{ user.userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
                 {% else %}
-                <img name="user_face" src="{% static 'images/newton.jpg' %}" class="img-circle" width="270px" id="my_photo">
+                <img name="user_face" src="{% static 'images/default.jpg' %}" class="img-circle" width="270px" id="my_photo">
                 {% endif %}
             </div>
             <div style="margin-right: 100px"><button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload my photo</button></div>
@@ -61,13 +61,14 @@
 <script type="text/javascript" src="{% static 'js/layer.js'%}"></script>
 <script>
 function upload_image_layer(){
-    /*layer.open({
+    layer.open({
         //content:"<p>hello world</p>",
         title:"上传头像",
-        area: ['650px', '600px'],
+        area: ['600px', '360px'],
+        shadeClose: true, //点击遮罩关闭
         type:2,
-        content:"{% url 'account:my_image' %}",
-    });*/
+        content:"{% verbatim %}{% url 'account:my_image' %}{% endverbatim %}",
+    });
     location.href= "{% url 'account:my_image' %}"
 }
 </script>
