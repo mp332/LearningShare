@@ -23,6 +23,9 @@
                                      class="img-circle" width="270px" id="my_photo">
                                 {% endif %}
                             </div>
+                        <div class="tt-avater-title">
+                                <h4><strong>作者： {{ answer.author }}</strong></h4>
+                            </div>
                         </div>
                     </div>
                     <div class="tt-item-description">
@@ -50,6 +53,9 @@
                                 <img name="user_face" src="{% static 'images/default.jpg' %}" height="50" width="50"
                                      class="img-circle" width="270px" id="my_photo">
                                 {% endif %}
+                         <div class="tt-avater-title">
+                                <h4><strong>{{ comment.commenter }}</strong></h4>
+                         </div>
                          </div>
                         <div class="tt-item-title">
                             <p>{{ comment }}</p>
