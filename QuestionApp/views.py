@@ -59,6 +59,7 @@ def index(request, page_id):
 
 def question_content(request, question_id):
     question = Question.objects.get(id=question_id)
+    question_2 = Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]
     question.views = question.views + 1
     question.save()
     answer_list = AnswerModel.objects.filter(question_id=question_id)
@@ -66,7 +67,8 @@ def question_content(request, question_id):
     context = {
         "question": question,
         "answer_list": answer_list,
-        "questions": questions
+        "questions": questions,
+        "question_2":question_2
     }
 
     return render(request, "question/content.html", context=context)
