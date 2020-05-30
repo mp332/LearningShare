@@ -23,7 +23,6 @@
 
                     <a class="toggle-mobile-menu" href="#">
                         <svg class="tt-icon">
-                          <use xlink:href="#icon-menu_icon"></use>
                         </svg>
                     </a>
                     <!-- /toggle mobile menu -->
@@ -55,9 +54,6 @@
                     <div class="tt-search">
                         <!-- toggle -->
                         <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
-                            <svg class="tt-icon">
-                                <use xlink:href="#icon-search"></use>
-                            </svg>
                         </button>
 
                         <form class="search-wrapper" role="search" method="get" action="{%url 'question:search' %}">
@@ -121,9 +117,6 @@
                                                 {% endif %}
                                             </a> </li>
                                             <li><a href="{% url 'account:password_change' %}">修改密码</a></li>
-{#                                            <li><a href="{% url 'account:my_information' %}">个人信息</a></li>#}
-{#                                            <li><a href="{% url 'question:my_questions' %}">我的问题与回答</a></li>#}
-{#                                            <li><a href="{% url 'account:my_collections' %}">我的收藏</a></li>#}
                                             <li><a href="{% url 'account:user_logout' %}">退出</a></li>
                                         </ul>
                                     {% else %}
@@ -140,47 +133,4 @@
             </div>
         </div>
     </header>
-    <!-- <div class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="{% url 'question:index' page_id=1 %}" class="navbar-brand">LearningShare</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-            </ul>
-            <form class="navbar-form navbar-left" role="search" method="get" id="searchform"
-                action="{%url 'question:search' %}">
-                <div class="form-group">
-                    <input type="search" class="form-control" name="keyword" placeholder="Search" required>
-                    <button type="submit" class="btn btn-default"><span>搜索</span></button>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'question:add_question' %}">提问</a></li>
-                <li><a href="{% url 'account:user_register' %}">注册</a></li>
-                {% if user.is_authenticated %}
-                <li class="dropdown">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{ user.username }}<strong
-                            class="caret"></strong></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">我的主页</a></li>
-                        <li><a href="{% url 'account:password_change' %}">修改密码</a></li>
-                        <li><a href="{% url 'account:my_information' %}">个人信息</a></li>
-                        <li><a href="{% url 'question:my_questions' %}">我的问题</a></li>
-                        <li><a href="{% url 'question:my_collections' %}">我的收藏</a></li>
-                        <li><a href="#">设置</a></li>
-                        <li><a href="{% url 'account:user_logout' %}">退出</a></li>
-
-                    </ul>
-                </li>
-                {% else %}
-                <li>
-                    <a href="{% url 'account:user_login' %}">登录</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div> -->
 </body>
