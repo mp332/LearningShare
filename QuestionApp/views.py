@@ -30,7 +30,7 @@ def index(request, page_id):
         question_2 = Question.objects.filter(questionCategory_id=category_id).order_by('-views', 'created',
                                                                                        'questionTitle')
 
-    paginator = Paginator(question_1, 3)
+    paginator = Paginator(question_1, 10)
     page_of_questions = paginator.page(page_id)
 
     current_page_num = page_of_questions.number

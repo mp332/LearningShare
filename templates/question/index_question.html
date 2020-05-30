@@ -27,8 +27,8 @@
             <div class="row">
             {% block content %}
                 <div class="col-sm-2">
-                    <div class="side-bar">
-                        <a class="list-group-item" href="{% url 'question:index' page_id=1 %}">全部</a>
+                    <div class="side-bar" style="position: fixed;">
+                        <a class="list-group-item" href="{% url 'question:index' page_id=1 %}">全部&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a>
                         {% for category in categorys %}
                         <a class="list-group-item" href="/question/question_index/1/?category_id={{ category.id }}">{{ category.name}}</a>
                         {% endfor %}
@@ -74,12 +74,12 @@
                     </div>
                 </div>
                 {% endblock %}
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="position: fixed;">
                     <div class="side-bar-well clearfix">
                         <div class="col-sm-5"><img src="{% static 'images/support.png' %}"></div>
                         <div class="col-sm-7">
-                            <p class="side-bar-well-title">技术支持</p>
-                            <p>欢迎联系我们</p>
+                            <p class="side-bar-well-title">欢迎联系我们</p>
+                            <p>5526765@qq.com</p>
                         </div>
                     </div>
                     <div class="side-bar-well">
