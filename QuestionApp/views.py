@@ -120,7 +120,8 @@ def ask(request):
         category = Category.objects.all()
         questions = Question.objects.all()
         return render(request, 'question/add_question.html',
-                      {"category": category, "form": form, "questions": questions})
+                      {"category": category, "form": form, "questions": questions,
+                       "question_2": Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
 
 
 @csrf_exempt
@@ -202,7 +203,9 @@ def search(request):
     return render(request, 'question/search.html', {'err_msg': err_msg, 'question_list': question_list,
                                                     'answer_list': answer_list, 'user_list': user_list,
                                                     'keyword': keyword, 'type': type,
-                                                    'question_2':Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
+                                                    'question_2': Question.objects.all().order_by('-views', 'created',
+                                                                                                  'questionTitle')[
+                                                                  :10]})
 
 
 def questionContent(request):
@@ -212,7 +215,7 @@ def questionContent(request):
     questions = Question.objects.all()
     return render(request, 'question/show_question.html',
                   {'username': username, 'question_list': question_list, "questions": questions,
-                   'question_2':Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
+                   'question_2': Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
 
 
 @csrf_exempt

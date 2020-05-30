@@ -21,7 +21,8 @@ def answer(request, question_id):
     if request.method == 'GET':
         answer_form = AnswerForm()
         return render(request, "question/answer.html",
-                      {'answer_form': answer_form, 'question': question})
+                      {'answer_form': answer_form, 'question': question,
+                       'question_2': Question.objects.all().order_by('-views', 'created', 'questionTitle')[:10]})
         # 显示答案撰写页面
     else:
         author = User.objects.get(id=request.user.id)
