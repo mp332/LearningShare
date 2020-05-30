@@ -1,8 +1,5 @@
-#from django.contrib.auth.views import LoginView
 from django.conf.urls import url
 from .import views
-
-from django.conf import settings
 
 from django.contrib.auth import views as auth_views
 from django.urls import path, reverse_lazy
@@ -13,7 +10,6 @@ from django.conf.urls.static import static
 app_name = 'AccountApp'
 
 urlpatterns = [
-    #url(r'^login/$', views.user_login, name="user_login"),
     url('login/', auth_views.LoginView.as_view(template_name='account/login.html'), name="user_login"),
     url("new-login/", auth_views.LoginView.as_view, {"template_name": "account/login.html"}),
     url('logout/', auth_views.LogoutView.as_view(template_name='account/logout.html'), name="user_logout"),

@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login  # 1从 Django 默认的（或者说是内置的）用户认证和管理应用中引入的两个方法。
-from .forms import LoginForm, RegistrationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, UserInfo
 from django.contrib.auth.models import User
+from .models import UserProfile, UserInfo
+from .forms import LoginForm, RegistrationForm
 from .forms import UserProfileForm, UserInfoForm, UserForm
 from QuestionApp.models import *
 
@@ -95,9 +95,6 @@ def myself_edit(request):
         return render(request, "account/myself_edit.html",
                       {"user_form": user_form, "userprofile_form": userprofile_form, "userinfo_form": userinfo_form})
 
-
-# def my_image(request):
-#    return render(request, "account/imagecrop.html",)
 # 改为可由前端传入图片
 @login_required(login_url='/account/login/')
 def my_image(request):
@@ -116,12 +113,10 @@ def my_collect(request):
     user = User.objects.get(id=request.user.id)
     collect_answers = user.collect_answer.all()
     collect_questions = user.collect_question.all()
-    context={"collect_answers": collect_answers, "collect_questions":collect_questions, }
+    context = {"collect_answers": collect_answers, "collect_questions":collect_questions, }
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
     userinfo = UserInfo.objects.get(user=user)
     context['userprofile'] = userprofile
     context['userinfo'] = userinfo
-    return render(request, 'account/collections.html',context=context)
-
-
+    return render(request, 'account/collections.html', context=context)

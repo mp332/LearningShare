@@ -37,8 +37,3 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserInfo.objects.create(user=instance)
         UserProfile.objects.create(user=instance)
 
-
-# # 信号接收函数，每当更新 User 实例时自动调用
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
