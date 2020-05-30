@@ -108,3 +108,20 @@ class QuestionViewTests(TestCase):
         response = self.client.get(url)
         self.assertIs(question.badNum, 1)
         # 检查同一用户重复点赞，踩数是否不变
+
+    def test_ask(self):
+        # author = User.objects.create(username='user1', password='test_password')
+        category, question, answer, author = create_category_question_answer()
+        # 数据库初始化
+
+        # 获取提问的网址
+        self.client.force_login(author)
+        # 登录用户author,
+
+        url = reverse('question:add_question')
+        response = self.client.post(url, {'category': 1, 'title': 'title_testfwerwtfe',
+                                          'editormd-markdown-doc': 'guest-tryetgert'})
+
+        # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的ask函数
+        # print(response.status_code)
+        self.assertContains(response, '添加成功')
