@@ -121,3 +121,20 @@ a.list-group-item:active {
   position: left;
 }
 
+#tt-pagefooter.tt-offset-small {
+  text-align: center;
+  font-size: small;
+}
+
+#tt-pagefooter.tt-offset-next {
+  text-align: center;
+  font-size: small;
+  margin-top: 240px;
+}
+
+#tt-pagefooter.tt-offset-first {
+  text-align: center;
+  font-size: small;
+  margin-top: 40px;
+}
+
