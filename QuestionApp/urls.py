@@ -6,11 +6,8 @@ from . import views
 app_name = 'question'
 
 urlpatterns = [
-    # path('index/',views.index,name='index'),
-    # path('', RedirectView.as_view(url='index/')),
     path('question_index/<int:page_id>/', views.index, name='index'),
     path('<int:question_id>/', views.question_content, name="question_content"),
-    # path('add_question',views.add_question,name='add_question')
     path('add_question/', views.ask, name='add_question'),
     path('search/', views.search, name='search'),
 
@@ -23,12 +20,9 @@ urlpatterns = [
     path('redit-question/<int:question_id>/', views.redit_question, name="redit_question"),
     path('collect/<int:id>/<str:action>/', views.collect, name='collect_question'),
     path('collect/<int:id>/<str:action>/', views.collect, name='cancel_collect_question'),
+
     path('delete-question/<int:question_id>/', views.delete_question, name="delete_question"),
     
     path('my_center/',views.my_center,name='my_center'),
     path('my_answers/',views.my_answers,name='my_answers'),
-
-
-
-
 ]
