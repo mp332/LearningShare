@@ -89,7 +89,7 @@
 {% block left %}
 <div class="col-sm-3" style="position: fixed;">
     <div class="side-bar-well clearfix">
-        <div class="col-sm-5"><img src="{% static 'images/support.png' %}"width="90px" height="70px"></div>
+        <div class="col-sm-5"><img src="{% static 'images/support.png' %}"></div>
         <div class="col-sm-7">
             <p class="side-bar-well-title">欢迎联系我们</p>
             <p>5526765@qq.com</p>
@@ -98,7 +98,7 @@
     <div class="side-bar-well">
         <strong class="side-bar-well-title">热门问题</strong>
         {% for question in question_2 %}
-        <a href="{{ question.id }}" class="news-item">
+        <a href="{% url 'question:question_content' question_id=question.id %}" class="news-item">
             <div class="news-title">{{question.questionTitle}}</div>
         </a>
         <div class="news-info">
