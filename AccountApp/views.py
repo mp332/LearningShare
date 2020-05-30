@@ -16,8 +16,8 @@ def user_login(request):  # 2视图函数中要处理前端提交的数据，井
         login_form = LoginForm(request.POST)  # 4前端浏览器向服务器端提交表单内容
         if login_form.is_valid():  # 5验证所传入的数据是否合法
             cd = login_form.cleaned_data  # 6cd引用的是一个字典类型数据，其中以键值对的形式记录了用户名和密码。
-            user = authenticate(username=cd['username'], password=cd[
-                'password'])  # 7authenticate（）函数，其作用是检验此用户是否为本网站项目的用户,以及其密码是否正确.如果都对上号，就返回User的一个实例对象，否则返回None
+            user = authenticate(username=cd['username'], password=cd['password'])
+            # 7authenticate（）函数，其作用是检验此用户是否为本网站项目的用户,以及其密码是否正确.如果都对上号，就返回User的一个实例对象，否则返回None
             if user:
                 login(request, user)  # 8login（）函数，以语句⑦所得到的User实例对象作为参数，实现用户登录
                 return HttpResponse("Wellcom You. You have been authenticated successfully")  # 9
