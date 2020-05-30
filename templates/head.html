@@ -33,7 +33,7 @@
 
 
                     <div class="tt-title">
-                        <a href="{% url 'question:index' page_id=1 %}"><span>LearningShare</span></a>
+                        <a href="{% url 'question:index' page_id=1 %}"><span style="font-size:23px">LearningShare</span></a>
 
                     </div>
 
@@ -43,8 +43,8 @@
                             <ul>
 
                                 <!-- <li><a href="{% url 'question:index' page_id=1 %}"><span>LearningShare</span></a></li> -->
-                                <li><a href="{% url 'question:index' page_id=1 %}"><span>主页</span></a></li>
-                                <li><a href="{% url 'question:add_question' %}"><span>提问</span></a></li>
+                                <li><a href="{% url 'question:index' page_id=1 %}"><span style="font-size:20px">主页</span></a></li>
+                                <li><a href="{% url 'question:add_question' %}"><span style="font-size:20px">提问</span></a></li>
 
                             </ul>
                         </nav>
@@ -101,7 +101,7 @@
                                             {% endif %}
                                             <span>
                                             {% if user.userinfo.photo %}
-                                            <img src="{{ user.userinfo.photo | striptags }}" height="35" width="35"
+                                            <img src="{{ user.userinfo.photo | striptags }}" height="40" width="40"
                                                  class="img-circle" id="my_photo" name="user_face">
                                             {% else %}
                                             <img name="user_face" src="{% static 'images/default.jpg' %}" height="35" width="35"
@@ -121,7 +121,7 @@
                                         </ul>
                                     {% else %}
                                     <li>
-                                        <a href="{% url 'account:user_login' %}">登录</a>
+                                        <a href="{% url 'account:user_login' %}" style="font-size:20px">登录</a>
                                     </li>
                                     {% endif %}
                                 </li>
