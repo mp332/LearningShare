@@ -123,5 +123,4 @@ class QuestionViewTests(TestCase):
                                           'editormd-markdown-doc': 'guest-tryetgert'})
 
         # 向url对应的视图发起请求并获得了响应response, 即调用了views里面的ask函数
-        # print(response.status_code)
-        self.assertContains(response, '添加成功')
+        self.assertEqual(response.status_code, 302)
