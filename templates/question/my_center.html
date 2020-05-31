@@ -16,10 +16,10 @@
                 {% if user.userinfo.photo %}
                 <img src="{{ user.userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
                 {% else %}
-                <img name="user_face" src="{% static 'images/default.jpg' %}" class="img-circle" width="270px" id="my_photo">
+                <img name="user_face" src="{% static 'images/default.jpg' %}" class="img-circle" width="200px" id="my_photo">
                 {% endif %}
             </div>
-            <div style="margin-right: 100px"><button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload my photo</button></div>
+            <div style="margin-left: 50px"><button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传头像</button></div>
         </div>
 		</div>
 		<div class="col-md-8 column">
@@ -61,7 +61,7 @@
                 <div class="col-md-4 text-right"><span>个人介绍：</span></div>
                 <div class="col-md-8 text-left">{{user.userinfo.aboutme}}</div>
             </div>
-            <a href="{% url 'account:edit_my_information' %}"><button class="btn btn-primary btn-lg">edit my information</button> </a>
+            <a href="{% url 'account:edit_my_information' %}"><button class="btn btn-primary btn-lg">编辑个人信息</button> </a>
         </div>
 
     </div>
@@ -120,8 +120,8 @@ function upload_image_layer(){
                                     <ul class="tt-list-badge">
                                         <li><a href="#"><span
                                                     class="tt-color09 tt-badge">发表于{{ question.created }}</span></a></li>
-                                        <li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ question.goodNum }}</span></a></li>
-                                        <li><a href="#"><span class="tt-color02 tt-badge">反对 {{ question.badNum }}</span></a></li>
+                                        <li><a href="#"><span class="tt-color02 tt-badge">赞同 {{ question.users_like.count }}</span></a></li>
+                                        <li><a href="#"><span class="tt-color02 tt-badge">反对 {{ question.users_unlike.count }}</span></a></li>
                                     </ul>
                                 </div>
                                 <div class="tt-item-title">
